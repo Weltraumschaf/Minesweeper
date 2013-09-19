@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 public enum ImageIcons {
 
     BLANK("blank.png"),
+    FLAG("flag.png"),
     CLOSED("closed.png"),
     BOMB("bomb.png"),
     BOMB_EXPLODED("bomb_exploded.png"),

@@ -24,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * The applications main window.
@@ -107,6 +108,8 @@ public final class MainWindow extends SwingFrame {
     private static class BoxButtonListener extends MouseAdapter {
 
         private final MineFieldBox box;
+        private boolean opened;
+        private boolean flagged;
 
         public BoxButtonListener(final MineFieldBox box) {
             super();
@@ -115,7 +118,33 @@ public final class MainWindow extends SwingFrame {
 
         @Override
         public void mouseClicked(final MouseEvent e) {
-            ((JButton) e.getComponent()).setIcon(determineIcon());
+            if (opened) {
+                return;
+            }
+
+            final JButton origin = (JButton) e.getComponent();
+
+            if (SwingUtilities.isRightMouseButton(e)) {
+                if (flagged) {
+                    origin.setIcon(ImageIcons.CLOSED.getResource());
+                    flagged = false;
+                } else {
+                    origin.setIcon(ImageIcons.FLAG.getResource());
+                    flagged = true;
+                }
+            } else {
+                if (flagged) {
+                    return;
+                }
+
+                if (box.isMine()) {
+                    origin.setIcon(ImageIcons.BOMB_EXPLODED.getResource());
+                } else {
+                    origin.setIcon(determineIcon());
+                }
+
+                opened = true;
+            }
         }
 
         private ImageIcon determineIcon() {
