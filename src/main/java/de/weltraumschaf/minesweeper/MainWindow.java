@@ -13,11 +13,15 @@ package de.weltraumschaf.minesweeper;
 
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
 /**
  * The applications main window.
@@ -30,44 +34,94 @@ public final class MainWindow extends SwingFrame {
      * Logging facility.
      */
     private static final Logger LOG = Logger.getLogger(MainWindow.class.getName());
-
     /**
      * Id for serialization.
      */
     private static final long serialVersionUID = 1L;
+    private final MineField mineField;
 
     /**
      * Initializes the main window with an title.
      *
      * @param title The window title.
      */
-    public MainWindow(final String title) {
+    public MainWindow(final String title, final MineField mineField) {
         super(title);
+        this.mineField = mineField;
     }
 
     @Override
     protected void initMenu() {
         final JMenuBar menubar = MenuBarBuilder.builder()
-            .menu("File")
+                .menu("File")
                 .item("New")
-                    .addListener(new Listener())
+                .addListener(new Listener())
                 .end()
                 .item("Version")
-                    .addListener(new Listener())
+                .addListener(new Listener())
                 .end()
                 .separator()
                 .item("Quit")
-                    .addListener(new Listener())
+                .addListener(new Listener())
                 .end()
-            .end()
-            .create();
+                .end()
+                .create();
 
         setJMenuBar(menubar);
     }
 
     @Override
     protected void initPanel() {
-//        panel.add(null);
+        final JPanel field = new JPanel();
+        field.setLayout(new GridLayout(mineField.getWidth(), mineField.getHeight()));
+
+        for (int x = 0; x < mineField.getWidth(); ++x) {
+            for (int y = 0; y < mineField.getHeight(); ++y) {
+                final MineFieldBox box = mineField.getBox(x, y);
+                ImageIcon icon;
+
+                if (box.isMine()) {
+                    icon = ImageIcons.BOMB.getResource();
+                } else {
+                    switch (box.countMinesInNeighborhood()) {
+                        case 0:
+                            icon = ImageIcons.BLANK.getResource();
+                            break;
+                        case 1:
+                            icon = ImageIcons.ONE_NEIGHBOR.getResource();
+                            break;
+                        case 2:
+                            icon = ImageIcons.TWO_NEIGHBOR.getResource();
+                            break;
+                        case 3:
+                            icon = ImageIcons.THREE_NEIGHBOR.getResource();
+                            break;
+                        case 4:
+                            icon = ImageIcons.FOUR_NEIGHBOR.getResource();
+                            break;
+                        case 5:
+                            icon = ImageIcons.FIVE_NEIGHBOR.getResource();
+                            break;
+                        case 6:
+                            icon = ImageIcons.SIX_NEIGHBOR.getResource();
+                            break;
+                        case 7:
+                            icon = ImageIcons.SEVEN_NEIGHBOR.getResource();
+                            break;
+                        case 8:
+                            icon = ImageIcons.EIGHT_NEIGHBOR.getResource();
+                            break;
+                        default:
+                            throw new IllegalStateException(String.format("Unsupported neighbor count: %d!",
+                                    box.countMinesInNeighborhood()));
+                    }
+                }
+
+                field.add(new JButton(icon));
+            }
+        }
+
+        panel.add(field);
     }
 
     /**
@@ -75,13 +129,13 @@ public final class MainWindow extends SwingFrame {
      *
      * @deprecated Will be removed soon!
      */
-    @Deprecated private class Listener implements ActionListener {
+    @Deprecated
+    private class Listener implements ActionListener {
 
         @Override
         public void actionPerformed(final ActionEvent e) {
             final Object source = e.getSource();
             LOG.log(Level.INFO, String.format("Received event from %s.", source.toString()));
         }
-
     }
 }

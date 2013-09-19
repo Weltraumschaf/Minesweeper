@@ -56,7 +56,7 @@ public class App extends InvokableAdapter implements Runnable {
     @Override
     public void run() {
         mineField.initializeFieldWithBoxes();
-        final MainWindow mainWindow = new MainWindow("Minesweeper");
+        final MainWindow mainWindow = new MainWindow("Minesweeper", mineField);
         mainWindow.init();
         mainWindow.setVisible(true);
     }

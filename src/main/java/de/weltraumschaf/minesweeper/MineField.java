@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.minesweeper;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -125,5 +126,17 @@ class MineField {
         }
 
         return neighbours;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public MineFieldBox getBox(final int x, final int y) {
+        return boxes[x][y];
     }
 }
