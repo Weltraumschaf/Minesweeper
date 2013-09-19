@@ -25,6 +25,8 @@ abstract class MineFieldBox {
     private final MineField field;
     private List<MineFieldBox> neighbours;
     private int minesInNeighbourhoodCount = -1;
+    private boolean opened;
+    private boolean flagged;
 
     public MineFieldBox(final int rowId, final int columnId, final MineField field) {
         super();
@@ -55,6 +57,31 @@ abstract class MineFieldBox {
         }
 
         return neighbours;
+    }
+
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public void setOpened(final boolean opened) {
+        this.opened = opened;
+    }
+
+    public boolean isFlagged() {
+        return flagged;
+    }
+
+    public void setFlagged(final boolean flagged) {
+        this.flagged = flagged;
+    }
+
+    MineField getField() {
+        return field;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + rowId + ", " + columnId + ')';
     }
 
 }

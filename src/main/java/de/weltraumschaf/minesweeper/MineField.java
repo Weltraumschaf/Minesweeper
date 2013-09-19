@@ -32,6 +32,7 @@ class MineField {
     private final Random random = new Random();
     private int bombsCount;
     private int savesCount;
+    private boolean gameOver;
 
     public MineField(final int width, final int height) {
         this.width = width;
@@ -139,4 +140,13 @@ class MineField {
     public MineFieldBox getBox(final int x, final int y) {
         return boxes[x][y];
     }
+
+    public void setGameOver() {
+        gameOver = true;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
 }

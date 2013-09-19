@@ -13,11 +13,14 @@ package de.weltraumschaf.minesweeper;
 
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -42,6 +45,7 @@ public final class MainWindow extends SwingFrame {
      */
     private static final long serialVersionUID = 1L;
     private final MineField mineField;
+    private final JPanel field = new JPanel();
 
     /**
      * Initializes the main window with an title.
@@ -73,9 +77,13 @@ public final class MainWindow extends SwingFrame {
         setJMenuBar(menubar);
     }
 
+    public JPanel getField() {
+        return field;
+    }
+
     @Override
     protected void initPanel() {
-        final JPanel field = new JPanel();
+
         field.setLayout(new GridLayout(mineField.getWidth(), mineField.getHeight()));
 
         for (int x = 0; x < mineField.getWidth(); ++x) {
@@ -107,9 +115,12 @@ public final class MainWindow extends SwingFrame {
 
     private static class BoxButtonListener extends MouseAdapter {
 
+        private static final Logger LOG = Logger.getLogger(BoxButtonListener.class.getName());
+
+        static {
+            LOG.setLevel(Level.OFF);
+        }
         private final MineFieldBox box;
-        private boolean opened;
-        private boolean flagged;
 
         public BoxButtonListener(final MineFieldBox box) {
             super();
@@ -118,32 +129,58 @@ public final class MainWindow extends SwingFrame {
 
         @Override
         public void mouseClicked(final MouseEvent e) {
-            if (opened) {
+            if (box.isOpened()) {
                 return;
             }
 
             final JButton origin = (JButton) e.getComponent();
 
             if (SwingUtilities.isRightMouseButton(e)) {
-                if (flagged) {
+                LOG.info("Right click on " + box.toString());
+
+                if (box.isFlagged()) {
                     origin.setIcon(ImageIcons.CLOSED.getResource());
-                    flagged = false;
+                    box.setFlagged(false);
                 } else {
                     origin.setIcon(ImageIcons.FLAG.getResource());
-                    flagged = true;
+                    box.setFlagged(true);
                 }
             } else {
-                if (flagged) {
+                LOG.info("Left click on " + box.toString());
+
+                if (box.isFlagged()) {
                     return;
                 }
 
+                box.setOpened(true);
+
                 if (box.isMine()) {
                     origin.setIcon(ImageIcons.BOMB_EXPLODED.getResource());
+                    box.getField().setGameOver();
                 } else {
                     origin.setIcon(determineIcon());
                 }
+            }
 
-                opened = true;
+            if (box.getField().isGameOver()) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (final Component comp : origin.getParent().getComponents()) {
+                            if (comp instanceof JButton) {
+                                final JButton button = (JButton) comp;
+                                final MouseEvent me = new MouseEvent(button, // which
+                                        MouseEvent.MOUSE_CLICKED, // what
+                                        System.currentTimeMillis(), // when
+                                        0, // no modifiers
+                                        button.getX(), button.getY(), // where: at (10, 10}
+                                        1, // only 1 click
+                                        false); // not a popup trigger
+                                button.dispatchEvent(me);
+                            }
+                        }
+                    }
+                });
             }
         }
 

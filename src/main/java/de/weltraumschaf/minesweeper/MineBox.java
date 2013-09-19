@@ -17,6 +17,10 @@ package de.weltraumschaf.minesweeper;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class MineBox extends MineFieldBox {
+    /**
+     * http://www.fileformat.info/info/unicode/char/1f4a3/index.htm
+     */
+    public static final String BOMB = "\uD83D\uDCA3";
 
     public MineBox(final int rowId, final int columnId, final MineField field) {
         super(rowId, columnId, field);
@@ -29,7 +33,7 @@ class MineBox extends MineFieldBox {
 
     @Override
     public String toString() {
-        return "\uD83D\uDCA3"; // http://www.fileformat.info/info/unicode/char/1f4a3/index.htm
+        return BOMB + " " + super.toString();
     }
 
 }

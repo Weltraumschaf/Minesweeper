@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.minesweeper;
 
 /**
@@ -29,11 +28,6 @@ class SaveBox extends MineFieldBox {
 
     @Override
     public String toString() {
-        if (countMinesInNeighborhood() == 0) {
-            return " ";
-        } else {
-            return String.valueOf(countMinesInNeighborhood());
-        }
+        return String.valueOf(countMinesInNeighborhood()) + " " + super.toString();
     }
-
 }
