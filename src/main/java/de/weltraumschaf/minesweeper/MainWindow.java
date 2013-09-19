@@ -20,8 +20,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * The applications main window.
@@ -122,6 +124,7 @@ public final class MainWindow extends SwingFrame {
         }
 
         panel.add(field);
+        pack();
     }
 
     /**
