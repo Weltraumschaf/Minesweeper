@@ -74,9 +74,9 @@ public final class MainWindow extends SwingFrame {
                 .item("New")
                 .addListener(new NewGame(this))
                 .end()
-                .item("Version")
-                .addListener(new Listener())
-                .end()
+//                .item("Version")
+//                .addListener(new Listener())
+//                .end()
                 .separator()
                 .item("Quit")
                 .addListener(new Quit(this))
@@ -104,21 +104,6 @@ public final class MainWindow extends SwingFrame {
 
         panel.add(field);
         pack();
-    }
-
-    /**
-     * Default listener for playing around.
-     *
-     * @deprecated Will be removed soon!
-     */
-    @Deprecated
-    private class Listener implements ActionListener {
-
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-            final Object source = e.getSource();
-            LOG.log(Level.INFO, String.format("Received event from %s.", source.toString()));
-        }
     }
 
     private class NewGame implements ActionListener {
@@ -200,6 +185,10 @@ public final class MainWindow extends SwingFrame {
                     box.getField().setGameOver();
                 } else {
                     origin.setIcon(determineIcon());
+
+                    if (box.countMinesInNeighborhood() == 0) {
+                        
+                    }
                 }
             }
 
