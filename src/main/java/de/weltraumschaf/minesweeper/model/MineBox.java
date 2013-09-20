@@ -13,15 +13,25 @@
 package de.weltraumschaf.minesweeper.model;
 
 /**
+ * A mine box which explodes if opened and not flagged.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class MineBox extends BaseMineFieldBox {
     /**
+     * Bomb uniocde character.
+     *
      * http://www.fileformat.info/info/unicode/char/1f4a3/index.htm
      */
-    public static final String BOMB = "\uD83D\uDCA3";
+    private static final String BOMB = "\uD83D\uDCA3";
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param rowId must not be less than 0
+     * @param columnId must not be less than 0
+     * @param field must not be {@code null}
+     */
     public MineBox(final int rowId, final int columnId, final MineField field) {
         super(rowId, columnId, field);
     }

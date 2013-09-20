@@ -13,25 +13,59 @@
 package de.weltraumschaf.minesweeper.model;
 
 import java.util.List;
+import java.util.Observable;
+import org.apache.commons.lang3.Validate;
 
 /**
+ * Base implementation of a mine field box.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-abstract class BaseMineFieldBox implements MineFieldBox {
+abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
 
+    /**
+     * Row in which this box is positioned in the field (y-coordinate).
+     */
     private final int rowId;
+    /**
+     * Column in which this box is positioned in the field (x-coordinate).
+     */
     private final int columnId;
+    /**
+     * Mine field to which the box belongs.
+     */
     private final MineField field;
-    private List<BaseMineFieldBox> neighbours;
+    /**
+     * List of direct neighbors fields.
+     */
+    private List<MineFieldBox> neighbours;
+    /**
+     * Numbers of mines in neighborhood.
+     */
     private int minesInNeighbourhoodCount = -1;
+    /**
+     * Whether the box is opened.
+     */
     private boolean opened;
+    /**
+     * Whether the box is flagged.
+     */
     private boolean flagged;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param rowId must not be less than 0
+     * @param columnId must not be less than 0
+     * @param field must not be {@code null}
+     */
     public BaseMineFieldBox(final int rowId, final int columnId, final MineField field) {
         super();
+        Validate.isTrue(rowId < 0, "Row id must not be less than 0!");
         this.rowId = rowId;
+        Validate.isTrue(columnId < 0, "Column id must not be less than 0!");
         this.columnId = columnId;
+        Validate.notNull(field, "Field must not be null!");
         this.field = field;
     }
 
@@ -40,7 +74,7 @@ abstract class BaseMineFieldBox implements MineFieldBox {
         if (minesInNeighbourhoodCount == -1) {
             minesInNeighbourhoodCount = 0;
 
-            for (final BaseMineFieldBox box : getNeighbours()) {
+            for (final MineFieldBox box : getNeighbours()) {
                 if (box.isMine()) {
                     ++minesInNeighbourhoodCount;
                 }
@@ -50,7 +84,12 @@ abstract class BaseMineFieldBox implements MineFieldBox {
         return minesInNeighbourhoodCount;
     }
 
-    protected List<BaseMineFieldBox> getNeighbours() {
+    /**
+     * Get all direct neighbors of a box.
+     *
+     * @return contains at least 3 and maximum 8 boxes
+     */
+    protected List<MineFieldBox> getNeighbours() {
         if (neighbours == null) {
             neighbours = field.getNeighboursOfBox(rowId, columnId);
         }
@@ -65,7 +104,9 @@ abstract class BaseMineFieldBox implements MineFieldBox {
 
     @Override
     public void setOpened(final boolean opened) {
+        setChanged();
         this.opened = opened;
+        notifyObservers(this);
     }
 
     @Override
@@ -75,7 +116,9 @@ abstract class BaseMineFieldBox implements MineFieldBox {
 
     @Override
     public void setFlagged(final boolean flagged) {
+        setChanged();
         this.flagged = flagged;
+        notifyObservers(this);
     }
 
     @Override

@@ -12,31 +12,77 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.model.MineFieldBox;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import org.apache.commons.lang3.Validate;
 
 /**
+ * Represents a mine filed box button.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class FieldBoxButton extends JButton {
+class FieldBoxButton extends JButton implements Observer {
+    /**
+     * Zero mines in neighborhood.
+     */
     private static final int ZERO_NEIGHBORS = 0;
+    /**
+     * One mines in neighborhood.
+     */
     private static final int ONE_NEIGHBORS = 1;
+    /**
+     * Two mines in neighborhood.
+     */
     private static final int TWO_NEIGHBORS = 2;
+    /**
+     * Three mines in neighborhood.
+     */
     private static final int THREE_NEIGHBORS = 3;
+    /**
+     * Four mines in neighborhood.
+     */
     private static final int FOUR_NEIGHBORS = 4;
+    /**
+     * Five mines in neighborhood.
+     */
     private static final int FIVE_NEIGHBORS = 5;
+    /**
+     * Six mines in neighborhood.
+     */
     private static final int SIX_NEIGHBORS = 6;
+    /**
+     * Seven mines in neighborhood.
+     */
     private static final int SEVEN_NEIGHBORS = 7;
+    /**
+     * Eight mines in neighborhood.
+     */
     private static final int EIGHT_NEIGHBORS = 8;
-
+    /**
+     * The data model behind the button.
+     */
     private final MineFieldBox model;
 
+    /**
+     * Dedicated constructor.
+     *
+     * Initializes the button with closed icon.
+     *
+     * @param model must not be {@code null}
+     */
     public FieldBoxButton(MineFieldBox model) {
         super(ImageIcons.CLOSED.getResource());
+        Validate.notNull(model);
         this.model = model;
     }
 
+    /**
+     * Get the box model.
+     *
+     * @return never {@code null}
+     */
     public MineFieldBox getBox() {
         return model;
     }
@@ -132,5 +178,10 @@ class FieldBoxButton extends JButton {
         }
 
         return icon;
+    }
+
+    @Override
+    public void update(final Observable observable, final Object arg) {
+
     }
 }

@@ -12,11 +12,19 @@
 package de.weltraumschaf.minesweeper.model;
 
 /**
+ * A save box which does not explodes if opened and not flagged.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class SaveBox extends BaseMineFieldBox {
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param rowId must not be less than 0
+     * @param columnId must not be less than 0
+     * @param field must not be {@code null}
+     */
     public SaveBox(final int rowId, final int columnId, final MineField field) {
         super(rowId, columnId, field);
     }

@@ -20,12 +20,16 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 /**
+ * Listen for mouse clicks on a {@link FieldBoxButton}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class BoxButtonListener extends MouseAdapter {
+class FieldBoxButtonListener extends MouseAdapter {
 
-    private static final Logger LOG = Logger.getLogger(BoxButtonListener.class.getName());
+    /**
+     * Log facility.
+     */
+    private static final Logger LOG = Logger.getLogger(FieldBoxButtonListener.class.getName());
 
     static {
         LOG.setLevel(Level.OFF);
