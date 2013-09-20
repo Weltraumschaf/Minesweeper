@@ -14,20 +14,12 @@ package de.weltraumschaf.minesweeper.gui;
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
 import de.weltraumschaf.minesweeper.model.MineField;
-import de.weltraumschaf.minesweeper.model.MineFieldBox;
-import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * The applications main window.
@@ -98,7 +90,7 @@ public final class MainWindow extends SwingFrame {
 
         for (int x = 0; x < mineField.getWidth(); ++x) {
             for (int y = 0; y < mineField.getHeight(); ++y) {
-                final JButton box = new JButton(ImageIcons.CLOSED.getResource());
+                final JButton box = new FieldBoxButton(mineField.getBox(x, y));
                 box.addMouseListener(new BoxButtonListener(mineField.getBox(x, y)));
                 field.add(box);
             }

@@ -12,6 +12,8 @@
 
 package de.weltraumschaf.minesweeper.gui;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.ImageIcon;
 
 /**
@@ -36,13 +38,24 @@ public enum ImageIcons {
     EIGHT_NEIGHBOR("eight_neighbor.png");
 
     private static final String BASE_PACKAGE = "de/weltraumschaf/minesweeper/";
+    private static final Map<ImageIcons, ImageIcon> CACHE = new ConcurrentHashMap<ImageIcons, ImageIcon>();
     private final String baseName;
+
+    static {
+        for (final ImageIcons icn : values()) {
+            CACHE.put(icn, icn.getResource());
+        }
+    }
 
     private ImageIcons(final String baseName) {
         this.baseName = baseName;
     }
 
     public ImageIcon getResource() {
+        if (CACHE.containsKey(this)) {
+            return CACHE.get(this);
+        }
+
         return new ImageIcon(getClass().getClassLoader().getResource(BASE_PACKAGE + baseName));
     }
 
