@@ -52,6 +52,7 @@ public final class MainWindow extends SwingFrame {
     public MainWindow(final String title, final MineField mineField) {
         super(title);
         this.mineField = mineField;
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     public MineField getMineField() {
@@ -74,7 +75,7 @@ public final class MainWindow extends SwingFrame {
                 .end()
                 .separator()
                 .item("Quit")
-                .addListener(new Listener())
+                .addListener(new Quit(this))
                 .end()
                 .end()
                 .create();
@@ -130,6 +131,21 @@ public final class MainWindow extends SwingFrame {
             newField.initializeFieldWithBoxes();
             main.setMineField(newField);
             main.initPanel();
+        }
+    }
+
+    private class Quit implements ActionListener {
+
+        private final MainWindow main;
+
+        public Quit(final MainWindow main) {
+            super();
+            this.main = main;
+        }
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            main.dispose();
         }
     }
 
