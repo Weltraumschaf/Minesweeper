@@ -25,38 +25,40 @@ import javax.swing.SwingUtilities;
  */
 public class App extends InvokableAdapter implements Runnable {
 
-    private static final int DEFAULT_WIDTH = 8;
-    private static final int DEFAULT_HEIGHT = 8;
-
-    private final MineField mineField;
     /**
      * Version information.
      */
     private final Version version;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param args must not be {@code null}
+     */
+    public App(final String[] args) {
+        super(args);
+        version = new Version("/de/weltraumschaf/minesweeper/version.properties");
+    }
+
+    /**
+     * Main entry point of VM.
+     *
+     * @param args cli arguments from VM
+     */
     public static void main(final String[] args) {
         InvokableAdapter.main(new App(args));
     }
 
-    public App(final String[] args) {
-        super(args);
-        final int width;
-        final int height;
-
-        if (args.length == 2) {
-            width = Integer.parseInt(args[0]);
-            height = Integer.parseInt(args[1]);
-        } else {
-            width = DEFAULT_WIDTH;
-            height = DEFAULT_HEIGHT;
-        }
-
-        this.mineField = new MineField(width, height);
-        this.version = new Version("/de/weltraumschaf/minesweeper/version.properties");
-    }
-
     @Override
     public void run() {
+        final MineField mineField;
+
+        if (getArgs().length == 2) {
+            mineField = new MineField(Integer.parseInt(getArgs()[0]), Integer.parseInt(getArgs()[1]));
+        } else {
+            mineField = new MineField();
+        }
+
         mineField.initializeFieldWithBoxes();
         final MainWindow mainWindow = new MainWindow("Minesweeper", mineField);
         mainWindow.init();
@@ -66,6 +68,7 @@ public class App extends InvokableAdapter implements Runnable {
     @Override
     public void execute() throws Exception {
         setExiter(new NullExiter());
+        version.load();
         SwingUtilities.invokeLater(this);
     }
 }

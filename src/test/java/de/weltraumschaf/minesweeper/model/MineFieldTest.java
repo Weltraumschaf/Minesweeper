@@ -9,12 +9,14 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.minesweeper.model;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Tests for {@link MineField}.
@@ -24,8 +26,15 @@ import org.junit.rules.ExpectedException;
 public class MineFieldTest {
 
     //CHECKSTYLE:OFF
-    @Rule public final ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
     //CHECKSTYLE:ON
+    private final MineField sut = new MineField();
+
+    @Before
+    public void initializeFieldWithBoxes() {
+        sut.initializeFieldWithBoxes();
+    }
 
     @Test
     public void throwsExceptionIfConstructWithHeightLessThanOne() {
@@ -41,4 +50,71 @@ public class MineFieldTest {
         new MineField(1, 0);
     }
 
+    @Test
+    public void getNeighboursOfBox_atCornerReturnsThree() {
+        assertThat(sut.getNeighboursOfBox(0, 0), hasSize(3));
+        assertThat(sut.getNeighboursOfBox(0, 7), hasSize(3));
+        assertThat(sut.getNeighboursOfBox(7, 0), hasSize(3));
+        assertThat(sut.getNeighboursOfBox(7, 7), hasSize(3));
+    }
+
+    @Test
+    public void getNeighboursOfBox_atEdgeReturnsFive() {
+        assertThat(sut.getNeighboursOfBox(1, 0), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(2, 0), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(3, 0), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(4, 0), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(5, 0), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(6, 0), hasSize(5));
+
+        assertThat(sut.getNeighboursOfBox(1, 7), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(2, 7), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(3, 7), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(4, 7), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(5, 7), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(6, 7), hasSize(5));
+
+        assertThat(sut.getNeighboursOfBox(0, 1), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(0, 2), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(0, 3), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(0, 4), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(0, 5), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(0, 6), hasSize(5));
+
+        assertThat(sut.getNeighboursOfBox(7, 1), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(7, 2), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(7, 3), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(7, 4), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(7, 5), hasSize(5));
+        assertThat(sut.getNeighboursOfBox(7, 6), hasSize(5));
+    }
+
+    @Test
+    public void getNeighboursOfBox_atTheMiddleReturnsEight() {
+        for (int x = 1; x <= 6; ++x) {
+            for (int y = 1; y <= 6; ++y) {
+                assertThat(sut.getNeighboursOfBox(x, y), hasSize(8));
+            }
+        }
+    }
+
+    @Test
+    public void getNeighboursOfBox_throwsExceptionInNotInitialized() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
+        new MineField(1, 1).getNeighboursOfBox(0, 0);
+    }
+
+    @Test
+    public void getNeighboursOfBox_throwsExceptionIfRowIdLessThanZero() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Row id must not be less than 0!");
+        sut.getNeighboursOfBox(-1, 0);
+    }
+
+    public void getNeighboursOfBox_throwsExceptionIfColumnIdLessThanZero() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Column id must not be less than 0!");
+        sut.getNeighboursOfBox(0, -1);
+    }
 }

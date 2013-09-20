@@ -31,6 +31,14 @@ public class MineField {
      */
     private static final double HUNDRED_PERCENT = 100.0;
     /**
+     * Default Width.
+     */
+    private static final int DEFAULT_WIDTH = 8;
+    /**
+     * Default height.
+     */
+    private static final int DEFAULT_HEIGHT = 8;
+    /**
      * How many boxes in the height.
      */
     private final int height;
@@ -62,6 +70,13 @@ public class MineField {
      * Whether {@link #initializeFieldWithBoxes()} was invoked at least once.
      */
     private boolean initialized;
+
+    /**
+     * Initializes width and height with {@link #DEFAULT_WIDTH} and {@link #DEFAULT_HEIGHT}.
+     */
+    public MineField() {
+        this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
+    }
 
     /**
      * Dedicated constructor.
@@ -156,8 +171,8 @@ public class MineField {
                 "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
         }
 
-        Validate.isTrue(rowId < 0, "Row id must not be less than 0");
-        Validate.isTrue(columnId < 0, "Column id must not be less than 0");
+        Validate.isTrue(rowId >= 0, "Row id must not be less than 0!");
+        Validate.isTrue(columnId >= 0, "Column id must not be less than 0!");
         int rowIdStart = rowId - 1;
 
         if (rowIdStart < 0) {
