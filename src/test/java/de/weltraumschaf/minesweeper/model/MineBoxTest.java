@@ -25,6 +25,7 @@ public class MineBoxTest {
 
     private final MineField field = new MineField(2, 2);
     private final MineBox sut = new MineBox(1, 2, field);
+
     @Test
     public void isMine() {
         assertThat(sut.isMine(), is(true));
@@ -32,7 +33,7 @@ public class MineBoxTest {
 
     @Test
     public void testToString() {
-        assertThat(sut.toString(), is(equalTo("")));
+        assertThat(sut.toString(), is(equalTo("\uD83D\uDCA3 [2,1]")));
     }
 
 }

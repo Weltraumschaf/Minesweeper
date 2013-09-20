@@ -61,9 +61,9 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
      */
     public BaseMineFieldBox(final int rowId, final int columnId, final MineField field) {
         super();
-        Validate.isTrue(rowId < 0, "Row id must not be less than 0!");
+        Validate.isTrue(rowId >= 0, "Row id must not be less than 0!");
         this.rowId = rowId;
-        Validate.isTrue(columnId < 0, "Column id must not be less than 0!");
+        Validate.isTrue(columnId >= 0, "Column id must not be less than 0!");
         this.columnId = columnId;
         Validate.notNull(field, "Field must not be null!");
         this.field = field;

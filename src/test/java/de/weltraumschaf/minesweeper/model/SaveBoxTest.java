@@ -11,9 +11,11 @@
  */
 package de.weltraumschaf.minesweeper.model;
 
+import java.util.Collections;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link SaveBox}.
@@ -22,7 +24,7 @@ import static org.hamcrest.Matchers.*;
  */
 public class SaveBoxTest {
 
-    private final MineField field = new MineField(2, 2);
+    private final MineField field = mock(MineField.class);
     private final SaveBox sut = new SaveBox(1, 2, field);
 
     @Test
@@ -32,7 +34,8 @@ public class SaveBoxTest {
 
     @Test
     public void testToString() {
-        assertThat(sut.toString(), is(equalTo("")));
+        when(field.getNeighboursOfBox(1, 2)).thenReturn(Collections.<MineFieldBox>emptyList());
+        assertThat(sut.toString(), is(equalTo("0 [2,1]")));
     }
 
 }
