@@ -35,6 +35,7 @@ abstract class BaseMineFieldBox implements MineFieldBox {
         this.field = field;
     }
 
+    @Override
     public int countMinesInNeighborhood() {
         if (minesInNeighbourhoodCount == -1) {
             minesInNeighbourhoodCount = 0;
@@ -57,22 +58,27 @@ abstract class BaseMineFieldBox implements MineFieldBox {
         return neighbours;
     }
 
+    @Override
     public boolean isOpened() {
         return opened;
     }
 
+    @Override
     public void setOpened(final boolean opened) {
         this.opened = opened;
     }
 
+    @Override
     public boolean isFlagged() {
         return flagged;
     }
 
+    @Override
     public void setFlagged(final boolean flagged) {
         this.flagged = flagged;
     }
 
+    @Override
     public MineField getField() {
         return field;
     }
