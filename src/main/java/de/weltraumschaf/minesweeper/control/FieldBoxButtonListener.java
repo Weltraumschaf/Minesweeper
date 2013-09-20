@@ -11,11 +11,11 @@
  */
 package de.weltraumschaf.minesweeper.control;
 
+import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.gui.FieldBoxButton;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -30,11 +30,7 @@ class FieldBoxButtonListener extends MouseAdapter {
     /**
      * Log facility.
      */
-    private static final Logger LOG = Logger.getLogger(FieldBoxButtonListener.class.getName());
-
-    static {
-        LOG.setLevel(Level.OFF);
-    }
+    private static final Logger LOG = GlobalLog.getLogger(FieldBoxButtonListener.class);
 
     @Override
     public void mouseClicked(final MouseEvent e) {

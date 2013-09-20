@@ -11,10 +11,10 @@
  */
 package de.weltraumschaf.minesweeper.gui;
 
+import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.MineFieldBox;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,7 +29,7 @@ public class FieldBoxButton extends JButton implements Observer {
     /**
      * Log facility.
      */
-    private static final Logger LOG = Logger.getLogger(FieldBoxButton.class.getName());
+    private static final Logger LOG = GlobalLog.getLogger(FieldBoxButton.class);
     /**
      * Zero mines in neighborhood.
      */
@@ -69,23 +69,15 @@ public class FieldBoxButton extends JButton implements Observer {
     /**
      * The data model behind the button.
      */
-    private final MineFieldBox box;
-
-    static {
-        LOG.setLevel(Level.ALL);
-    }
+    private MineFieldBox box;
 
     /**
      * Dedicated constructor.
      *
      * Initializes the button with closed icon.
-     *
-     * @param box must not be {@code null}
      */
-    public FieldBoxButton(MineFieldBox box) {
+    public FieldBoxButton() {
         super(ImageIcons.CLOSED.getResource());
-        Validate.notNull(box, "Box must not be null!");
-        this.box = box;
     }
 
     /**
@@ -98,9 +90,21 @@ public class FieldBoxButton extends JButton implements Observer {
     }
 
     /**
+     * Set the box model.
+     *
+     * @param box must not be {@code null}
+     */
+    public void setBox(final MineFieldBox box) {
+        Validate.notNull(box, "Box must not be null!");
+        this.box = box;
+    }
+
+    /**
      * Open the box.
      */
     public void open() {
+        Validate.notNull(box, "Box model is null! Set box first.");
+
         if (box.isOpen()) {
             return;
         }
@@ -127,6 +131,7 @@ public class FieldBoxButton extends JButton implements Observer {
      * @return {@code true} if the box is already open
      */
     public boolean isOpen() {
+        Validate.notNull(box, "Box model is null! Set box first.");
         return box.isOpen();
     }
 
@@ -136,6 +141,7 @@ public class FieldBoxButton extends JButton implements Observer {
      * Already opened box can not be closed.
      */
     public void close() {
+        Validate.notNull(box, "Box model is null! Set box first.");
         if (!box.isOpen()) {
             return;
         }
@@ -146,6 +152,7 @@ public class FieldBoxButton extends JButton implements Observer {
     }
 
     public void flag() {
+        Validate.notNull(box, "Box model is null! Set box first.");
         if (box.isFlag()) {
             return;
         }
@@ -156,10 +163,12 @@ public class FieldBoxButton extends JButton implements Observer {
     }
 
     public boolean isFlag() {
+        Validate.notNull(box, "Box model is null! Set box first.");
         return box.isFlag();
     }
 
     private ImageIcon determineIcon() {
+        Validate.notNull(box, "Box model is null! Set box first.");
         final ImageIcon icon;
 
         if (box.isMine()) {
@@ -212,6 +221,8 @@ public class FieldBoxButton extends JButton implements Observer {
 
     @Override
     public void update(final Observable observable, final Object arg) {
+        Validate.notNull(box, "Box model is null! Set box first.");
+
         if (box.isOpen()) {
             open();
         }

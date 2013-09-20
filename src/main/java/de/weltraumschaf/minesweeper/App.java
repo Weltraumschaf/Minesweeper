@@ -18,7 +18,6 @@ import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;
 import de.weltraumschaf.minesweeper.control.MenuItemListeners;
 import de.weltraumschaf.minesweeper.model.Game;
-import java.io.IOException;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.Validate;
 

@@ -13,15 +13,12 @@ package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
-import de.weltraumschaf.minesweeper.control.FieldBoxListeners;
+import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.MineField;
-import de.weltraumschaf.minesweeper.model.MineFieldBox;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -34,11 +31,8 @@ public final class MainWindow extends SwingFrame {
     /**
      * Logging facility.
      */
-    private static final Logger LOG = Logger.getLogger(MainWindow.class.getName());
+    private static final Logger LOG = GlobalLog.getLogger(MainWindow.class);
 
-    static {
-        LOG.setLevel(Level.ALL);
-    }
     /**
      * Id for serialization.
      */
@@ -64,11 +58,14 @@ public final class MainWindow extends SwingFrame {
      * Initializes the main window with an title.
      *
      * @param title The window title.
+     * @param mineField must not be null
      */
     public MainWindow(final String title, final MineField mineField) {
         super(title);
+        Validate.notNull(mineField, "Mine field must not be null!");
         this.mineField = mineField;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setExitOnCloseWindow(true);
     }
 
     public MineField getMineField() {
@@ -83,16 +80,16 @@ public final class MainWindow extends SwingFrame {
     protected void initMenu() {
         final JMenuBar menubar = MenuBarBuilder.builder()
                 .menu("File")
-                .item("New")
-                .addListener(newGameListener)
-                .end()
-                .item("Version")
-                .addListener(versionInfoListener)
-                .end()
-                .separator()
-                .item("Quit")
-                .addListener(quitListener)
-                .end()
+                    .item("New")
+                        .addListener(newGameListener)
+                    .end()
+                    .item("Version")
+                        .addListener(versionInfoListener)
+                    .end()
+                    .separator()
+                    .item("Quit")
+                        .addListener(quitListener)
+                    .end()
                 .end()
                 .create();
 
@@ -101,35 +98,38 @@ public final class MainWindow extends SwingFrame {
 
     @Override
     public void initPanel() {
-        panel.removeAll();
-        final JPanel field = new JPanel();
-        field.setLayout(new GridLayout(mineField.getWidth(), mineField.getHeight()));
         LOG.info(String.format("Pain field:%n%s", mineField.toString()));
-
-        for (int x = 0; x < mineField.getWidth(); ++x) {
-            for (int y = 0; y < mineField.getHeight(); ++y) {
-                final MineFieldBox box = mineField.getBox(x, y);
-                final FieldBoxButton button = new FieldBoxButton(box);
-                box.addObserver(button);
-                button.addMouseListener(FieldBoxListeners.createClickListener());
-                field.add(button);
-            }
-        }
-
-        panel.add(field);
+        final MineFieldPanel gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight());
+        gamePanel.init();
+        panel.add(gamePanel);
         pack();
     }
 
+    /**
+     * Set listener for version info menu item.
+     *
+     * @param listener must not be {@code null}
+     */
     public void setVersionInfoListener(final ActionListener listener) {
         Validate.notNull(listener, "Listener must not be null!");
         versionInfoListener = listener;
     }
 
+    /**
+     * Set listener for new game menu item.
+     *
+     * @param listener must not be {@code null}
+     */
     public void setNewGameListener(final ActionListener listener) {
         Validate.notNull(listener, "Listener must not be null!");
         newGameListener = listener;
     }
 
+    /**
+     * Set listener for quit menu item.
+     *
+     * @param listener must not be {@code null}
+     */
     public void setQuitListener(final ActionListener listener) {
         Validate.notNull(listener, "Listener must not be null!");
         quitListener = listener;

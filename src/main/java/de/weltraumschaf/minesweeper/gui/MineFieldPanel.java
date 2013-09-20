@@ -13,22 +13,46 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.Matrix;
+import de.weltraumschaf.minesweeper.control.FieldBoxListeners;
+import de.weltraumschaf.minesweeper.model.MineFieldBox;
+import java.awt.GridLayout;
+import java.util.List;
 import javax.swing.JPanel;
+import org.apache.commons.lang3.Validate;
 
 /**
+ * Paints the game field.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class MineFieldPanel extends JPanel {
 
-    private final int width;
-    private final int height;
     private final Matrix<FieldBoxButton> fieldButtons;
 
     public MineFieldPanel(int width, int height) {
-        this.width = width;
-        this.height = height;
+        super(new GridLayout(width, height));
         this.fieldButtons = new Matrix<FieldBoxButton>(FieldBoxButton.class, width, height);
+    }
+
+    public void init() {
+        fieldButtons.initWithObjects();
+
+        for (final FieldBoxButton btn : fieldButtons.getAll()) {
+            btn.addMouseListener(FieldBoxListeners.createClickListener());
+            add(btn);
+        }
+    }
+
+    public void setModels(final List<MineFieldBox> boxes) {
+        Validate.isTrue(boxes.size() == fieldButtons.size(), "Size of buttons and boxes matrix must be equal!");
+
+        int i = 0;
+        for (final FieldBoxButton btn : fieldButtons.getAll()) {
+            final MineFieldBox box = boxes.get(i);
+            box.addObserver(btn);
+            btn.setBox(box);
+            ++i;
+        }
     }
 
 }
