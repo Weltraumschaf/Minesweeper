@@ -9,14 +9,17 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.minesweeper.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observer;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link BaseMineFieldBox}.
@@ -26,8 +29,10 @@ import org.junit.rules.ExpectedException;
 public class BaseMineFieldBoxTest {
 
     //CHECKSTYLE:OFF
-    @Rule public final ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
     //CHECKSTYLE:ON
+    private static final int NEIGHBOURCOUNT = 8;
     private final MineField field = new MineField(2, 2);
 
     @Test
@@ -51,7 +56,86 @@ public class BaseMineFieldBoxTest {
         new BaseMineFieldBoxStub(0, 0, null);
     }
 
-    private static final class BaseMineFieldBoxStub extends BaseMineFieldBox {
+    private List<MineFieldBox> createNeighbours() {
+        final List<MineFieldBox> neighbors = new ArrayList<MineFieldBox>(NEIGHBOURCOUNT);
+
+        for (int i = 0; i < NEIGHBOURCOUNT; ++i) {
+            neighbors.add(new SaveBox(0, 0, field));
+        }
+
+        return neighbors;
+    }
+
+    @Test
+    public void countMinesInNeighborhood_noMines() {
+        final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
+        final List<MineFieldBox> neighbors = createNeighbours();
+        sut.setNeighbors(neighbors);
+        assertThat(sut.countMinesInNeighborhood(), is(0));
+    }
+
+    @Test
+    public void countMinesInNeighborhood_oneMines() {
+        final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
+        final List<MineFieldBox> neighbors = createNeighbours();
+        neighbors.set(3, new MineBox(0, 0, field));
+        sut.setNeighbors(neighbors);
+        assertThat(sut.countMinesInNeighborhood(), is(1));
+    }
+
+    @Test
+    public void countMinesInNeighborhood_threeMines() {
+        final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
+        final List<MineFieldBox> neighbors = createNeighbours();
+        neighbors.set(3, new MineBox(0, 0, field));
+        neighbors.set(5, new MineBox(0, 0, field));
+        neighbors.set(7, new MineBox(0, 0, field));
+        sut.setNeighbors(neighbors);
+        assertThat(sut.countMinesInNeighborhood(), is(3));
+    }
+
+    @Test
+    public void countMinesInNeighborhood_allMines() {
+        final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
+        final List<MineFieldBox> neighbors = new ArrayList<MineFieldBox>(NEIGHBOURCOUNT);
+
+        for (int i = 0; i < NEIGHBOURCOUNT; ++i) {
+            neighbors.add(new MineBox(0, 0, field));
+        }
+
+        sut.setNeighbors(neighbors);
+        assertThat(sut.countMinesInNeighborhood(), is(NEIGHBOURCOUNT));
+    }
+
+    @Test
+    public void setOpened_triggersObserver() {
+        final BaseMineFieldBox sut = new BaseMineFieldBoxStub(0, 0, field);
+        final Observer observer = mock(Observer.class);
+        sut.addObserver(observer);
+        assertThat(sut.isOpen(), is(false));
+        sut.setOpened(true);
+        assertThat(sut.isOpen(), is(true));
+        verify(observer, times(1)).update(sut, null);
+    }
+
+    @Test
+    public void setFlagged_triggersObserver() {
+        final BaseMineFieldBox sut = new BaseMineFieldBoxStub(0, 0, field);
+        final Observer observer = mock(Observer.class);
+        sut.addObserver(observer);
+        assertThat(sut.isFlag(), is(false));
+        sut.setFlag(true);
+        assertThat(sut.isFlag(), is(true));
+        verify(observer, times(1)).update(sut, null);
+    }
+
+    @Test
+    public void getField() {
+        final BaseMineFieldBox sut = new BaseMineFieldBoxStub(0, 0, field);
+        assertThat(sut.getField(), is(sameInstance(field)));
+    }
+
+    private static class BaseMineFieldBoxStub extends BaseMineFieldBox {
 
         public BaseMineFieldBoxStub(final int rowId, final int columnId, final MineField field) {
             super(rowId, columnId, field);
@@ -63,4 +147,22 @@ public class BaseMineFieldBoxTest {
         }
     }
 
+    private static class BaseMineFieldBoxStubFixedNeighbors extends BaseMineFieldBoxStub {
+
+        private List<MineFieldBox> neighbors;
+
+        public BaseMineFieldBoxStubFixedNeighbors(final int rowId, final int columnId, final MineField field) {
+            super(rowId, columnId, field);
+        }
+
+        public void setNeighbors(List<MineFieldBox> neighbors) {
+            this.neighbors = neighbors;
+        }
+
+        @Override
+        public List<MineFieldBox> getNeighbours() {
+            return neighbors;
+        }
+
+    }
 }

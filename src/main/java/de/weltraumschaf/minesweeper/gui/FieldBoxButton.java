@@ -140,7 +140,7 @@ public class FieldBoxButton extends JButton implements Observer {
             return;
         }
 
-        box.setFlagged(false);
+        box.setFlag(false);
         setIcon(ImageIcons.CLOSED.getResource());
         repaint();
     }
@@ -150,7 +150,7 @@ public class FieldBoxButton extends JButton implements Observer {
             return;
         }
 
-        box.setFlagged(true);
+        box.setFlag(true);
         setIcon(ImageIcons.FLAG.getResource());
         repaint();
     }

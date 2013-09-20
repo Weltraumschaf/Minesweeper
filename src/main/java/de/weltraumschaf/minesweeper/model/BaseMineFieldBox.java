@@ -111,7 +111,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
     }
 
     @Override
-    public void setFlagged(final boolean flagged) {
+    public void setFlag(final boolean flagged) {
         setChanged();
         this.flagged = flagged;
         notifyObservers();

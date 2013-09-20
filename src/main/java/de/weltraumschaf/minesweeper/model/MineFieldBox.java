@@ -42,7 +42,7 @@ public interface MineFieldBox {
      *
      * @param flagged {@code true} for flagging, else {@code false}
      */
-    void setFlagged(final boolean flagged);
+    void setFlag(final boolean flagged);
 
     boolean isOpen();
 
