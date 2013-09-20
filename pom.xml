@@ -7,6 +7,8 @@
     <packaging>jar</packaging>
 
     <name>Minesweeper</name>
+    <description>Java Swing implementation of the famous Minesweeper game.</description>
+    <url>http://weltraumschaf.github.io/Minesweeper/</url>
 
     <developers>
         <developer>
