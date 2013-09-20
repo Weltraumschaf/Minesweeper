@@ -16,7 +16,6 @@ import de.weltraumschaf.commons.swing.SwingFrame;
 import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuBar;
 import org.apache.commons.lang3.Validate;

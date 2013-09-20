@@ -12,7 +12,6 @@
 
 package de.weltraumschaf.minesweeper;
 
-import de.weltraumschaf.minesweeper.gui.FieldBoxButton;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.Validate;

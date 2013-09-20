@@ -26,7 +26,7 @@ public final class MenuItemListeners {
      * Hidden because pure static factory.
      */
     private MenuItemListeners() {
-        super();;
+        super();
     }
 
     /**
