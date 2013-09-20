@@ -3,7 +3,7 @@
 
     <groupId>de.weltraumschaf</groupId>
     <artifactId>minesweeper</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Minesweeper</name>
@@ -42,7 +42,7 @@
         <connection>scm:git:git://github.com/Weltraumschaf/Minesweeper</connection>
         <developerConnection>scm:git:git@github.com:Weltraumschaf/Minesweeper.git</developerConnection>
         <url>https://github.com/Weltraumschaf/Minesweeper.git</url>
-        <tag>0.1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
