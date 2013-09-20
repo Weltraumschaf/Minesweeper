@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.minesweeper;
+package de.weltraumschaf.minesweeper.model;
 
 import java.util.List;
 
@@ -18,30 +18,28 @@ import java.util.List;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-abstract class MineFieldBox {
+abstract class BaseMineFieldBox implements MineFieldBox {
 
     private final int rowId;
     private final int columnId;
     private final MineField field;
-    private List<MineFieldBox> neighbours;
+    private List<BaseMineFieldBox> neighbours;
     private int minesInNeighbourhoodCount = -1;
     private boolean opened;
     private boolean flagged;
 
-    public MineFieldBox(final int rowId, final int columnId, final MineField field) {
+    public BaseMineFieldBox(final int rowId, final int columnId, final MineField field) {
         super();
         this.rowId = rowId;
         this.columnId = columnId;
         this.field = field;
     }
 
-    public abstract boolean isMine();
-
     public int countMinesInNeighborhood() {
         if (minesInNeighbourhoodCount == -1) {
             minesInNeighbourhoodCount = 0;
 
-            for (final MineFieldBox box : getNeighbours()) {
+            for (final BaseMineFieldBox box : getNeighbours()) {
                 if (box.isMine()) {
                     ++minesInNeighbourhoodCount;
                 }
@@ -51,7 +49,7 @@ abstract class MineFieldBox {
         return minesInNeighbourhoodCount;
     }
 
-    protected List<MineFieldBox> getNeighbours() {
+    protected List<BaseMineFieldBox> getNeighbours() {
         if (neighbours == null) {
             neighbours = field.getNeighboursOfBox(rowId, columnId);
         }

@@ -9,13 +9,13 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.minesweeper;
+package de.weltraumschaf.minesweeper.model;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class SaveBox extends MineFieldBox {
+class SaveBox extends BaseMineFieldBox {
 
     public SaveBox(final int rowId, final int columnId, final MineField field) {
         super(rowId, columnId, field);

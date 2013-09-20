@@ -9,10 +9,12 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf(at)googlemail(dot)com>
  */
-package de.weltraumschaf.minesweeper;
+package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
+import de.weltraumschaf.minesweeper.model.MineField;
+import de.weltraumschaf.minesweeper.model.MineFieldBox;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -187,7 +189,7 @@ public final class MainWindow extends SwingFrame {
                     origin.setIcon(determineIcon());
 
                     if (box.countMinesInNeighborhood() == 0) {
-                        
+
                     }
                 }
             }

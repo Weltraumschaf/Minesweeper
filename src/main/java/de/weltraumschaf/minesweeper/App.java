@@ -11,6 +11,8 @@
  */
 package de.weltraumschaf.minesweeper;
 
+import de.weltraumschaf.minesweeper.model.MineField;
+import de.weltraumschaf.minesweeper.gui.MainWindow;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;

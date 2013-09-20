@@ -9,9 +9,8 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.minesweeper;
+package de.weltraumschaf.minesweeper.model;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +19,7 @@ import java.util.Random;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class MineField {
+public class MineField {
     /**
      * One quarter mines.
      */
@@ -28,7 +27,7 @@ class MineField {
 
     private final int height;
     private final int width;
-    private final MineFieldBox[][] boxes;
+    private final BaseMineFieldBox[][] boxes;
     private final Random random = new Random();
     private int bombsCount;
     private int savesCount;
@@ -37,7 +36,7 @@ class MineField {
     public MineField(final int height, final int width) {
         this.height = height;
         this.width = width;
-        this.boxes = new MineFieldBox[width][height];
+        this.boxes = new BaseMineFieldBox[width][height];
     }
 
     public void initializeFieldWithBoxes() {
@@ -53,8 +52,8 @@ class MineField {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width));
 
-        for (final MineFieldBox[] row : boxes) {
-            for (final MineFieldBox box : row) {
+        for (final BaseMineFieldBox[] row : boxes) {
+            for (final BaseMineFieldBox box : row) {
                 buffer.append(box).append(' ');
             }
 
@@ -69,7 +68,7 @@ class MineField {
         return buffer.toString();
     }
 
-    private MineFieldBox createBox(final int rowId, final int columnId) {
+    private BaseMineFieldBox createBox(final int rowId, final int columnId) {
         if (random.nextInt() % MINE_FACTOR == 0) {
             ++bombsCount;
             return new MineBox(rowId, columnId, this);
@@ -89,7 +88,7 @@ class MineField {
      * @param columnId
      * @return
      */
-    List<MineFieldBox> getNeighboursOfBox(final int rowId, final int columnId) {
+    List<BaseMineFieldBox> getNeighboursOfBox(final int rowId, final int columnId) {
         int rowIdStart = rowId - 1;
 
         if (rowIdStart < 0) {
@@ -114,7 +113,7 @@ class MineField {
             columnIdStop = height - 1;
         }
 
-        final List<MineFieldBox> neighbours = new ArrayList<MineFieldBox>();
+        final List<BaseMineFieldBox> neighbours = new ArrayList<BaseMineFieldBox>();
 
         for (int x = rowIdStart; x <= rowIdStop; ++x) {
             for (int y = columnIdStart; y <= columnIdStop; ++y) {
@@ -137,7 +136,7 @@ class MineField {
         return width;
     }
 
-    public MineFieldBox getBox(final int x, final int y) {
+    public BaseMineFieldBox getBox(final int x, final int y) {
         return boxes[x][y];
     }
 

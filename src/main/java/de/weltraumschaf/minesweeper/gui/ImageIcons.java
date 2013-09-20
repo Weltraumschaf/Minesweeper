@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.minesweeper;
+package de.weltraumschaf.minesweeper.gui;
 
 import javax.swing.ImageIcon;
 
