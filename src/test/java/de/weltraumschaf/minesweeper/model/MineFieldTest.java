@@ -112,9 +112,56 @@ public class MineFieldTest {
         sut.getNeighboursOfBox(-1, 0);
     }
 
+    @Test
     public void getNeighboursOfBox_throwsExceptionIfColumnIdLessThanZero() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Column id must not be less than 0!");
         sut.getNeighboursOfBox(0, -1);
     }
+
+    @Test
+    public void getBox_throwsExceptionInNotInitialized() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
+        new MineField(1, 1).getBox(0, 0);
+    }
+
+    @Test
+    public void getBox_throwsExceptionIfXLessThanZero() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("X must not be less than 0!");
+        sut.getBox(-1, 0);
+    }
+
+    @Test
+    public void getBox_throwsExceptionIfXGreaterThanWidthMinusOne() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("X must not be less than MineField#getWidth()!");
+        sut.getBox(8, 0);
+    }
+
+    @Test
+    public void getBox_throwsExceptionIfYLessThanZero() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Y must not be less than 0!");
+        sut.getBox(0, -1);
+    }
+
+    @Test
+    public void getBox_throwsExceptionIfYGreaterThanWidthMinusOne() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Y must not be less than MineField#getHeight()!");
+        sut.getBox(0, 8);
+    }
+
+    @Test
+    public void getBox() {
+        assertThat(sut.getBox(0, 0).getY(), is(0));
+        assertThat(sut.getBox(0, 0).getX(), is(0));
+        assertThat(sut.getBox(5, 3).getY(), is(3));
+        assertThat(sut.getBox(5, 3).getX(), is(5));
+        assertThat(sut.getBox(3, 5).getY(), is(5));
+        assertThat(sut.getBox(3, 5).getX(), is(3));
+    }
+
 }

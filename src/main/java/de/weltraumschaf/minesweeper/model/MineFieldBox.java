@@ -70,5 +70,17 @@ public interface MineFieldBox {
     boolean hasChanged();
 
     int countObservers();
+    /**
+     * Get the x-position in the mine field.
+     *
+     * @return [0, width - 1]
+     */
+    int getY();
+    /**
+     * Get the y-position in the mine field.
+     *
+     * @return [0, width - 1]
+     */
+    int getX();
 
 }

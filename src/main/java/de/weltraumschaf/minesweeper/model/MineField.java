@@ -245,10 +245,10 @@ public class MineField {
                 "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
         }
 
-        Validate.isTrue(x < 0, "X must not be less than 0!");
-        Validate.isTrue(x > width - 1, "X must not be greater than MineField#getWidth() - 1!");
-        Validate.isTrue(y < 0, "Y must not be less than 0!");
-        Validate.isTrue(y > height - 1, "Y must not be greater than MineField#getHeight() - 1!");
+        Validate.isTrue(x >= 0, "X must not be less than 0!");
+        Validate.isTrue(x < width, "X must not be less than MineField#getWidth()!");
+        Validate.isTrue(y >= 0, "Y must not be less than 0!");
+        Validate.isTrue(y < height, "Y must not be less than MineField#getHeight()!");
         return boxes[x][y];
     }
 

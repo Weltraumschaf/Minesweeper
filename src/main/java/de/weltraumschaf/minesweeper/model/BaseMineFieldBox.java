@@ -24,13 +24,13 @@ import org.apache.commons.lang3.Validate;
 abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
 
     /**
-     * Row in which this box is positioned in the field (y-coordinate).
+     * Row in which this box is positioned in the field (x-coordinate).
      */
-    private final int rowId;
+    private final int x;
     /**
-     * Column in which this box is positioned in the field (x-coordinate).
+     * Column in which this box is positioned in the field (y-coordinate).
      */
-    private final int columnId;
+    private final int y;
     /**
      * Mine field to which the box belongs.
      */
@@ -62,9 +62,9 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
     public BaseMineFieldBox(final int rowId, final int columnId, final MineField field) {
         super();
         Validate.isTrue(rowId >= 0, "Row id must not be less than 0!");
-        this.rowId = rowId;
+        this.x = rowId;
         Validate.isTrue(columnId >= 0, "Column id must not be less than 0!");
-        this.columnId = columnId;
+        this.y = columnId;
         Validate.notNull(field, "Field must not be null!");
         this.field = field;
     }
@@ -87,7 +87,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
     @Override
     public List<MineFieldBox> getNeighbours() {
         if (neighbours == null) {
-            neighbours = field.getNeighboursOfBox(rowId, columnId);
+            neighbours = field.getNeighboursOfBox(x, y);
         }
 
         return neighbours;
@@ -124,7 +124,17 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
 
     @Override
     public String toString() {
-        return String.format("[%s,%s]", columnId, rowId);
+        return String.format("[%s,%s]", y, x);
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
     }
 
 }
