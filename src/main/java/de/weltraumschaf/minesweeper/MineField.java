@@ -26,23 +26,23 @@ class MineField {
      */
     private static final int MINE_FACTOR = 4;
 
-    private final int width;
     private final int height;
+    private final int width;
     private final MineFieldBox[][] boxes;
     private final Random random = new Random();
     private int bombsCount;
     private int savesCount;
     private boolean gameOver;
 
-    public MineField(final int width, final int height) {
-        this.width = width;
+    public MineField(final int height, final int width) {
         this.height = height;
-        this.boxes = new MineFieldBox[height][width];
+        this.width = width;
+        this.boxes = new MineFieldBox[width][height];
     }
 
     public void initializeFieldWithBoxes() {
-        for (int rowId = 0; rowId < height; ++rowId) {
-            for (int columnId = 0; columnId < width; ++columnId) {
+        for (int rowId = 0; rowId < width; ++rowId) {
+            for (int columnId = 0; columnId < height; ++columnId) {
                 boxes[rowId][columnId] = createBox(rowId, columnId);
             }
         }
@@ -51,7 +51,7 @@ class MineField {
     @Override
     public String toString() {
         final StringBuilder buffer = new StringBuilder();
-        buffer.append(String.format("Mine filed (width: %s, height: %s)%n", width, height));
+        buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width));
 
         for (final MineFieldBox[] row : boxes) {
             for (final MineFieldBox box : row) {
@@ -104,14 +104,14 @@ class MineField {
 
         int rowIdStop = rowId + 1;
 
-        if (rowIdStop > height - 1) {
-            rowIdStop = height - 1;
+        if (rowIdStop > width - 1) {
+            rowIdStop = width - 1;
         }
 
         int columnIdStop = columnId + 1;
 
-        if (columnIdStop > width - 1) {
-            columnIdStop = width - 1;
+        if (columnIdStop > height - 1) {
+            columnIdStop = height - 1;
         }
 
         final List<MineFieldBox> neighbours = new ArrayList<MineFieldBox>();
@@ -130,11 +130,11 @@ class MineField {
     }
 
     public int getWidth() {
-        return width;
+        return height;
     }
 
     public int getHeight() {
-        return height;
+        return width;
     }
 
     public MineFieldBox getBox(final int x, final int y) {
