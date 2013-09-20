@@ -248,6 +248,14 @@
                 Build plugins.
             -->
             <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <localCheckout>true</localCheckout>
+                    <pushChanges>false</pushChanges>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
