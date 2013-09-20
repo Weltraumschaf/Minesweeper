@@ -17,7 +17,10 @@ import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;
 import de.weltraumschaf.minesweeper.control.MenuItemListeners;
+import de.weltraumschaf.minesweeper.model.Game;
+import java.io.IOException;
 import javax.swing.SwingUtilities;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Main application class.
@@ -53,9 +56,15 @@ public class App extends InvokableAdapter implements Runnable {
     @Override
     public void run() {
         final MineField mineField;
+        final Game game = new Game();
 
         if (getArgs().length == 2) {
-            mineField = new MineField(Integer.parseInt(getArgs()[0]), Integer.parseInt(getArgs()[1]));
+            final int width = Integer.parseInt(getArgs()[0]);
+            final int height = Integer.parseInt(getArgs()[1]);
+            Validate.isTrue(width > 0, "Width must not be less than 1!");
+            Validate.isTrue(height > 0, "Height must not be less than 1!");
+            mineField = new MineField(width, height);
+            game.resize(width, height);
         } else {
             mineField = new MineField();
         }
@@ -72,7 +81,7 @@ public class App extends InvokableAdapter implements Runnable {
     @Override
     public void execute() throws Exception {
         setExiter(new NullExiter());
-//        version.load();
+        version.load();
         SwingUtilities.invokeLater(this);
     }
 }
