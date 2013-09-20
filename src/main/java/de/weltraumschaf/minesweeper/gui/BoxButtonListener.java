@@ -11,13 +11,11 @@
  */
 package de.weltraumschaf.minesweeper.gui;
 
-import de.weltraumschaf.minesweeper.model.MineFieldBox;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
@@ -31,12 +29,6 @@ class BoxButtonListener extends MouseAdapter {
 
     static {
         LOG.setLevel(Level.OFF);
-    }
-    private final MineFieldBox box;
-
-    public BoxButtonListener(final MineFieldBox box) {
-        super();
-        this.box = box;
     }
 
     @Override
@@ -52,7 +44,7 @@ class BoxButtonListener extends MouseAdapter {
         }
 
         if (SwingUtilities.isRightMouseButton(e)) {
-            LOG.info("Right click on " + box.toString());
+            LOG.info("Right click on " + originatingButton.getBox().toString());
 
             if (originatingButton.isFlag()) {
                 originatingButton.close();
@@ -60,7 +52,7 @@ class BoxButtonListener extends MouseAdapter {
                 originatingButton.flag();
             }
         } else {
-            LOG.info("Left click on " + box.toString());
+            LOG.info("Left click on " + originatingButton.getBox().toString());
 
             if (originatingButton.isFlag()) {
                 return;
@@ -69,7 +61,7 @@ class BoxButtonListener extends MouseAdapter {
             originatingButton.open();
         }
 
-        if (box.getField().isGameOver()) {
+        if (originatingButton.getBox().getField().isGameOver()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -89,49 +81,6 @@ class BoxButtonListener extends MouseAdapter {
                 }
             });
         }
-    }
-
-    private ImageIcon determineIcon() {
-        final ImageIcon icon;
-
-        if (box.isMine()) {
-            icon = ImageIcons.BOMB.getResource();
-        } else {
-            switch (box.countMinesInNeighborhood()) {
-                case 0:
-                    icon = ImageIcons.BLANK.getResource();
-                    break;
-                case 1:
-                    icon = ImageIcons.ONE_NEIGHBOR.getResource();
-                    break;
-                case 2:
-                    icon = ImageIcons.TWO_NEIGHBOR.getResource();
-                    break;
-                case 3:
-                    icon = ImageIcons.THREE_NEIGHBOR.getResource();
-                    break;
-                case 4:
-                    icon = ImageIcons.FOUR_NEIGHBOR.getResource();
-                    break;
-                case 5:
-                    icon = ImageIcons.FIVE_NEIGHBOR.getResource();
-                    break;
-                case 6:
-                    icon = ImageIcons.SIX_NEIGHBOR.getResource();
-                    break;
-                case 7:
-                    icon = ImageIcons.SEVEN_NEIGHBOR.getResource();
-                    break;
-                case 8:
-                    icon = ImageIcons.EIGHT_NEIGHBOR.getResource();
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("Unsupported neighbor count: %d!",
-                            box.countMinesInNeighborhood()));
-            }
-        }
-
-        return icon;
     }
 
 }

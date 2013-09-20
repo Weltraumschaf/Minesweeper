@@ -91,7 +91,7 @@ public final class MainWindow extends SwingFrame {
         for (int x = 0; x < mineField.getWidth(); ++x) {
             for (int y = 0; y < mineField.getHeight(); ++y) {
                 final JButton box = new FieldBoxButton(mineField.getBox(x, y));
-                box.addMouseListener(new BoxButtonListener(mineField.getBox(x, y)));
+                box.addMouseListener(new BoxButtonListener());
                 field.add(box);
             }
         }

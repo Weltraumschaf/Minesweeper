@@ -37,6 +37,10 @@ class FieldBoxButton extends JButton {
         this.model = model;
     }
 
+    public MineFieldBox getBox() {
+        return model;
+    }
+
     public void open() {
         if (model.isOpen()) {
             return;
@@ -78,7 +82,7 @@ class FieldBoxButton extends JButton {
     public boolean isFlag() {
         return model.isFlag();
     }
-    
+
     private ImageIcon determineIcon() {
         final ImageIcon icon;
 
