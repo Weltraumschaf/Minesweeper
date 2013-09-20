@@ -75,13 +75,13 @@ abstract class MineFieldBox {
         this.flagged = flagged;
     }
 
-    MineField getField() {
+    public MineField getField() {
         return field;
     }
 
     @Override
     public String toString() {
-        return "(" + rowId + ", " + columnId + ')';
+        return String.format("[%s,%s]", columnId, rowId);
     }
 
 }

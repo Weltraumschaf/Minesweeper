@@ -38,6 +38,10 @@ public final class MainWindow extends SwingFrame {
      * Logging facility.
      */
     private static final Logger LOG = Logger.getLogger(MainWindow.class.getName());
+
+    static {
+        LOG.setLevel(Level.ALL);
+    }
     /**
      * Id for serialization.
      */
@@ -88,6 +92,7 @@ public final class MainWindow extends SwingFrame {
         panel.removeAll();
         final JPanel field = new JPanel();
         field.setLayout(new GridLayout(mineField.getWidth(), mineField.getHeight()));
+        LOG.info(String.format("Pain field:%n%s", mineField.toString()));
 
         for (int x = 0; x < mineField.getWidth(); ++x) {
             for (int y = 0; y < mineField.getHeight(); ++y) {
