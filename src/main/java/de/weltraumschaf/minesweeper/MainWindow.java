@@ -19,8 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -44,8 +42,7 @@ public final class MainWindow extends SwingFrame {
      * Id for serialization.
      */
     private static final long serialVersionUID = 1L;
-    private final MineField mineField;
-    private final JPanel field = new JPanel();
+    private MineField mineField;
 
     /**
      * Initializes the main window with an title.
@@ -57,12 +54,20 @@ public final class MainWindow extends SwingFrame {
         this.mineField = mineField;
     }
 
+    public MineField getMineField() {
+        return mineField;
+    }
+
+    public void setMineField(final MineField mineField) {
+        this.mineField = mineField;
+    }
+
     @Override
     protected void initMenu() {
         final JMenuBar menubar = MenuBarBuilder.builder()
                 .menu("File")
                 .item("New")
-                .addListener(new Listener())
+                .addListener(new NewGame(this))
                 .end()
                 .item("Version")
                 .addListener(new Listener())
@@ -77,13 +82,10 @@ public final class MainWindow extends SwingFrame {
         setJMenuBar(menubar);
     }
 
-    public JPanel getField() {
-        return field;
-    }
-
     @Override
     protected void initPanel() {
-
+        panel.removeAll();
+        final JPanel field = new JPanel();
         field.setLayout(new GridLayout(mineField.getWidth(), mineField.getHeight()));
 
         for (int x = 0; x < mineField.getWidth(); ++x) {
@@ -110,6 +112,24 @@ public final class MainWindow extends SwingFrame {
         public void actionPerformed(final ActionEvent e) {
             final Object source = e.getSource();
             LOG.log(Level.INFO, String.format("Received event from %s.", source.toString()));
+        }
+    }
+
+    private class NewGame implements ActionListener {
+
+        private final MainWindow main;
+
+        public NewGame(final MainWindow main) {
+            super();
+            this.main = main;
+        }
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            final MineField newField = new MineField(main.getMineField().getWidth(), main.getMineField().getHeight());
+            newField.initializeFieldWithBoxes();
+            main.setMineField(newField);
+            main.initPanel();
         }
     }
 
