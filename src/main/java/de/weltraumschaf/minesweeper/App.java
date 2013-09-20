@@ -19,7 +19,7 @@ import de.weltraumschaf.commons.system.NullExiter;
 import javax.swing.SwingUtilities;
 
 /**
- * https://de.wikipedia.org/wiki/Minesweeper
+ * Main application class.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
