@@ -41,47 +41,39 @@ class BoxButtonListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(final MouseEvent e) {
-        if (box.isOpened()) {
+        if (!(e.getComponent() instanceof FieldBoxButton)) {
             return;
         }
 
-        final JButton origin = (JButton) e.getComponent();
+        final FieldBoxButton originatingButton = (FieldBoxButton) e.getComponent();
+
+        if (originatingButton.isOpen()) {
+            return;
+        }
 
         if (SwingUtilities.isRightMouseButton(e)) {
             LOG.info("Right click on " + box.toString());
 
-            if (box.isFlagged()) {
-                origin.setIcon(ImageIcons.CLOSED.getResource());
-                box.setFlagged(false);
+            if (originatingButton.isFlag()) {
+                originatingButton.close();
             } else {
-                origin.setIcon(ImageIcons.FLAG.getResource());
-                box.setFlagged(true);
+                originatingButton.flag();
             }
         } else {
             LOG.info("Left click on " + box.toString());
 
-            if (box.isFlagged()) {
+            if (originatingButton.isFlag()) {
                 return;
             }
 
-            box.setOpened(true);
-
-            if (box.isMine()) {
-                origin.setIcon(ImageIcons.BOMB_EXPLODED.getResource());
-                box.getField().setGameOver();
-            } else {
-                origin.setIcon(determineIcon());
-
-                if (box.countMinesInNeighborhood() == 0) {
-                }
-            }
+            originatingButton.open();
         }
 
         if (box.getField().isGameOver()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    for (final Component comp : origin.getParent().getComponents()) {
+                    for (final Component comp : originatingButton.getParent().getComponents()) {
                         if (comp instanceof JButton) {
                             final JButton button = (JButton) comp;
                             final MouseEvent me = new MouseEvent(button, // which

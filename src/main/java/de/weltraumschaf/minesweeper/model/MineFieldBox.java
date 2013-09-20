@@ -19,11 +19,11 @@ public interface MineFieldBox {
 
     boolean isMine();
 
-    boolean isFlagged();
+    boolean isFlag();
 
     void setFlagged(final boolean flagged);
 
-    boolean isOpened();
+    boolean isOpen();
 
     void setOpened(final boolean opened);
 

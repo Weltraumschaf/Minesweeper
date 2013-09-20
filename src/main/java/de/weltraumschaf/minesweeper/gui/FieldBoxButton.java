@@ -38,7 +38,7 @@ class FieldBoxButton extends JButton {
     }
 
     public void open() {
-        if (model.isOpened()) {
+        if (model.isOpen()) {
             return;
         }
 
@@ -53,8 +53,12 @@ class FieldBoxButton extends JButton {
         }
     }
 
+    public boolean isOpen() {
+        return model.isOpen();
+    }
+
     public void close() {
-        if (!model.isOpened()) {
+        if (!model.isOpen()) {
             return;
         }
 
@@ -63,7 +67,7 @@ class FieldBoxButton extends JButton {
     }
 
     public void flag() {
-        if (model.isFlagged()) {
+        if (model.isFlag()) {
             return;
         }
 
@@ -71,6 +75,10 @@ class FieldBoxButton extends JButton {
         setIcon(ImageIcons.FLAG.getResource());
     }
 
+    public boolean isFlag() {
+        return model.isFlag();
+    }
+    
     private ImageIcon determineIcon() {
         final ImageIcon icon;
 

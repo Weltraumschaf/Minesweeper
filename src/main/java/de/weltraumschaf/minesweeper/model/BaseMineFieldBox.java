@@ -59,7 +59,7 @@ abstract class BaseMineFieldBox implements MineFieldBox {
     }
 
     @Override
-    public boolean isOpened() {
+    public boolean isOpen() {
         return opened;
     }
 
@@ -69,7 +69,7 @@ abstract class BaseMineFieldBox implements MineFieldBox {
     }
 
     @Override
-    public boolean isFlagged() {
+    public boolean isFlag() {
         return flagged;
     }
 
