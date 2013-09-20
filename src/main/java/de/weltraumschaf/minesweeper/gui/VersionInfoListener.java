@@ -9,6 +9,7 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
+
 package de.weltraumschaf.minesweeper.gui;
 
 import java.awt.event.ActionEvent;
@@ -16,11 +17,11 @@ import java.awt.event.ActionListener;
 import org.apache.commons.lang3.Validate;
 
 /**
- * Listens for the menu item quit and dispose main window.
+ * Listens for the menu item version and shows version info dialog.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class QuitListener implements ActionListener {
+class VersionInfoListener implements ActionListener{
 
     /**
      * Used to dispose.
@@ -32,7 +33,7 @@ class QuitListener implements ActionListener {
      *
      * @param main must not be {@code nul;}
      */
-    public QuitListener(final MainWindow main) {
+    public VersionInfoListener(final MainWindow main) {
         super();
         Validate.notNull(main, "Main window must not be null!");
         this.main = main;
@@ -40,7 +41,7 @@ class QuitListener implements ActionListener {
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-        main.dispose();
+        
     }
 
 }

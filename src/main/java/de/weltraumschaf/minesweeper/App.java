@@ -68,7 +68,7 @@ public class App extends InvokableAdapter implements Runnable {
     @Override
     public void execute() throws Exception {
         setExiter(new NullExiter());
-        version.load();
+//        version.load();
         SwingUtilities.invokeLater(this);
     }
 }

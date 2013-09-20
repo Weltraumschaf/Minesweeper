@@ -18,7 +18,6 @@ import de.weltraumschaf.minesweeper.model.MineFieldBox;
 import java.awt.GridLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
@@ -41,6 +40,9 @@ public final class MainWindow extends SwingFrame {
      * Id for serialization.
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * Model for the game play.
+     */
     private MineField mineField;
 
     /**
@@ -69,9 +71,9 @@ public final class MainWindow extends SwingFrame {
                 .item("New")
                 .addListener(new NewGameListener(this))
                 .end()
-//                .item("Version")
-//                .addListener(new Listener())
-//                .end()
+                .item("Version")
+                .addListener(new VersionInfoListener(this))
+                .end()
                 .separator()
                 .item("Quit")
                 .addListener(new QuitListener(this))
