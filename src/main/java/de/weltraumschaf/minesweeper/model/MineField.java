@@ -71,9 +71,9 @@ public class MineField {
      */
     public MineField(final int height, final int width) {
         super();
-        Validate.isTrue(height < 1, "Height must not be less than 1!");
+        Validate.isTrue(height > 0, "Height must not be less than 1!");
         this.height = height;
-        Validate.isTrue(width < 1, "Width must not be less than 1!");
+        Validate.isTrue(width > 0, "Width must not be less than 1!");
         this.width = width;
         this.boxes = new BaseMineFieldBox[width][height];
     }

@@ -84,12 +84,8 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
         return minesInNeighbourhoodCount;
     }
 
-    /**
-     * Get all direct neighbors of a box.
-     *
-     * @return contains at least 3 and maximum 8 boxes
-     */
-    protected List<MineFieldBox> getNeighbours() {
+    @Override
+    public List<MineFieldBox> getNeighbours() {
         if (neighbours == null) {
             neighbours = field.getNeighboursOfBox(rowId, columnId);
         }
@@ -106,7 +102,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
     public void setOpened(final boolean opened) {
         setChanged();
         this.opened = opened;
-        notifyObservers(this);
+        notifyObservers();
     }
 
     @Override
@@ -118,7 +114,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
     public void setFlagged(final boolean flagged) {
         setChanged();
         this.flagged = flagged;
-        notifyObservers(this);
+        notifyObservers();
     }
 
     @Override

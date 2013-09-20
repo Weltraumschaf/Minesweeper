@@ -14,6 +14,8 @@ package de.weltraumschaf.minesweeper.gui;
 import de.weltraumschaf.minesweeper.model.MineFieldBox;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import org.apache.commons.lang3.Validate;
@@ -24,6 +26,10 @@ import org.apache.commons.lang3.Validate;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class FieldBoxButton extends JButton implements Observer {
+    /**
+     * Log facility.
+     */
+    private static final Logger LOG = Logger.getLogger(FieldBoxButton.class.getName());
     /**
      * Zero mines in neighborhood.
      */
@@ -63,19 +69,23 @@ class FieldBoxButton extends JButton implements Observer {
     /**
      * The data model behind the button.
      */
-    private final MineFieldBox model;
+    private final MineFieldBox box;
+
+    static {
+        LOG.setLevel(Level.ALL);
+    }
 
     /**
      * Dedicated constructor.
      *
      * Initializes the button with closed icon.
      *
-     * @param model must not be {@code null}
+     * @param box must not be {@code null}
      */
-    public FieldBoxButton(MineFieldBox model) {
+    public FieldBoxButton(MineFieldBox box) {
         super(ImageIcons.CLOSED.getResource());
-        Validate.notNull(model);
-        this.model = model;
+        Validate.notNull(box, "Box must not be null!");
+        this.box = box;
     }
 
     /**
@@ -84,55 +94,75 @@ class FieldBoxButton extends JButton implements Observer {
      * @return never {@code null}
      */
     public MineFieldBox getBox() {
-        return model;
+        return box;
     }
 
+    /**
+     * Open the box.
+     */
     public void open() {
-        if (model.isOpen()) {
+        if (box.isOpen()) {
             return;
         }
 
-        if (model.isMine()) {
+        if (box.isMine()) {
             setIcon(ImageIcons.BOMB_EXPLODED.getResource());
-            model.getField().setGameOver();
+            box.getField().setGameOver();
         } else {
             setIcon(determineIcon());
 
-            if (model.countMinesInNeighborhood() == 0) {
+            if (box.countMinesInNeighborhood() == 0) {
+                for (final MineFieldBox neighbor : box.getNeighbours()) {
+                    neighbor.setOpened(true);
+                }
             }
         }
+
+        repaint();
     }
 
+    /**
+     * Whether the box is open or not.
+     *
+     * @return {@code true} if the box is already open
+     */
     public boolean isOpen() {
-        return model.isOpen();
+        return box.isOpen();
     }
 
+    /**
+     * Close the box.
+     *
+     * Already opened box can not be closed.
+     */
     public void close() {
-        if (!model.isOpen()) {
+        if (!box.isOpen()) {
             return;
         }
 
-        model.setFlagged(false);
+        box.setFlagged(false);
         setIcon(ImageIcons.CLOSED.getResource());
+        repaint();
     }
 
     public void flag() {
-        if (model.isFlag()) {
+        if (box.isFlag()) {
             return;
         }
 
-        model.setFlagged(true);
+        box.setFlagged(true);
         setIcon(ImageIcons.FLAG.getResource());
+        repaint();
     }
 
     public boolean isFlag() {
-        return model.isFlag();
+        return box.isFlag();
     }
 
     private ImageIcon determineIcon() {
         final ImageIcon icon;
 
-        if (model.isMine()) {
+        if (box.isMine()) {
             icon = ImageIcons.BOMB.getResource();
         } else {
             icon = determineNumberIcon();
@@ -144,7 +174,7 @@ class FieldBoxButton extends JButton implements Observer {
     private ImageIcon determineNumberIcon() {
         final ImageIcon icon;
 
-        switch (model.countMinesInNeighborhood()) {
+        switch (box.countMinesInNeighborhood()) {
             case ZERO_NEIGHBORS:
                 icon = ImageIcons.BLANK.getResource();
                 break;
@@ -174,7 +204,7 @@ class FieldBoxButton extends JButton implements Observer {
                 break;
             default:
                 throw new IllegalStateException(String.format("Unsupported neighbor count: %d!",
-                        model.countMinesInNeighborhood()));
+                        box.countMinesInNeighborhood()));
         }
 
         return icon;
@@ -182,6 +212,8 @@ class FieldBoxButton extends JButton implements Observer {
 
     @Override
     public void update(final Observable observable, final Object arg) {
-
+        if (box.isOpen()) {
+            open();
+        }
     }
 }

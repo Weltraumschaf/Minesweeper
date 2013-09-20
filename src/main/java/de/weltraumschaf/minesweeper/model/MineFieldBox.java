@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.minesweeper.model;
 
+import java.util.List;
 import java.util.Observer;
 
 /**
@@ -48,7 +49,12 @@ public interface MineFieldBox {
     void setOpened(final boolean opened);
 
     MineField getField();
-
+    /**
+     * Get all direct neighbors of a box.
+     *
+     * @return contains at least 3 and maximum 8 boxes
+     */
+    List<MineFieldBox> getNeighbours();
     int countMinesInNeighborhood();
 
     void addObserver(Observer o);
