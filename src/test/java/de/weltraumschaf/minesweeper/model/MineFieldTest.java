@@ -33,7 +33,7 @@ public class MineFieldTest {
 
     @Before
     public void initializeFieldWithBoxes() {
-        sut.initializeFieldWithBoxes();
+        sut.initializeFieldWithBoxes(0, 0);
     }
 
     @Test

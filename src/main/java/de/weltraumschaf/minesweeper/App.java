@@ -16,6 +16,7 @@ import de.weltraumschaf.minesweeper.gui.MainWindow;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;
+import de.weltraumschaf.minesweeper.control.MenuItemListeners;
 import javax.swing.SwingUtilities;
 
 /**
@@ -59,8 +60,11 @@ public class App extends InvokableAdapter implements Runnable {
             mineField = new MineField();
         }
 
-        mineField.initializeFieldWithBoxes();
+        mineField.initializeFieldWithBoxes(0, 0);
         final MainWindow mainWindow = new MainWindow("Minesweeper", mineField);
+        mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
+        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow));
+        mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
         mainWindow.init();
         mainWindow.setVisible(true);
     }

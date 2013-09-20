@@ -9,38 +9,33 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.minesweeper.gui;
+package de.weltraumschaf.minesweeper.control;
 
+import de.weltraumschaf.minesweeper.gui.MainWindow;
+import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.apache.commons.lang3.Validate;
 
 /**
- * Listens for the menu item quit and dispose main window.
+ * Listens for the new game menu item.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class QuitListener implements ActionListener {
+class NewGameListener implements ActionListener {
 
-    /**
-     * Used to dispose.
-     */
     private final MainWindow main;
 
-    /**
-     * Dedicated constructor.
-     *
-     * @param main must not be {@code nul;}
-     */
-    public QuitListener(final MainWindow main) {
+    public NewGameListener(final MainWindow main) {
         super();
-        Validate.notNull(main, "Main window must not be null!");
         this.main = main;
     }
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-        main.dispose();
+        final MineField newField = new MineField(main.getMineField().getWidth(), main.getMineField().getHeight());
+        newField.initializeFieldWithBoxes(0, 0);
+        main.setMineField(newField);
+        main.initPanel();
     }
 
 }

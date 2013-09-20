@@ -13,13 +13,16 @@ package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
+import de.weltraumschaf.minesweeper.control.FieldBoxListeners;
 import de.weltraumschaf.minesweeper.model.MineField;
 import de.weltraumschaf.minesweeper.model.MineFieldBox;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import org.apache.commons.lang3.Validate;
 
 /**
  * The applications main window.
@@ -44,6 +47,18 @@ public final class MainWindow extends SwingFrame {
      * Model for the game play.
      */
     private MineField mineField;
+    /**
+     * Listens for version menu item.
+     */
+    private ActionListener versionInfoListener;
+    /**
+     * Listens for new game menu item.
+     */
+    private ActionListener newGameListener;
+    /**
+     * Listens for quit menu item.
+     */
+    private ActionListener quitListener;
 
     /**
      * Initializes the main window with an title.
@@ -69,14 +84,14 @@ public final class MainWindow extends SwingFrame {
         final JMenuBar menubar = MenuBarBuilder.builder()
                 .menu("File")
                 .item("New")
-                .addListener(new NewGameListener(this))
+                .addListener(newGameListener)
                 .end()
                 .item("Version")
-                .addListener(new VersionInfoListener(this))
+                .addListener(versionInfoListener)
                 .end()
                 .separator()
                 .item("Quit")
-                .addListener(new QuitListener(this))
+                .addListener(quitListener)
                 .end()
                 .end()
                 .create();
@@ -85,7 +100,7 @@ public final class MainWindow extends SwingFrame {
     }
 
     @Override
-    protected void initPanel() {
+    public void initPanel() {
         panel.removeAll();
         final JPanel field = new JPanel();
         field.setLayout(new GridLayout(mineField.getWidth(), mineField.getHeight()));
@@ -96,13 +111,28 @@ public final class MainWindow extends SwingFrame {
                 final MineFieldBox box = mineField.getBox(x, y);
                 final FieldBoxButton button = new FieldBoxButton(box);
                 box.addObserver(button);
-                button.addMouseListener(new FieldBoxButtonListener());
+                button.addMouseListener(FieldBoxListeners.createClickListener());
                 field.add(button);
             }
         }
 
         panel.add(field);
         pack();
+    }
+
+    public void setVersionInfoListener(final ActionListener listener) {
+        Validate.notNull(listener, "Listener must not be null!");
+        versionInfoListener = listener;
+    }
+
+    public void setNewGameListener(final ActionListener listener) {
+        Validate.notNull(listener, "Listener must not be null!");
+        newGameListener = listener;
+    }
+
+    public void setQuitListener(final ActionListener listener) {
+        Validate.notNull(listener, "Listener must not be null!");
+        quitListener = listener;
     }
 
 }

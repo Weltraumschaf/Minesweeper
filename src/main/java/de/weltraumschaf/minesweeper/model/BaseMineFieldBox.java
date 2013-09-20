@@ -124,7 +124,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
 
     @Override
     public String toString() {
-        return String.format("[%s,%s]", y, x);
+        return String.format("[%s,%s]", x, y);
     }
 
     @Override

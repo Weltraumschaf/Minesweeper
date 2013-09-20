@@ -35,7 +35,7 @@ public class SaveBoxTest {
     @Test
     public void testToString() {
         when(field.getNeighboursOfBox(1, 2)).thenReturn(Collections.<MineFieldBox>emptyList());
-        assertThat(sut.toString(), is(equalTo("0 [2,1]")));
+        assertThat(sut.toString(), is(equalTo("0 [1,2]")));
     }
 
 }

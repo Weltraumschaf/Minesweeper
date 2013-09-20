@@ -25,7 +25,7 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class FieldBoxButton extends JButton implements Observer {
+public class FieldBoxButton extends JButton implements Observer {
     /**
      * Log facility.
      */

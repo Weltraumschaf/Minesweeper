@@ -9,8 +9,9 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.minesweeper.gui;
+package de.weltraumschaf.minesweeper.control;
 
+import de.weltraumschaf.minesweeper.gui.FieldBoxButton;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

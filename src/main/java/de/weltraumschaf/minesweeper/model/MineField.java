@@ -22,6 +22,7 @@ import org.apache.commons.lang3.Validate;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class MineField {
+
     /**
      * One quarter mines.
      */
@@ -95,11 +96,14 @@ public class MineField {
 
     /**
      * Set all fields in {@link #boxes} with an instance.
+     *
+     * @param x coordinate of first clicked box
+     * @param y coordinate of first clicked box
      */
-    public void initializeFieldWithBoxes() {
+    public void initializeFieldWithBoxes(final int x, final int y) {
         for (int rowId = 0; rowId < width; ++rowId) {
             for (int columnId = 0; columnId < height; ++columnId) {
-                boxes[rowId][columnId] = createRandomBox(rowId, columnId);
+                boxes[rowId][columnId] = createRandomBox(rowId, columnId, x, y);
             }
         }
 
@@ -136,8 +140,11 @@ public class MineField {
      * @param columnId must not be less than 0
      * @return always new instance
      */
-    private BaseMineFieldBox createRandomBox(final int rowId, final int columnId) {
-        if (random.nextInt() % MINE_FACTOR == 0) {
+    private BaseMineFieldBox createRandomBox(final int rowId, final int columnId, final int x, final int y) {
+        if (rowId == x && columnId == y) {
+            ++savesCount;
+            return new SaveBox(rowId, columnId, this);
+        } else if (random.nextInt() % MINE_FACTOR == 0) {
             ++minesCount;
             return new MineBox(rowId, columnId, this);
         } else {
@@ -168,7 +175,7 @@ public class MineField {
     List<MineFieldBox> getNeighboursOfBox(final int rowId, final int columnId) {
         if (!initialized) {
             throw new IllegalStateException(
-                "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
+                    "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
         }
 
         Validate.isTrue(rowId >= 0, "Row id must not be less than 0!");
@@ -242,7 +249,7 @@ public class MineField {
     public MineFieldBox getBox(final int x, final int y) {
         if (!initialized) {
             throw new IllegalStateException(
-                "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
+                    "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
         }
 
         Validate.isTrue(x >= 0, "X must not be less than 0!");
@@ -260,4 +267,7 @@ public class MineField {
         return gameOver;
     }
 
+    public boolean hasWon() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
