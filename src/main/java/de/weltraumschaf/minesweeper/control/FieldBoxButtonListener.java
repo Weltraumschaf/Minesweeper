@@ -45,7 +45,7 @@ class FieldBoxButtonListener extends MouseAdapter {
         }
 
         if (SwingUtilities.isRightMouseButton(e)) {
-            LOG.info("Right click on " + originatingButton.getBox().toString());
+            LOG.info(String.format("Right click on %s.", originatingButton.getBox()));
 
             if (originatingButton.isFlag()) {
                 originatingButton.close();
@@ -53,7 +53,7 @@ class FieldBoxButtonListener extends MouseAdapter {
                 originatingButton.flag();
             }
         } else {
-            LOG.info("Left click on " + originatingButton.getBox().toString());
+            LOG.info(String.format("Left click on %s", originatingButton.getBox()));
 
             if (originatingButton.isFlag()) {
                 return;
@@ -62,26 +62,26 @@ class FieldBoxButtonListener extends MouseAdapter {
             originatingButton.open();
         }
 
-//        if (originatingButton.getBox().getField().isGameOver()) {
-//            SwingUtilities.invokeLater(new Runnable() {
-//                @Override
-//                public void run() {
-//                    for (final Component comp : originatingButton.getParent().getComponents()) {
-//                        if (comp instanceof JButton) {
-//                            final JButton button = (JButton) comp;
-//                            final MouseEvent me = new MouseEvent(button, // which
-//                                    MouseEvent.MOUSE_CLICKED, // what
-//                                    System.currentTimeMillis(), // when
-//                                    0, // no modifiers
-//                                    button.getX(), button.getY(), // where: at (10, 10}
-//                                    1, // only 1 click
-//                                    false); // not a popup trigger
-//                            button.dispatchEvent(me);
-//                        }
-//                    }
-//                }
-//            });
-//        }
+        if (originatingButton.getBox().getField().isGameOver()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    for (final Component comp : originatingButton.getParent().getComponents()) {
+                        if (comp instanceof JButton) {
+                            final JButton button = (JButton) comp;
+                            final MouseEvent me = new MouseEvent(button, // which
+                                    MouseEvent.MOUSE_CLICKED, // what
+                                    System.currentTimeMillis(), // when
+                                    0, // no modifiers
+                                    button.getX(), button.getY(), // where: at (10, 10}
+                                    1, // only 1 click
+                                    false); // not a popup trigger
+                            button.dispatchEvent(me);
+                        }
+                    }
+                }
+            });
+        }
     }
 
 }
