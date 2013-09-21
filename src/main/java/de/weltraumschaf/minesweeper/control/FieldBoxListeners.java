@@ -15,16 +15,26 @@ package de.weltraumschaf.minesweeper.control;
 import java.awt.event.MouseAdapter;
 
 /**
+ * Factory to create listeners for {@link FieldBoxListeners}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class FieldBoxListeners {
 
+    /**
+     * Hidden for pure static class.
+     */
     private FieldBoxListeners() {
         super();
     }
 
+    /**
+     * Creates listener which reacts on right/left mouse clicks.
+     *
+     * @return never {@code null}
+     */
     public static MouseAdapter createClickListener() {
         return new FieldBoxButtonListener();
     }
+
 }

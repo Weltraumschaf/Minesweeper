@@ -43,6 +43,7 @@ public final class MenuItemListeners {
      * Creates new version listener.
      *
      * @param main must not be {@code null}
+     * @param version must not be {@code null}
      * @return always new instance, never {@code null}
      */
     public static ActionListener createVersionListener(final MainWindow main, final Version version) {

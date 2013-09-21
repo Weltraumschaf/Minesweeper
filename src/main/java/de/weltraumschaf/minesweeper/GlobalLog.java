@@ -57,6 +57,7 @@ public final class GlobalLog {
      * Set log level on a logger.
      *
      * @param logger must not be {@code null}
+     * @return the passed in logger
      */
     public static Logger setLevel(final Logger logger) {
         Validate.notNull(logger, "Logger must not be null!");
@@ -64,7 +65,15 @@ public final class GlobalLog {
         return logger;
     }
 
+    /**
+     * Returns a logger for a class set with global level.
+     *
+     * @param <T> type of class
+     * @param type must not be {@code null}
+     * @return never {@code null}
+     */
     public static <T> Logger getLogger(final Class<T> type) {
         return setLevel(Logger.getLogger(type.getName()));
     }
+
 }

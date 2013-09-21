@@ -48,7 +48,7 @@ public final class Matrix<T> {
      * @param width must not be less than 1
      * @param height must not be less than 1
      */
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked") // Because of unchecked cast to create generic array.
     public Matrix(final Class<T> type, final int width, final int height) {
         super();
         Validate.notNull(type, "Type must not be null!");
@@ -179,6 +179,11 @@ public final class Matrix<T> {
         }
     }
 
+    /**
+     * Get all data elements as list of rows.
+     *
+     * @return never {@code null}, no {@code null} values
+     */
     public List<List<T>> getRows() {
         final List<List<T>> rows = new ArrayList<List<T>>(height);
 
@@ -186,7 +191,11 @@ public final class Matrix<T> {
             final List<T> row = new ArrayList<T>(width);
 
             for (int x = 0; x < width; ++x) {
-                row.add(get(x, y));
+                final T datum = get(x, y);
+
+                if (datum != null) {
+                    row.add(datum);
+                }
             }
 
             rows.add(row);

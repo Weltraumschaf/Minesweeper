@@ -23,6 +23,8 @@ import org.apache.commons.lang3.Validate;
 /**
  * Represents a mine filed box button.
  *
+ * A button has three states: Closed, open, flagged.
+ *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class FieldBoxButton extends JButton implements Observer {
@@ -71,6 +73,11 @@ public class FieldBoxButton extends JButton implements Observer {
      * The data model behind the button.
      */
     private FieldBox box;
+    /**
+     * State of the button.
+     *
+     * The button holds an own state additional to {@link #box} to prevent endless loops by observer notification.
+     */
     private State state = State.CLOSED;
 
     /**
@@ -82,7 +89,13 @@ public class FieldBoxButton extends JButton implements Observer {
         super(ImageIcons.CLOSED.getResource());
     }
 
-    private boolean isInState(State s) {
+    /**
+     * Determine if button is in state.
+     *
+     * @param s state to check.
+     * @return {@code true} if button has passed in state, else {@code false}
+     */
+    boolean isInState(final State s) {
         return state == s;
     }
 
@@ -97,6 +110,8 @@ public class FieldBoxButton extends JButton implements Observer {
 
     /**
      * Set the box model.
+     *
+     * Must be set before any operation can be performed on the button.
      *
      * @param box must not be {@code null}
      */
@@ -150,6 +165,8 @@ public class FieldBoxButton extends JButton implements Observer {
 
     /**
      * Whether the box is open or not.
+     *
+     * @return {@code true} if button is open, else {@code false}
      */
     public boolean isOpen() {
         return isInState(State.OPEN);
@@ -172,6 +189,11 @@ public class FieldBoxButton extends JButton implements Observer {
         repaint();
     }
 
+    /**
+     * Flags a button to signal that there may be a mine.
+     *
+     * Only closed or not flagged buttons can be flagged.
+     */
     public void flag() {
         if (isInState(State.FLAG)) {
             return;
@@ -184,11 +206,21 @@ public class FieldBoxButton extends JButton implements Observer {
         repaint();
     }
 
+    /**
+     * Whether the button is flagged.
+     *
+     * @return {@code true} if the button is in flagged state, else {@code false}
+     */
     public boolean isFlag() {
         return isInState(State.FLAG);
     }
 
-    private ImageIcon determineIcon() {
+    /**
+     * Determines the right icon image (either bomb or number for mines in neighberhood).
+     *
+     * @return never {@code null}
+     */
+    ImageIcon determineIcon() {
         Validate.notNull(box, "Box model is null! Set box first.");
         final ImageIcon icon;
 
@@ -201,7 +233,12 @@ public class FieldBoxButton extends JButton implements Observer {
         return icon;
     }
 
-    private ImageIcon determineNumberIcon() {
+    /**
+     * Determines the number icons for mines in neighborhood.
+     *
+     * @return never {@code null}
+     */
+    ImageIcon determineNumberIcon() {
         final ImageIcon icon;
 
         switch (box.countMinesInNeighborhood()) {
@@ -251,6 +288,15 @@ public class FieldBoxButton extends JButton implements Observer {
         }
     }
 
+    /**
+     * Resets the button.
+     *
+     * <ul>
+     * <li>set state to closed</li>
+     * <li>set icon to closed</li>
+     * <li>repaint button</li>
+     * </ul>
+     */
     void reset() {
         state = State.CLOSED;
         setIcon(ImageIcons.CLOSED.getResource());
@@ -275,4 +321,5 @@ public class FieldBoxButton extends JButton implements Observer {
          */
         OPEN;
     }
+
 }

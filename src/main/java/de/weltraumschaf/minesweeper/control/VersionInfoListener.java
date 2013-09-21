@@ -24,10 +24,12 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class VersionInfoListener implements ActionListener{
+class VersionInfoListener implements ActionListener {
 
     /**
      * Used to dispose.
+     *
+     * XXX: Consider if retrievable from {@link ActionEvent}.
      */
     private final MainWindow main;
     /**

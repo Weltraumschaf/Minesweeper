@@ -15,6 +15,7 @@ import de.weltraumschaf.minesweeper.gui.MainWindow;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Listens for the new game menu item.
@@ -23,10 +24,21 @@ import java.awt.event.ActionListener;
  */
 class NewGameListener implements ActionListener {
 
+    /**
+     * Frame to which the listener was added.
+     *
+     * XXX: Consider if retrievable from {@link ActionEvent}.
+     */
     private final MainWindow main;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param main must not be {@code null}
+     */
     public NewGameListener(final MainWindow main) {
         super();
+        Validate.notNull(main, "Main must not be null!");
         this.main = main;
     }
 
