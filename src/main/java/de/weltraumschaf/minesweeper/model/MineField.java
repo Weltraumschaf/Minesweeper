@@ -271,4 +271,8 @@ public class MineField {
     public boolean hasWon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public List<FieldBox> getBoxes() {
+        return boxes.getAll();
+    }
 }

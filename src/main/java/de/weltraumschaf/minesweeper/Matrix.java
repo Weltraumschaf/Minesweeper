@@ -95,7 +95,7 @@ public final class Matrix<T> {
      *
      * @return never {@code null}
      */
-    public Collection<T> getAll() {
+    public List<T> getAll() {
         final List<T> all = new ArrayList<T>(size());
 
         for (int y = 0; y < height; ++y) {

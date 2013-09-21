@@ -100,6 +100,8 @@ public final class MainWindow extends SwingFrame {
         LOG.info(String.format("Pain field:%n%s", mineField.toString()));
         final MineFieldPanel gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight());
         gamePanel.init();
+        // First init so that buttons are available.
+        gamePanel.setModels(mineField.getBoxes());
         panel.add(gamePanel);
         pack();
     }
