@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.minesweeper.model;
 
+import de.weltraumschaf.minesweeper.Matrix;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,7 +51,7 @@ public class MineField {
     /**
      * The box matrix.
      */
-    private final BaseMineFieldBox[][] boxes;
+    private final Matrix<FieldBox> boxes;
     /**
      * Used to initialize the box matrix randomly.
      */
@@ -91,7 +92,7 @@ public class MineField {
         this.height = height;
         Validate.isTrue(width > 0, "Width must not be less than 1!");
         this.width = width;
-        this.boxes = new BaseMineFieldBox[width][height];
+        this.boxes = new Matrix<FieldBox>(FieldBox.class, width, height);
     }
 
     /**
@@ -101,9 +102,9 @@ public class MineField {
      * @param y coordinate of first clicked box
      */
     public void initializeFieldWithBoxes(final int x, final int y) {
-        for (int rowId = 0; rowId < width; ++rowId) {
-            for (int columnId = 0; columnId < height; ++columnId) {
-                boxes[rowId][columnId] = createRandomBox(rowId, columnId, x, y);
+        for (int rowId = 0; rowId < height; ++rowId) {
+            for (int columnId = 0; columnId < width; ++columnId) {
+                boxes.set(columnId, rowId, createRandomBox(columnId, rowId, x, y));
             }
         }
 
@@ -115,8 +116,8 @@ public class MineField {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width));
 
-        for (final BaseMineFieldBox[] row : boxes) {
-            for (final BaseMineFieldBox box : row) {
+        for (final List<FieldBox> row : boxes.getRows()) {
+            for (final FieldBox box : row) {
                 buffer.append(box).append(' ');
             }
 
@@ -172,7 +173,7 @@ public class MineField {
      * @param columnId must not be less than 0
      * @return never {@code null}, maybe empty list
      */
-    List<MineFieldBox> getNeighboursOfBox(final int rowId, final int columnId) {
+    List<FieldBox> getNeighboursOfBox(final int rowId, final int columnId) {
         if (!initialized) {
             throw new IllegalStateException(
                     "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
@@ -204,7 +205,7 @@ public class MineField {
             columnIdStop = height - 1;
         }
 
-        final List<MineFieldBox> neighbours = new ArrayList<MineFieldBox>();
+        final List<FieldBox> neighbours = new ArrayList<FieldBox>();
 
         for (int x = rowIdStart; x <= rowIdStop; ++x) {
             for (int y = columnIdStart; y <= columnIdStop; ++y) {
@@ -212,7 +213,7 @@ public class MineField {
                     continue; // Ignore self.
                 }
 
-                neighbours.add(boxes[x][y]);
+                neighbours.add(boxes.get(x, y));
             }
         }
 
@@ -246,7 +247,7 @@ public class MineField {
      * @param y must not be less than 0 and greater than {@link #getHeight()} - 1.
      * @return never {@code null}
      */
-    public MineFieldBox getBox(final int x, final int y) {
+    public FieldBox getBox(final int x, final int y) {
         if (!initialized) {
             throw new IllegalStateException(
                     "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
@@ -256,7 +257,7 @@ public class MineField {
         Validate.isTrue(x < width, "X must not be less than MineField#getWidth()!");
         Validate.isTrue(y >= 0, "Y must not be less than 0!");
         Validate.isTrue(y < height, "Y must not be less than MineField#getHeight()!");
-        return boxes[x][y];
+        return boxes.get(x, y);
     }
 
     public void setGameOver() {

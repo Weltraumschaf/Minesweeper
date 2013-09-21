@@ -21,7 +21,7 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
+abstract class BaseMineFieldBox extends Observable implements FieldBox {
 
     /**
      * Row in which this box is positioned in the field (x-coordinate).
@@ -38,7 +38,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
     /**
      * List of direct neighbors fields.
      */
-    private List<MineFieldBox> neighbours;
+    private List<FieldBox> neighbours;
     /**
      * Numbers of mines in neighborhood.
      */
@@ -74,7 +74,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
         if (minesInNeighbourhoodCount == -1) {
             minesInNeighbourhoodCount = 0;
 
-            for (final MineFieldBox box : getNeighbours()) {
+            for (final FieldBox box : getNeighbours()) {
                 if (box.isMine()) {
                     ++minesInNeighbourhoodCount;
                 }
@@ -85,7 +85,7 @@ abstract class BaseMineFieldBox extends Observable implements MineFieldBox {
     }
 
     @Override
-    public List<MineFieldBox> getNeighbours() {
+    public List<FieldBox> getNeighbours() {
         if (neighbours == null) {
             neighbours = field.getNeighboursOfBox(x, y);
         }

@@ -19,7 +19,7 @@ import java.util.Observer;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public interface MineFieldBox {
+public interface FieldBox {
 
     /**
      * Whether the box is a mine or not.
@@ -54,7 +54,7 @@ public interface MineFieldBox {
      *
      * @return contains at least 3 and maximum 8 boxes
      */
-    List<MineFieldBox> getNeighbours();
+    List<FieldBox> getNeighbours();
     int countMinesInNeighborhood();
 
     void addObserver(Observer o);

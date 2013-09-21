@@ -11,8 +11,10 @@
  */
 package de.weltraumschaf.minesweeper;
 
+import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
@@ -178,5 +180,15 @@ public final class Matrix<T> {
                 set(x, y, datum);
             }
         }
+    }
+
+    public List<List<T>> getRows() {
+        final List<List<T>> rows = new ArrayList<List<T>>(height);
+
+        for (final T[] r : data) {
+            rows.add(Arrays.asList(r));
+        }
+
+        return rows;
     }
 }

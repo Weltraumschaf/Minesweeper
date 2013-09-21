@@ -12,7 +12,7 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.GlobalLog;
-import de.weltraumschaf.minesweeper.model.MineFieldBox;
+import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
@@ -69,7 +69,7 @@ public class FieldBoxButton extends JButton implements Observer {
     /**
      * The data model behind the button.
      */
-    private MineFieldBox box;
+    private FieldBox box;
 
     /**
      * Dedicated constructor.
@@ -85,7 +85,7 @@ public class FieldBoxButton extends JButton implements Observer {
      *
      * @return never {@code null}
      */
-    public MineFieldBox getBox() {
+    public FieldBox getBox() {
         return box;
     }
 
@@ -94,7 +94,7 @@ public class FieldBoxButton extends JButton implements Observer {
      *
      * @param box must not be {@code null}
      */
-    public void setBox(final MineFieldBox box) {
+    public void setBox(final FieldBox box) {
         Validate.notNull(box, "Box must not be null!");
         this.box = box;
     }
@@ -116,7 +116,7 @@ public class FieldBoxButton extends JButton implements Observer {
             setIcon(determineIcon());
 
             if (box.countMinesInNeighborhood() == 0) {
-                for (final MineFieldBox neighbor : box.getNeighbours()) {
+                for (final FieldBox neighbor : box.getNeighbours()) {
                     neighbor.setOpened(true);
                 }
             }

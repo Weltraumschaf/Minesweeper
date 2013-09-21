@@ -56,8 +56,8 @@ public class BaseMineFieldBoxTest {
         new BaseMineFieldBoxStub(0, 0, null);
     }
 
-    private List<MineFieldBox> createNeighbours() {
-        final List<MineFieldBox> neighbors = new ArrayList<MineFieldBox>(NEIGHBOURCOUNT);
+    private List<FieldBox> createNeighbours() {
+        final List<FieldBox> neighbors = new ArrayList<FieldBox>(NEIGHBOURCOUNT);
 
         for (int i = 0; i < NEIGHBOURCOUNT; ++i) {
             neighbors.add(new SaveBox(0, 0, field));
@@ -69,7 +69,7 @@ public class BaseMineFieldBoxTest {
     @Test
     public void countMinesInNeighborhood_noMines() {
         final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
-        final List<MineFieldBox> neighbors = createNeighbours();
+        final List<FieldBox> neighbors = createNeighbours();
         sut.setNeighbors(neighbors);
         assertThat(sut.countMinesInNeighborhood(), is(0));
     }
@@ -77,7 +77,7 @@ public class BaseMineFieldBoxTest {
     @Test
     public void countMinesInNeighborhood_oneMines() {
         final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
-        final List<MineFieldBox> neighbors = createNeighbours();
+        final List<FieldBox> neighbors = createNeighbours();
         neighbors.set(3, new MineBox(0, 0, field));
         sut.setNeighbors(neighbors);
         assertThat(sut.countMinesInNeighborhood(), is(1));
@@ -86,7 +86,7 @@ public class BaseMineFieldBoxTest {
     @Test
     public void countMinesInNeighborhood_threeMines() {
         final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
-        final List<MineFieldBox> neighbors = createNeighbours();
+        final List<FieldBox> neighbors = createNeighbours();
         neighbors.set(3, new MineBox(0, 0, field));
         neighbors.set(5, new MineBox(0, 0, field));
         neighbors.set(7, new MineBox(0, 0, field));
@@ -97,7 +97,7 @@ public class BaseMineFieldBoxTest {
     @Test
     public void countMinesInNeighborhood_allMines() {
         final BaseMineFieldBoxStubFixedNeighbors sut = new BaseMineFieldBoxStubFixedNeighbors(0, 0, field);
-        final List<MineFieldBox> neighbors = new ArrayList<MineFieldBox>(NEIGHBOURCOUNT);
+        final List<FieldBox> neighbors = new ArrayList<FieldBox>(NEIGHBOURCOUNT);
 
         for (int i = 0; i < NEIGHBOURCOUNT; ++i) {
             neighbors.add(new MineBox(0, 0, field));
@@ -149,18 +149,18 @@ public class BaseMineFieldBoxTest {
 
     private static class BaseMineFieldBoxStubFixedNeighbors extends BaseMineFieldBoxStub {
 
-        private List<MineFieldBox> neighbors;
+        private List<FieldBox> neighbors;
 
         public BaseMineFieldBoxStubFixedNeighbors(final int rowId, final int columnId, final MineField field) {
             super(rowId, columnId, field);
         }
 
-        public void setNeighbors(List<MineFieldBox> neighbors) {
+        public void setNeighbors(List<FieldBox> neighbors) {
             this.neighbors = neighbors;
         }
 
         @Override
-        public List<MineFieldBox> getNeighbours() {
+        public List<FieldBox> getNeighbours() {
             return neighbors;
         }
 
