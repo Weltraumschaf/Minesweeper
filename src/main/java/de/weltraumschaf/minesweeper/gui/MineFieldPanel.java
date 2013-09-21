@@ -15,7 +15,6 @@ import de.weltraumschaf.minesweeper.Matrix;
 import de.weltraumschaf.minesweeper.control.FieldBoxListeners;
 import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.awt.GridLayout;
-import java.util.List;
 import javax.swing.JPanel;
 import org.apache.commons.lang3.Validate;
 
