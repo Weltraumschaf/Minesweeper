@@ -243,6 +243,12 @@ public class FieldBoxButton extends JButton implements Observer {
         }
     }
 
+    void reset() {
+        state = State.CLOSED;
+        setIcon(ImageIcons.CLOSED.getResource());
+        repaint();
+    }
+
     /**
      * Represent the button state.
      */

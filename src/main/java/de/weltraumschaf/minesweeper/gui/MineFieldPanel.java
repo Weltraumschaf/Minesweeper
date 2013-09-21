@@ -54,6 +54,7 @@ public class MineFieldPanel extends JPanel {
                 final FieldBoxButton btn = fieldButtons.get(x, y);
                 box.addObserver(btn);
                 btn.setBox(box);
+                btn.reset();
             }
         }
     }

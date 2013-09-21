@@ -36,6 +36,7 @@ class NewGameListener implements ActionListener {
         newField.initializeFieldWithBoxes(0, 0);
         main.setMineField(newField);
         main.initPanel();
+        main.repaint();
     }
 
 }
