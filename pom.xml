@@ -64,7 +64,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.version.source>1.7</project.build.version.source>
         <project.build.version.target>1.7</project.build.version.target>
-        <project.build.exefile>minesweeper.exe</project.build.exefile>
+        <project.build.exefile>Minesweeper.exe</project.build.exefile>
         <project.src.mainClass>de.weltraumschaf.minesweeper.App</project.src.mainClass>
         <maven.pmd.rulesetfiles>${project.basedir}/src/main/config/pmd.xml</maven.pmd.rulesetfiles>
         <maven.pmd.cpd-excludes>${project.basedir}/src/main/config/exclude-cpd.properties</maven.pmd.cpd-excludes>
@@ -300,7 +300,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>${de.weltraumschaf.minesweeper.App}</mainClass>
+                            <mainClass>${project.src.mainClass}</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -309,25 +309,19 @@
                     <finalName>${finalName}</finalName>
                     <outputDirectory>${project.basedir}/bin</outputDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <attach>true</attach>
+                    <attach>false</attach>
                 </configuration>
                 <executions>
                     <execution>
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <!--<goal>single</goal>-->
                             <goal>attached</goal>
                         </goals>
-<!--                        <configuration>
-                            <descriptors>
-                                <descriptor>${project.basedir}/src/main/assembly/src.xml</descriptor>
-                            </descriptors>
-                        </configuration>-->
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>
+            <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
                 <executions>
@@ -346,14 +340,14 @@
                                 <mainClass>${project.src.mainClass}</mainClass>
                             </classPath>
                             <jre>
-                                <minVersion>${project.build.version.target}</minVersion>
+                                <minVersion>${project.build.version.target}.0</minVersion>
                             </jre>
                             <versionInfo>
-                                <fileVersion>${project.version}</fileVersion>
+                                <fileVersion>0.0.0.0</fileVersion>
                                 <txtFileVersion>${project.version}</txtFileVersion>
                                 <fileDescription>${project.description}</fileDescription>
                                 <copyright>The Beer-Ware-License</copyright>
-                                <productVersion>${project.version}</productVersion>
+                                <productVersion>0.0.0.0</productVersion>
                                 <txtProductVersion>${project.version}</txtProductVersion>
                                 <productName>${project.name}</productName>
                                 <internalName>${project.name}</internalName>
@@ -362,7 +356,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
 
             <!--
                 Code analysis plugins.
