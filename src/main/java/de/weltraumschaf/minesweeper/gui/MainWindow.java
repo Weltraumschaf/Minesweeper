@@ -31,11 +31,13 @@ public final class MainWindow extends SwingFrame {
      * Logging facility.
      */
     private static final Logger LOG = GlobalLog.getLogger(MainWindow.class);
-
     /**
      * Id for serialization.
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * Holds the game field.
+     */
     private final MineFieldPanel gamePanel;
     /**
      * Model for the game play.
@@ -70,11 +72,22 @@ public final class MainWindow extends SwingFrame {
         gamePanel.init();
     }
 
+    /**
+     * Get the game mine field model.
+     *
+     * @return never {@code null}
+     */
     public MineField getMineField() {
         return mineField;
     }
 
+    /**
+     * Set the game mine field model.
+     *
+     * @param mineField must not be {@code null}
+     */
     public void setMineField(final MineField mineField) {
+        Validate.notNull(mineField, "Mine field must not be null!");
         this.mineField = mineField;
     }
 
@@ -82,16 +95,16 @@ public final class MainWindow extends SwingFrame {
     protected void initMenu() {
         final JMenuBar menubar = MenuBarBuilder.builder()
                 .menu("File")
-                    .item("New")
-                        .addListener(newGameListener)
-                    .end()
-                    .item("Version")
-                        .addListener(versionInfoListener)
-                    .end()
-                    .separator()
-                    .item("Quit")
-                        .addListener(quitListener)
-                    .end()
+                .item("New")
+                .addListener(newGameListener)
+                .end()
+                .item("Version")
+                .addListener(versionInfoListener)
+                .end()
+                .separator()
+                .item("Quit")
+                .addListener(quitListener)
+                .end()
                 .end()
                 .create();
 

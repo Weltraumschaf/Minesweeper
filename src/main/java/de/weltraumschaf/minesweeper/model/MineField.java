@@ -139,6 +139,8 @@ public class MineField {
      *
      * @param rowId must not be less than 0
      * @param columnId must not be less than 0
+     * @param x coordinate of button which must not be a mine
+     * @param y coordinate of button which must not be a mine
      * @return always new instance
      */
     private BaseMineFieldBox createRandomBox(final int rowId, final int columnId, final int x, final int y) {
@@ -260,18 +262,36 @@ public class MineField {
         return boxes.get(x, y);
     }
 
+    /**
+     * Set the game as lost if a mine was opened.
+     */
     public void setGameOver() {
         gameOver = true;
     }
 
+    /**
+     * Whether the game was lost.
+     *
+     * @return {@code true} if a mine was opened, else {@code false}
+     */
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * Whether the game was won.
+     *
+     * @return {@code true} if all fields are opened or flagged and no mine was opened, else {@code false}
+     */
     public boolean hasWon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Get the boxes.
+     *
+     * @return never {@code null}
+     */
     public Matrix<FieldBox> getBoxes() {
         return boxes;
     }

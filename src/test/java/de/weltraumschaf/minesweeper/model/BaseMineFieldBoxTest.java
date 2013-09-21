@@ -32,7 +32,13 @@ public class BaseMineFieldBoxTest {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
     //CHECKSTYLE:ON
+    /**
+     * Count of neighbors.
+     */
     private static final int NEIGHBOURCOUNT = 8;
+    /**
+     * Dependency for SUT.
+     */
     private final MineField field = new MineField(2, 2);
 
     @Test
@@ -113,7 +119,7 @@ public class BaseMineFieldBoxTest {
         final Observer observer = mock(Observer.class);
         sut.addObserver(observer);
         assertThat(sut.isOpen(), is(false));
-        sut.setOpened(true);
+        sut.setOpened();
         assertThat(sut.isOpen(), is(true));
         verify(observer, times(1)).update(sut, null);
     }

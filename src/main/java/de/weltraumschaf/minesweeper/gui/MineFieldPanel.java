@@ -25,10 +25,29 @@ import org.apache.commons.lang3.Validate;
  */
 public class MineFieldPanel extends JPanel {
 
+    /**
+     * Holds the game field buttons in a matrix.
+     */
     private final Matrix<FieldBoxButton> fieldButtons;
+    /**
+     * Count of buttons in x-axis.
+     */
     private final int width;
+    /**
+     * Count of buttons in y-axis.
+     */
     private final int height;
+    /**
+     * Whether the was initialized.
+     */
+    private boolean initilaized;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param width must not be less than 1
+     * @param height must not be less than 1
+     */
     public MineFieldPanel(int width, int height) {
         super(new GridLayout(width, height));
         this.fieldButtons = new Matrix<FieldBoxButton>(FieldBoxButton.class, width, height);
@@ -36,16 +55,33 @@ public class MineFieldPanel extends JPanel {
         this.height = height;
     }
 
+    /**
+     * Initializes the panel with default buttons with attached click listeners and add them to the panel.
+     *
+     * Executes only one time per instance.
+     */
     public void init() {
+        if (initilaized) {
+            return;
+        }
+
         fieldButtons.initWithObjects();
 
         for (final FieldBoxButton btn : fieldButtons.getAll()) {
             btn.addMouseListener(FieldBoxListeners.createClickListener());
             add(btn);
         }
+
+        initilaized = true;
     }
 
+    /**
+     * Set the field box models.
+     *
+     * @param boxes must not be {@code null} and must have same size as {@link #fieldButtons}
+     */
     public void setModels(final Matrix<FieldBox> boxes) {
+        Validate.notNull(boxes, "Boxes must not be null!");
         Validate.isTrue(boxes.size() == fieldButtons.size(), "Size of buttons and boxes matrix must be equal!");
 
         for (int y = 0; y < height; ++y) {
@@ -58,4 +94,5 @@ public class MineFieldPanel extends JPanel {
             }
         }
     }
+
 }

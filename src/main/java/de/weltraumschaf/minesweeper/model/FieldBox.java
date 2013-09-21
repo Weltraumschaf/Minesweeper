@@ -43,11 +43,25 @@ public interface FieldBox {
      * @param flagged {@code true} for flagging, else {@code false}
      */
     void setFlag(final boolean flagged);
-
+    /**
+     * Whether a box is open or not.
+     *
+     * A open box can not be closed or flagged gain. If it is a bomb the game is over.
+     *
+     * @return {@code true} if opened, else {@code false}
+     */
     boolean isOpen();
-
-    void setOpened(final boolean opened);
-
+    /**
+     * Set the box opened.
+     *
+     * Should only perform any action, if not opened yet.
+     */
+    void setOpened();
+    /**
+     * Get the field to which the box belongs.
+     *
+     * @return never {@code null}
+     */
     MineField getField();
     /**
      * Get all direct neighbors of a box.
@@ -55,20 +69,51 @@ public interface FieldBox {
      * @return contains at least 3 and maximum 8 boxes
      */
     List<FieldBox> getNeighbours();
+    /**
+     * Count the mines in the direct neighborhood.
+     *
+     * @return number in range [0,8]
+     */
     int countMinesInNeighborhood();
-
+    /**
+     * Add an observer.
+     *
+     * @param o must not be {@code null}
+     */
     void addObserver(Observer o);
-
+    /**
+     * Delete an observer.
+     *
+     * @param o must not be {@code null}
+     */
     void deleteObserver(Observer o);
-
+    /**
+     * Notify observers for changes.
+     *
+     * Dispatches to {@link #notifyObservers(java.lang.Object)} with {@code null} as argument.
+     */
     void notifyObservers();
-
+    /**
+     * Notify observers for changes.
+     *
+     * @param arg may be {@code null}
+     */
     void notifyObservers(Object arg);
-
+    /**
+     * Delete all observers.
+     */
     void deleteObservers();
-
+    /**
+     * Determine if box state has changed for observers.
+     *
+     * @return {@code true} if observers should be notified, else {@code false}
+     */
     boolean hasChanged();
-
+    /**
+     * Count observers.
+     *
+     * @return not negative
+     */
     int countObservers();
     /**
      * Get the x-position in the mine field.

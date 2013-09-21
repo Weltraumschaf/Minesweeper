@@ -155,7 +155,7 @@ public class FieldBoxButton extends JButton implements Observer {
 
                 for (final FieldBox neighbor : box.getNeighbours()) {
                     LOG.info(String.format("Open neighbor box %s.", neighbor));
-                    neighbor.setOpened(true);
+                    neighbor.setOpened();
                 }
             }
         }
