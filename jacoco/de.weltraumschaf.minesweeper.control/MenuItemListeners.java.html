@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MenuItemListeners.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.control</a> &gt; <span class="el_source">MenuItemListeners.java</span></div><h1>MenuItemListeners.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.minesweeper.control;
+
+import de.weltraumschaf.commons.Version;
+import de.weltraumschaf.minesweeper.gui.MainWindow;
+import java.awt.event.ActionListener;
+
+/**
+ * Provides menu item action listeners.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public final class MenuItemListeners {
+
+    /**
+     * Hidden because pure static factory.
+     */
+    private MenuItemListeners() {
+<span class="nc" id="L29">        super();</span>
+<span class="nc" id="L30">    }</span>
+
+    /**
+     * Creates new game listener.
+     *
+     * @param main must not be {@code null}
+     * @return always new instance, never {@code null}
+     */
+    public static ActionListener createNewGameListener(final MainWindow main) {
+<span class="nc" id="L39">        return new NewGameListener(main);</span>
+    }
+
+    /**
+     * Creates new version listener.
+     *
+     * @param main must not be {@code null}
+     * @param version must not be {@code null}
+     * @return always new instance, never {@code null}
+     */
+    public static ActionListener createVersionListener(final MainWindow main, final Version version) {
+<span class="nc" id="L50">        return new VersionInfoListener(main, version);</span>
+    }
+
+    /**
+     * Creates new quit listener.
+     *
+     * @param main must not be {@code null}
+     * @return always new instance, never {@code null}
+     */
+    public static ActionListener createQuitListener(final MainWindow main) {
+<span class="nc" id="L60">        return new QuitListener(main);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

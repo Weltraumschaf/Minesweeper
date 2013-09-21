@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FieldBoxButtonListener.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.control</a> &gt; <span class="el_source">FieldBoxButtonListener.java</span></div><h1>FieldBoxButtonListener.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.minesweeper.control;
+
+import de.weltraumschaf.minesweeper.GlobalLog;
+import de.weltraumschaf.minesweeper.gui.FieldBoxButton;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
+
+/**
+ * Listen for mouse clicks on a {@link FieldBoxButton}.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+<span class="nc" id="L28">class FieldBoxButtonListener extends MouseAdapter {</span>
+
+    /**
+     * Log facility.
+     */
+<span class="nc" id="L33">    private static final Logger LOG = GlobalLog.getLogger(FieldBoxButtonListener.class);</span>
+
+    @Override
+    public void mouseClicked(final MouseEvent e) {
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (!(e.getComponent() instanceof FieldBoxButton)) {</span>
+<span class="nc" id="L38">            return;</span>
+        }
+
+<span class="nc" id="L41">        final FieldBoxButton originatingButton = (FieldBoxButton) e.getComponent();</span>
+
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (originatingButton.isOpen()) {</span>
+<span class="nc" id="L44">            return;</span>
+        }
+
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
+<span class="nc" id="L48">            LOG.info(String.format(&quot;Right click on %s.&quot;, originatingButton.getBox()));</span>
+
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (originatingButton.isFlag()) {</span>
+<span class="nc" id="L51">                originatingButton.close();</span>
+            } else {
+<span class="nc" id="L53">                originatingButton.flag();</span>
+            }
+        } else {
+<span class="nc" id="L56">            LOG.info(String.format(&quot;Left click on %s&quot;, originatingButton.getBox()));</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (originatingButton.isFlag()) {</span>
+<span class="nc" id="L59">                return;</span>
+            }
+
+<span class="nc" id="L62">            originatingButton.open();</span>
+        }
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (originatingButton.getBox().getField().isGameOver()) {</span>
+<span class="nc" id="L66">            SwingUtilities.invokeLater(new Runnable() {</span>
+                @Override
+                public void run() {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">                    for (final Component comp : originatingButton.getParent().getComponents()) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                        if (comp instanceof JButton) {</span>
+<span class="nc" id="L71">                            final JButton button = (JButton) comp;</span>
+<span class="nc" id="L72">                            final MouseEvent me = new MouseEvent(button, // which</span>
+                                    MouseEvent.MOUSE_CLICKED, // what
+                                    System.currentTimeMillis(), // when
+                                    0, // no modifiers
+                                    button.getX(), button.getY(), // where: at (10, 10}
+                                    1, // only 1 click
+                                    false); // not a popup trigger
+<span class="nc" id="L79">                            button.dispatchEvent(me);</span>
+                        }
+                    }
+<span class="nc" id="L82">                }</span>
+            });
+        }
+<span class="nc" id="L85">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

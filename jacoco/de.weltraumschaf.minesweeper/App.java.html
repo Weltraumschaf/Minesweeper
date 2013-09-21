@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.minesweeper;
+
+import de.weltraumschaf.minesweeper.model.MineField;
+import de.weltraumschaf.minesweeper.gui.MainWindow;
+import de.weltraumschaf.commons.InvokableAdapter;
+import de.weltraumschaf.commons.Version;
+import de.weltraumschaf.commons.system.NullExiter;
+import de.weltraumschaf.minesweeper.control.MenuItemListeners;
+import de.weltraumschaf.minesweeper.model.Game;
+import javax.swing.SwingUtilities;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Main application class.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public class App extends InvokableAdapter implements Runnable {
+
+    /**
+     * Version information.
+     */
+    private final Version version;
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param args must not be {@code null}
+     */
+    public App(final String[] args) {
+<span class="nc" id="L42">        super(args);</span>
+<span class="nc" id="L43">        version = new Version(&quot;/de/weltraumschaf/minesweeper/version.properties&quot;);</span>
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * Main entry point of VM.
+     *
+     * @param args cli arguments from VM
+     */
+    public static void main(final String[] args) {
+<span class="nc" id="L52">        InvokableAdapter.main(new App(args));</span>
+<span class="nc" id="L53">    }</span>
+
+    @Override
+    public void run() {
+        final MineField mineField;
+<span class="nc" id="L58">        final Game game = new Game();</span>
+
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (getArgs().length == 2) {</span>
+<span class="nc" id="L61">            final int width = Integer.parseInt(getArgs()[0]);</span>
+<span class="nc" id="L62">            final int height = Integer.parseInt(getArgs()[1]);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            Validate.isTrue(width &gt; 0, &quot;Width must not be less than 1!&quot;);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            Validate.isTrue(height &gt; 0, &quot;Height must not be less than 1!&quot;);</span>
+<span class="nc" id="L65">            mineField = new MineField(width, height);</span>
+<span class="nc" id="L66">            game.resize(width, height);</span>
+<span class="nc" id="L67">        } else {</span>
+<span class="nc" id="L68">            mineField = new MineField();</span>
+        }
+
+<span class="nc" id="L71">        mineField.initializeFieldWithBoxes(0, 0);</span>
+<span class="nc" id="L72">        final MainWindow mainWindow = new MainWindow(&quot;Minesweeper&quot;, mineField);</span>
+<span class="nc" id="L73">        mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));</span>
+<span class="nc" id="L74">        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow));</span>
+<span class="nc" id="L75">        mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));</span>
+<span class="nc" id="L76">        mainWindow.init();</span>
+<span class="nc" id="L77">        mainWindow.setVisible(true);</span>
+<span class="nc" id="L78">    }</span>
+
+    @Override
+    public void execute() throws Exception {
+<span class="nc" id="L82">        setExiter(new NullExiter());</span>
+<span class="nc" id="L83">        version.load();</span>
+<span class="nc" id="L84">        SwingUtilities.invokeLater(this);</span>
+<span class="nc" id="L85">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

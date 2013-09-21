@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ImageIcons.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.gui</a> &gt; <span class="el_source">ImageIcons.java</span></div><h1>ImageIcons.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+
+package de.weltraumschaf.minesweeper.gui;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.ImageIcon;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * ImageIcons for mine field boxes.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+<span class="pc" id="L25">public enum ImageIcons {</span>
+
+    /**
+     * Blank open box.
+     *
+     * Used for opened boxes with 0 mines in neighborhood.
+     */
+<span class="fc" id="L32">    BLANK(&quot;blank.png&quot;),</span>
+    /**
+     * Flagged box.
+     *
+     * Signals that the user thinks there is a mine.
+     */
+<span class="fc" id="L38">    FLAG(&quot;flag.png&quot;),</span>
+    /**
+     * Default image for a field box.
+     */
+<span class="fc" id="L42">    CLOSED(&quot;closed.png&quot;),</span>
+    /**
+     * Image for a opened mine.
+     */
+<span class="fc" id="L46">    BOMB(&quot;bomb.png&quot;),</span>
+    /**
+     * Image for a opened and exploded mine.
+     */
+<span class="fc" id="L50">    BOMB_EXPLODED(&quot;bomb_exploded.png&quot;),</span>
+    /**
+     * Opened field box with one mine in neighborhood.
+     */
+<span class="fc" id="L54">    ONE_NEIGHBOR(&quot;one_neighbor.png&quot;),</span>
+    /**
+     * Opened field box with two mine in neighborhood.
+     */
+<span class="fc" id="L58">    TWO_NEIGHBOR(&quot;two_neighbor.png&quot;),</span>
+    /**
+     * Opened field box with three mine in neighborhood.
+     */
+<span class="fc" id="L62">    THREE_NEIGHBOR(&quot;three_neighbor.png&quot;),</span>
+    /**
+     * Opened field box with four mine in neighborhood.
+     */
+<span class="fc" id="L66">    FOUR_NEIGHBOR(&quot;four_neighbor.png&quot;),</span>
+    /**
+     * Opened field box with five mine in neighborhood.
+     */
+<span class="fc" id="L70">    FIVE_NEIGHBOR(&quot;five_neighbor.png&quot;),</span>
+    /**
+     * Opened field box with six mine in neighborhood.
+     */
+<span class="fc" id="L74">    SIX_NEIGHBOR(&quot;six_neighbor.png&quot;),</span>
+    /**
+     * Opened field box with seven mine in neighborhood.
+     */
+<span class="fc" id="L78">    SEVEN_NEIGHBOR(&quot;seven_neighbor.png&quot;),</span>
+    /**
+     * Opened field box with eight mine in neighborhood.
+     */
+<span class="fc" id="L82">    EIGHT_NEIGHBOR(&quot;eight_neighbor.png&quot;);</span>
+    /**
+     * Base package where icon binaries are.
+     */
+    private static final String BASE_PACKAGE = &quot;de/weltraumschaf/minesweeper/&quot;;
+    /**
+     * Cache to pre load each image binary one time.
+     */
+<span class="fc" id="L90">    private static final Map&lt;ImageIcons, ImageIcon&gt; CACHE = new ConcurrentHashMap&lt;ImageIcons, ImageIcon&gt;();</span>
+    /**
+     * Base name of image.
+     */
+    private final String baseName;
+
+    static {
+        // Initialize the cache.
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (final ImageIcons icn : values()) {</span>
+<span class="fc" id="L99">            CACHE.put(icn, icn.getResource());</span>
+        }
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param baseName must not be {@code null} or empty
+     */
+<span class="fc" id="L108">    private ImageIcons(final String baseName) {</span>
+<span class="fc" id="L109">        Validate.notEmpty(baseName, &quot;Base name must not be null or empry!&quot;);</span>
+<span class="fc" id="L110">        this.baseName = baseName;</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Get image resource.
+     *
+     * @return never {@code null}, same instance
+     */
+    public ImageIcon getResource() {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (CACHE.containsKey(this)) {</span>
+<span class="fc" id="L120">            return CACHE.get(this);</span>
+        }
+
+<span class="fc" id="L123">        return new ImageIcon(getClass().getClassLoader().getResource(BASE_PACKAGE + baseName));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

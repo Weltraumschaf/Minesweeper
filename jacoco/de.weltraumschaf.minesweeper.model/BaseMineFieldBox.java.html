@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BaseMineFieldBox.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.model</a> &gt; <span class="el_source">BaseMineFieldBox.java</span></div><h1>BaseMineFieldBox.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+
+package de.weltraumschaf.minesweeper.model;
+
+import java.util.List;
+import java.util.Observable;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Base implementation of a mine field box.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+abstract class BaseMineFieldBox extends Observable implements FieldBox {
+
+    /**
+     * Row in which this box is positioned in the field (x-coordinate).
+     */
+    private final int x;
+    /**
+     * Column in which this box is positioned in the field (y-coordinate).
+     */
+    private final int y;
+    /**
+     * Mine field to which the box belongs.
+     */
+    private final MineField field;
+    /**
+     * List of direct neighbors fields.
+     */
+    private List&lt;FieldBox&gt; neighbours;
+    /**
+     * Numbers of mines in neighborhood.
+     */
+<span class="fc" id="L45">    private int minesInNeighbourhoodCount = -1;</span>
+    /**
+     * Whether the box is opened.
+     */
+    private boolean opened;
+    /**
+     * Whether the box is flagged.
+     */
+    private boolean flagged;
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param rowId must not be less than 0
+     * @param columnId must not be less than 0
+     * @param field must not be {@code null}
+     */
+    public BaseMineFieldBox(final int rowId, final int columnId, final MineField field) {
+<span class="fc" id="L63">        super();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        Validate.isTrue(rowId &gt;= 0, &quot;Row id must not be less than 0!&quot;);</span>
+<span class="fc" id="L65">        this.x = rowId;</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        Validate.isTrue(columnId &gt;= 0, &quot;Column id must not be less than 0!&quot;);</span>
+<span class="fc" id="L67">        this.y = columnId;</span>
+<span class="fc" id="L68">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
+<span class="fc" id="L69">        this.field = field;</span>
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public int countMinesInNeighborhood() {
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (minesInNeighbourhoodCount == -1) {</span>
+<span class="fc" id="L75">            minesInNeighbourhoodCount = 0;</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            for (final FieldBox box : getNeighbours()) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                if (box.isMine()) {</span>
+<span class="fc" id="L79">                    ++minesInNeighbourhoodCount;</span>
+                }
+<span class="fc" id="L81">            }</span>
+        }
+
+<span class="fc" id="L84">        return minesInNeighbourhoodCount;</span>
+    }
+
+    @Override
+    public List&lt;FieldBox&gt; getNeighbours() {
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (neighbours == null) {</span>
+<span class="fc" id="L90">            neighbours = field.getNeighboursOfBox(x, y);</span>
+        }
+
+<span class="fc" id="L93">        return neighbours;</span>
+    }
+
+    @Override
+    public boolean isOpen() {
+<span class="fc" id="L98">        return opened;</span>
+    }
+
+    @Override
+    public void setOpened() {
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (this.opened) {</span>
+<span class="nc" id="L104">            return;</span>
+        }
+
+<span class="fc" id="L107">        setChanged();</span>
+<span class="fc" id="L108">        this.opened = true;</span>
+<span class="fc" id="L109">        notifyObservers();</span>
+<span class="fc" id="L110">    }</span>
+
+    @Override
+    public boolean isFlag() {
+<span class="fc" id="L114">        return flagged;</span>
+    }
+
+    @Override
+    public void setFlag(final boolean flag) {
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (flagged == flag) {</span>
+<span class="nc" id="L120">            return;</span>
+        }
+
+<span class="fc" id="L123">        setChanged();</span>
+<span class="fc" id="L124">        flagged = flag;</span>
+<span class="fc" id="L125">        notifyObservers();</span>
+<span class="fc" id="L126">    }</span>
+
+    @Override
+    public MineField getField() {
+<span class="fc" id="L130">        return field;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L135">        return String.format(&quot;[%s,%s]&quot;, x, y);</span>
+    }
+
+    @Override
+    public int getX() {
+<span class="fc" id="L140">        return x;</span>
+    }
+
+    @Override
+    public int getY() {
+<span class="fc" id="L145">        return y;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

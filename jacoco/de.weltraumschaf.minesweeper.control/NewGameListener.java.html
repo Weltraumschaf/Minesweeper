@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NewGameListener.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.control</a> &gt; <span class="el_source">NewGameListener.java</span></div><h1>NewGameListener.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.minesweeper.control;
+
+import de.weltraumschaf.minesweeper.gui.MainWindow;
+import de.weltraumschaf.minesweeper.model.MineField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Listens for the new game menu item.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+class NewGameListener implements ActionListener {
+
+    /**
+     * Frame to which the listener was added.
+     *
+     * XXX: Consider if retrievable from {@link ActionEvent}.
+     */
+    private final MainWindow main;
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param main must not be {@code null}
+     */
+    public NewGameListener(final MainWindow main) {
+<span class="nc" id="L40">        super();</span>
+<span class="nc" id="L41">        Validate.notNull(main, &quot;Main must not be null!&quot;);</span>
+<span class="nc" id="L42">        this.main = main;</span>
+<span class="nc" id="L43">    }</span>
+
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+<span class="nc" id="L47">        final MineField newField = new MineField(main.getMineField().getWidth(), main.getMineField().getHeight());</span>
+<span class="nc" id="L48">        newField.initializeFieldWithBoxes(0, 0);</span>
+<span class="nc" id="L49">        main.setMineField(newField);</span>
+<span class="nc" id="L50">        main.initPanel();</span>
+<span class="nc" id="L51">        main.repaint();</span>
+<span class="nc" id="L52">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
