@@ -24,9 +24,9 @@ import org.apache.commons.lang3.Validate;
 public final class GlobalLog {
 
     /**
-     * Whether application debugging is enabled.
+     * Current level.
      */
-    private static final boolean DEBUG = true;
+    private static final Level LEVEL = Level.ALL;
 
     /**
      * Hidden for pure static class.
@@ -38,10 +38,10 @@ public final class GlobalLog {
     /**
      * Whether application debugging is enabled.
      *
-     * @return {2code true} if debugging is enabled, else {@code false}
+     * @return {@code true} if current level is ALL, else {@code false}
      */
     public static boolean debug() {
-        return DEBUG;
+        return Level.ALL.equals(getLevel());
     }
 
     /**
@@ -50,7 +50,7 @@ public final class GlobalLog {
      * @return never {@code null}
      */
     public static Level getLevel() {
-        return Level.ALL;
+        return LEVEL;
     }
 
     /**

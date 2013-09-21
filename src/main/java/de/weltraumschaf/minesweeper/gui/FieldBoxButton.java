@@ -121,7 +121,10 @@ public class FieldBoxButton extends JButton implements Observer {
             setIcon(determineIcon());
 
             if (box.countMinesInNeighborhood() == 0) {
+                LOG.info("Opened button has 0 mines in neighborhood.");
+
                 for (final FieldBox neighbor : box.getNeighbours()) {
+                    LOG.info(String.format("Open neighbor box %s.", neighbor));
                     neighbor.setOpened(true);
                 }
             }
@@ -227,8 +230,10 @@ public class FieldBoxButton extends JButton implements Observer {
     @Override
     public void update(final Observable observable, final Object arg) {
         Validate.notNull(box, "Box model is null! Set box first.");
+        LOG.info(String.format("Update from observable %s", observable));
 
         if (box.isOpen()) {
+            LOG.info(String.format("Open box %s.", box));
             open();
         }
     }
