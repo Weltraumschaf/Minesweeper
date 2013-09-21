@@ -272,7 +272,7 @@ public class MineField {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public List<FieldBox> getBoxes() {
-        return boxes.getAll();
+    public Matrix<FieldBox> getBoxes() {
+        return boxes;
     }
 }

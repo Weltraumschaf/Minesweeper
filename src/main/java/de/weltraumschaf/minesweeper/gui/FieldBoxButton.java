@@ -26,6 +26,7 @@ import org.apache.commons.lang3.Validate;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class FieldBoxButton extends JButton implements Observer {
+
     /**
      * Log facility.
      */
@@ -97,6 +98,10 @@ public class FieldBoxButton extends JButton implements Observer {
     public void setBox(final FieldBox box) {
         Validate.notNull(box, "Box must not be null!");
         this.box = box;
+
+        if (GlobalLog.debug()) {
+            setToolTipText(box.toString());
+        }
     }
 
     /**

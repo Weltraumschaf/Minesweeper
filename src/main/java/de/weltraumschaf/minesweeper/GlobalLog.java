@@ -24,10 +24,24 @@ import org.apache.commons.lang3.Validate;
 public final class GlobalLog {
 
     /**
+     * Whether application debugging is enabled.
+     */
+    private static final boolean DEBUG = true;
+
+    /**
      * Hidden for pure static class.
      */
     private GlobalLog() {
         super();
+    }
+
+    /**
+     * Whether application debugging is enabled.
+     *
+     * @return {2code true} if debugging is enabled, else {@code false}
+     */
+    public static boolean debug() {
+        return DEBUG;
     }
 
     /**

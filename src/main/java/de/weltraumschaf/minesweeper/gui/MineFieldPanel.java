@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.Matrix;
@@ -28,10 +27,14 @@ import org.apache.commons.lang3.Validate;
 public class MineFieldPanel extends JPanel {
 
     private final Matrix<FieldBoxButton> fieldButtons;
+    private final int width;
+    private final int height;
 
     public MineFieldPanel(int width, int height) {
         super(new GridLayout(width, height));
         this.fieldButtons = new Matrix<FieldBoxButton>(FieldBoxButton.class, width, height);
+        this.width = width;
+        this.height = height;
     }
 
     public void init() {
@@ -43,16 +46,16 @@ public class MineFieldPanel extends JPanel {
         }
     }
 
-    public void setModels(final List<FieldBox> boxes) {
+    public void setModels(final Matrix<FieldBox> boxes) {
         Validate.isTrue(boxes.size() == fieldButtons.size(), "Size of buttons and boxes matrix must be equal!");
 
-        int i = 0;
-        for (final FieldBoxButton btn : fieldButtons.getAll()) {
-            final FieldBox box = boxes.get(i);
-            box.addObserver(btn);
-            btn.setBox(box);
-            ++i;
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                final FieldBox box = boxes.get(x, y);
+                final FieldBoxButton btn = fieldButtons.get(x, y);
+                box.addObserver(btn);
+                btn.setBox(box);
+            }
         }
     }
-
 }

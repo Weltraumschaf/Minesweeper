@@ -185,8 +185,14 @@ public final class Matrix<T> {
     public List<List<T>> getRows() {
         final List<List<T>> rows = new ArrayList<List<T>>(height);
 
-        for (final T[] r : data) {
-            rows.add(Arrays.asList(r));
+        for (int y = 0; y < height; ++y) {
+            final List<T> row = new ArrayList<T>(width);
+
+            for (int x = 0; x < width; ++x) {
+                row.add(get(x, y));
+            }
+
+            rows.add(row);
         }
 
         return rows;
