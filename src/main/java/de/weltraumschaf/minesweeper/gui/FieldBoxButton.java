@@ -122,8 +122,16 @@ public class FieldBoxButton extends JButton implements Observer {
         state = State.OPEN;
 
         if (box.isMine()) {
-            setIcon(ImageIcons.BOMB_EXPLODED.getResource());
-            box.getField().setGameOver();
+            if (box.getField().isGameOver()) {
+                if (box.isFlag()) {
+                    setIcon(ImageIcons.BOMB.getResource());
+                } else {
+                    setIcon(ImageIcons.BOMB_EXPLODED.getResource());
+                }
+            } else {
+                setIcon(ImageIcons.BOMB_EXPLODED.getResource());
+                box.getField().setGameOver();
+            }
         } else {
             setIcon(determineIcon());
 
@@ -253,6 +261,7 @@ public class FieldBoxButton extends JButton implements Observer {
      * Represent the button state.
      */
     private static enum State {
+
         /**
          * Button is closed.
          */
@@ -266,5 +275,4 @@ public class FieldBoxButton extends JButton implements Observer {
          */
         OPEN;
     }
-
 }
