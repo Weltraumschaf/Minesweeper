@@ -36,6 +36,7 @@ public final class MainWindow extends SwingFrame {
      * Id for serialization.
      */
     private static final long serialVersionUID = 1L;
+    private final MineFieldPanel gamePanel;
     /**
      * Model for the game play.
      */
@@ -65,6 +66,8 @@ public final class MainWindow extends SwingFrame {
         this.mineField = mineField;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setExitOnCloseWindow(true);
+        gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight());
+        gamePanel.init();
     }
 
     public MineField getMineField() {
@@ -98,8 +101,6 @@ public final class MainWindow extends SwingFrame {
     @Override
     public void initPanel() {
         LOG.info(String.format("Pain field:%n%s", mineField.toString()));
-        final MineFieldPanel gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight());
-        gamePanel.init();
         // First init so that buttons are available.
         gamePanel.setModels(mineField.getBoxes());
         panel.add(gamePanel);

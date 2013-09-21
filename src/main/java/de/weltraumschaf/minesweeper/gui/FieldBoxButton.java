@@ -71,6 +71,7 @@ public class FieldBoxButton extends JButton implements Observer {
      * The data model behind the button.
      */
     private FieldBox box;
+    private State state = State.CLOSED;
 
     /**
      * Dedicated constructor.
@@ -79,6 +80,10 @@ public class FieldBoxButton extends JButton implements Observer {
      */
     public FieldBoxButton() {
         super(ImageIcons.CLOSED.getResource());
+    }
+
+    private boolean isInState(State s) {
+        return state == s;
     }
 
     /**
@@ -110,9 +115,11 @@ public class FieldBoxButton extends JButton implements Observer {
     public void open() {
         Validate.notNull(box, "Box model is null! Set box first.");
 
-        if (box.isOpen()) {
+        if (isOpen()) {
             return;
         }
+
+        state = State.OPEN;
 
         if (box.isMine()) {
             setIcon(ImageIcons.BOMB_EXPLODED.getResource());
@@ -135,12 +142,9 @@ public class FieldBoxButton extends JButton implements Observer {
 
     /**
      * Whether the box is open or not.
-     *
-     * @return {@code true} if the box is already open
      */
     public boolean isOpen() {
-        Validate.notNull(box, "Box model is null! Set box first.");
-        return box.isOpen();
+        return isInState(State.OPEN);
     }
 
     /**
@@ -149,30 +153,31 @@ public class FieldBoxButton extends JButton implements Observer {
      * Already opened box can not be closed.
      */
     public void close() {
-        Validate.notNull(box, "Box model is null! Set box first.");
-        if (!box.isOpen()) {
+        if (isInState(State.CLOSED)) {
             return;
         }
 
+        state = State.CLOSED;
+        Validate.notNull(box, "Box model is null! Set box first.");
         box.setFlag(false);
         setIcon(ImageIcons.CLOSED.getResource());
         repaint();
     }
 
     public void flag() {
-        Validate.notNull(box, "Box model is null! Set box first.");
-        if (box.isFlag()) {
+        if (isInState(State.FLAG)) {
             return;
         }
 
+        Validate.notNull(box, "Box model is null! Set box first.");
         box.setFlag(true);
         setIcon(ImageIcons.FLAG.getResource());
+        state = State.FLAG;
         repaint();
     }
 
     public boolean isFlag() {
-        Validate.notNull(box, "Box model is null! Set box first.");
-        return box.isFlag();
+        return isInState(State.FLAG);
     }
 
     private ImageIcon determineIcon() {
@@ -237,4 +242,23 @@ public class FieldBoxButton extends JButton implements Observer {
             open();
         }
     }
+
+    /**
+     * Represent the button state.
+     */
+    private static enum State {
+        /**
+         * Button is closed.
+         */
+        CLOSED,
+        /**
+         * Button has flag.
+         */
+        FLAG,
+        /**
+         * Button is open.
+         */
+        OPEN;
+    }
+
 }

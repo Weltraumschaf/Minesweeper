@@ -100,6 +100,10 @@ abstract class BaseMineFieldBox extends Observable implements FieldBox {
 
     @Override
     public void setOpened(final boolean opened) {
+        if (this.opened == opened) {
+            return;
+        }
+
         setChanged();
         this.opened = opened;
         notifyObservers();
@@ -112,6 +116,10 @@ abstract class BaseMineFieldBox extends Observable implements FieldBox {
 
     @Override
     public void setFlag(final boolean flagged) {
+        if (this.flagged == flagged) {
+            return;
+        }
+
         setChanged();
         this.flagged = flagged;
         notifyObservers();
