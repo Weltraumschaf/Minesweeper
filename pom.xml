@@ -335,6 +335,7 @@
                             <headerType>gui</headerType>
                             <outfile>bin/${project.build.exefile}</outfile>
                             <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
+                            <dontWrapJar>false</dontWrapJar>
                             <errTitle>${project.name}</errTitle>
                             <classPath>
                                 <mainClass>${project.src.mainClass}</mainClass>
