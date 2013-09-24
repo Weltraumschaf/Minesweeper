@@ -1,2 +1,4 @@
+@echo off
+set d=%~dp0
 
-start javaw -jar minesweeper.jar
+start javaw -jar %d%minesweeper.jar %*
