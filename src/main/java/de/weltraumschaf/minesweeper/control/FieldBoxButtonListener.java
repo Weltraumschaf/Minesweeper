@@ -13,12 +13,9 @@ package de.weltraumschaf.minesweeper.control;
 
 import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.gui.FieldBoxButton;
-import de.weltraumschaf.minesweeper.model.FieldBox;
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 /**
@@ -62,6 +59,8 @@ class FieldBoxButtonListener extends MouseAdapter {
 
             originatingButton.open();
         }
+
+        originatingButton.getParent().repaint();
     }
 
 }
