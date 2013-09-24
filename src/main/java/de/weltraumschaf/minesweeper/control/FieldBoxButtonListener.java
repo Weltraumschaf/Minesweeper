@@ -67,8 +67,8 @@ class FieldBoxButtonListener extends MouseAdapter {
                 @Override
                 public void run() {
                     for (final Component comp : originatingButton.getParent().getComponents()) {
-                        if (comp instanceof JButton) {
-                            final JButton button = (JButton) comp;
+                        if (comp instanceof FieldBoxButton) {
+                            final FieldBoxButton button = (FieldBoxButton) comp;
                             final MouseEvent me = new MouseEvent(button, // which
                                     MouseEvent.MOUSE_CLICKED, // what
                                     System.currentTimeMillis(), // when
