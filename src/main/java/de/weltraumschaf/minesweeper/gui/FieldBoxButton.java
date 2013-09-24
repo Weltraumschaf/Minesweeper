@@ -17,7 +17,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JLabel;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -27,7 +27,7 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class FieldBoxButton extends JButton implements Observer {
+public class FieldBoxButton extends JLabel implements Observer {
 
     /**
      * Log facility.
