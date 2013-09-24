@@ -66,7 +66,7 @@ public class MineFieldPanel extends JPanel {
         }
 
         fieldButtons.initWithObjects();
-        // TODO move into #setModels()
+
         for (final FieldBoxButton btn : fieldButtons.getAll()) {
             btn.addMouseListener(FieldBoxListeners.createClickListener());
             add(btn);

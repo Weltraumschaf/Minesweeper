@@ -267,6 +267,10 @@ public class MineField {
      */
     public void setGameOver() {
         gameOver = true;
+
+        for (final FieldBox b : getBoxes().getAll()) {
+            b.setOpened();
+        }
     }
 
     /**
