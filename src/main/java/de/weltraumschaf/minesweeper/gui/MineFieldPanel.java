@@ -40,7 +40,7 @@ public class MineFieldPanel extends JPanel {
     /**
      * Whether the was initialized.
      */
-    private boolean initilaized;
+    private boolean initialized;
 
     /**
      * Dedicated constructor.
@@ -61,18 +61,18 @@ public class MineFieldPanel extends JPanel {
      * Executes only one time per instance.
      */
     public void init() {
-        if (initilaized) {
+        if (initialized) {
             return;
         }
 
         fieldButtons.initWithObjects();
-
+        // TODO move into #setModels()
         for (final FieldBoxButton btn : fieldButtons.getAll()) {
             btn.addMouseListener(FieldBoxListeners.createClickListener());
             add(btn);
         }
 
-        initilaized = true;
+        initialized = true;
     }
 
     /**
