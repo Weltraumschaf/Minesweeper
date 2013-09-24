@@ -29,6 +29,10 @@ import org.apache.commons.lang3.Validate;
 public class App extends InvokableAdapter implements Runnable {
 
     /**
+     * Name of application.
+     */
+    private static final String NAME = "Minesweeper";
+    /**
      * Version information.
      */
     private final Version version;
@@ -69,7 +73,7 @@ public class App extends InvokableAdapter implements Runnable {
         }
 
         mineField.initializeFieldWithBoxes(0, 0);
-        final MainWindow mainWindow = new MainWindow("Minesweeper", mineField);
+        final MainWindow mainWindow = new MainWindow(NAME, mineField);
         mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
         mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow));
         mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));

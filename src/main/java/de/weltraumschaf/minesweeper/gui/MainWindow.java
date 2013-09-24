@@ -113,7 +113,7 @@ public final class MainWindow extends SwingFrame {
 
     @Override
     public void initPanel() {
-        LOG.info(String.format("Pain field:%n%s", mineField.toString()));
+        LOG.info(String.format("Paint field:%n%s", mineField.toString()));
         // First init so that buttons are available.
         gamePanel.setModels(mineField.getBoxes());
         panel.add(gamePanel);

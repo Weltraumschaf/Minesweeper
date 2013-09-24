@@ -53,7 +53,11 @@ class VersionInfoListener implements ActionListener {
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-        JOptionPane.showMessageDialog(main, String.format("Version: %s", version.toString()));
+        JOptionPane.showMessageDialog(
+            main,
+            String.format("Version: %s", version.toString()),
+            main.getTitle(),
+            JOptionPane.PLAIN_MESSAGE);
     }
 
 }
