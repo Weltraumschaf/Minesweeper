@@ -262,11 +262,6 @@
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>2.8</version>
                 </plugin>
-                <plugin>
-                    <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                    <artifactId>launch4j-maven-plugin</artifactId>
-                    <version>1.5.2</version>
-                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -318,43 +313,6 @@
                         <goals>
                             <goal>attached</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                <artifactId>launch4j-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>l4j-gui</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>launch4j</goal>
-                        </goals>
-                        <configuration>
-                            <headerType>gui</headerType>
-                            <outfile>bin/${project.build.exefile}</outfile>
-                            <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
-                            <dontWrapJar>false</dontWrapJar>
-                            <errTitle>${project.name}</errTitle>
-                            <classPath>
-                                <mainClass>${project.src.mainClass}</mainClass>
-                            </classPath>
-                            <jre>
-                                <minVersion>${project.build.version.target}.0</minVersion>
-                            </jre>
-                            <versionInfo>
-                                <fileVersion>0.0.0.0</fileVersion>
-                                <txtFileVersion>${project.version}</txtFileVersion>
-                                <fileDescription>${project.description}</fileDescription>
-                                <copyright>The Beer-Ware-License</copyright>
-                                <productVersion>0.0.0.0</productVersion>
-                                <txtProductVersion>${project.version}</txtProductVersion>
-                                <productName>${project.name}</productName>
-                                <internalName>${project.name}</internalName>
-                                <originalFilename>${project.build.exefile}</originalFilename>
-                            </versionInfo>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
