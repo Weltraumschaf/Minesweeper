@@ -26,7 +26,7 @@ public final class GlobalLog {
     /**
      * Current level.
      */
-    private static final Level LEVEL = Level.OFF;
+    private static final Level LEVEL = Level.ALL;
 
     /**
      * Hidden for pure static class.
