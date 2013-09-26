@@ -103,7 +103,13 @@ public class FieldBoxButton extends JLabel implements Observer {
         return state == s;
     }
 
+    /**
+     * Set the state of the button.
+     *
+     * @param s must not be {@code null}
+     */
     void setState(final State s) {
+        Validate.notNull(s, "State must not be null!");
         this.state = s;
     }
 

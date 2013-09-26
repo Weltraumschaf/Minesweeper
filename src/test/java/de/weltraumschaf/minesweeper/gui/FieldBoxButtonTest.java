@@ -36,6 +36,13 @@ public class FieldBoxButtonTest {
     private final FieldBox box = mock(FieldBox.class);
 
     @Test
+    public void setState_throwsExceptionIfNull() {
+        thrown.expect(NullPointerException.class);
+        thrown.expectMessage("State must not be null!");
+        sut.setState(null);
+    }
+
+    @Test
     public void setBox_throwsExceptionIfNull() {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Box must not be null!");
