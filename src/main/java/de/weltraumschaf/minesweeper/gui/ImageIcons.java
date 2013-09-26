@@ -14,6 +14,7 @@ package de.weltraumschaf.minesweeper.gui;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.apache.commons.lang3.Validate;
 
@@ -87,7 +88,7 @@ public enum ImageIcons {
     /**
      * Cache to pre load each image binary one time.
      */
-    private static final Map<ImageIcons, ImageIcon> CACHE = new ConcurrentHashMap<ImageIcons, ImageIcon>();
+    private static final Map<ImageIcons, Icon> CACHE = new ConcurrentHashMap<ImageIcons, Icon>();
     /**
      * Base name of image.
      */
@@ -115,7 +116,7 @@ public enum ImageIcons {
      *
      * @return never {@code null}, same instance
      */
-    public ImageIcon getResource() {
+    public Icon getResource() {
         if (CACHE.containsKey(this)) {
             return CACHE.get(this);
         }

@@ -32,7 +32,7 @@ public class FieldBoxButtonTest {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
     //CHECKSTYLE:ON
-    private final FieldBoxButton sut = new FieldBoxButton();
+    private final FieldBoxButton sut = spy(new FieldBoxButton());
     private final FieldBox box = mock(FieldBox.class);
 
     @Test
@@ -76,9 +76,16 @@ public class FieldBoxButtonTest {
         sut.close();
     }
 
-    @Test @Ignore
+    @Test
     public void close() {
-        // TODO: Implement test
+        sut.setBox(box);
+        sut.setState(FieldBoxButton.State.FLAG);
+        assertThat(sut.isInState(FieldBoxButton.State.CLOSED), is(false));
+        sut.close();
+        assertThat(sut.isInState(FieldBoxButton.State.CLOSED), is(true));
+        assertThat(sut.getIcon(), is(sameInstance(ImageIcons.CLOSED.getResource())));
+        verify(box, times(1)).setFlag(false);
+        verify(sut, times(1)).repaint();
     }
 
     @Test

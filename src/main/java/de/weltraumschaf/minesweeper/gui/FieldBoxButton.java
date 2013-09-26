@@ -16,6 +16,7 @@ import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import org.apache.commons.lang3.Validate;
@@ -234,9 +235,9 @@ public class FieldBoxButton extends JLabel implements Observer {
      *
      * @return never {@code null}
      */
-    ImageIcon determineIcon() {
+    Icon determineIcon() {
         Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
-        final ImageIcon icon;
+        final Icon icon;
 
         if (box.isMine()) {
             icon = ImageIcons.BOMB.getResource();
@@ -252,8 +253,8 @@ public class FieldBoxButton extends JLabel implements Observer {
      *
      * @return never {@code null}
      */
-    ImageIcon determineNumberIcon() {
-        final ImageIcon icon;
+    Icon determineNumberIcon() {
+        final Icon icon;
 
         switch (box.countMinesInNeighborhood()) {
             case ZERO_NEIGHBORS:
