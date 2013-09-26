@@ -13,6 +13,10 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.model.FieldBox;
+import de.weltraumschaf.minesweeper.model.MineField;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -34,6 +38,7 @@ public class FieldBoxButtonTest {
     //CHECKSTYLE:ON
     private final FieldBoxButton sut = spy(new FieldBoxButton());
     private final FieldBox box = mock(FieldBox.class);
+    private final MineField field = mock(MineField.class);
 
     @Test
     public void setState_throwsExceptionIfNull() {
@@ -63,9 +68,80 @@ public class FieldBoxButtonTest {
         sut.open();
     }
 
-    @Test @Ignore
-    public void open() {
-        // TODO: Implement test
+    @Test
+    public void open_isMineAndGameOverAndIsFlagged() {
+        when(field.isGameOver()).thenReturn(Boolean.TRUE);
+        when(box.getField()).thenReturn(field);
+        when(box.isFlag()).thenReturn(Boolean.TRUE);
+        when(box.isMine()).thenReturn(Boolean.TRUE);
+        sut.setBox(box);
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
+        sut.open();
+        assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB.getResource())));
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(true));
+        verify(sut, atLeastOnce()).repaint();
+    }
+
+    @Test
+    public void open_isMineAndGameOverAndIsNotFlagged() {
+        when(field.isGameOver()).thenReturn(Boolean.TRUE);
+        when(box.getField()).thenReturn(field);
+        when(box.isFlag()).thenReturn(Boolean.FALSE);
+        when(box.isMine()).thenReturn(Boolean.TRUE);
+        sut.setBox(box);
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
+        sut.open();
+        assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB_EXPLODED.getResource())));
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(true));
+        verify(sut, atLeastOnce()).repaint();
+    }
+
+    @Test
+    public void open_isMineAndGameNotOver() {
+        when(field.isGameOver()).thenReturn(Boolean.FALSE);
+        when(box.getField()).thenReturn(field);
+        when(box.isMine()).thenReturn(Boolean.TRUE);
+        sut.setBox(box);
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
+        sut.open();
+        assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB_EXPLODED.getResource())));
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(true));
+        verify(sut, atLeastOnce()).repaint();
+        verify(field, times(1)).setGameOver();
+    }
+
+    @Test
+    public void open_isNotMineAndMoreThanFifveNeighbors() {
+        when(box.getField()).thenReturn(field);
+        when(box.isMine()).thenReturn(Boolean.FALSE);
+        when(box.countMinesInNeighborhood()).thenReturn(5);
+        sut.setBox(box);
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
+        sut.open();
+        assertThat(sut.getIcon(), is(sameInstance(ImageIcons.FIVE_NEIGHBOR.getResource())));
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(true));
+        verify(sut, atLeastOnce()).repaint();
+    }
+
+    @Test
+    public void open_isNotMineAndMoreThanZeroNeighbors() {
+        when(box.getField()).thenReturn(field);
+        when(box.isMine()).thenReturn(Boolean.FALSE);
+        when(box.countMinesInNeighborhood()).thenReturn(0);
+        final List<FieldBox> neighbors = Arrays.asList(
+            mock(FieldBox.class), mock(FieldBox.class), mock(FieldBox.class)
+        );
+        when(box.getNeighbours()).thenReturn(neighbors);
+        sut.setBox(box);
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
+        sut.open();
+        assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BLANK.getResource())));
+        assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(true));
+        verify(sut, atLeastOnce()).repaint();
+
+        for (final FieldBox neighbor : neighbors) {
+            verify(neighbor, times(1)).setOpened();
+        }
     }
 
     @Test
