@@ -85,7 +85,7 @@ public class FieldBoxButtonTest {
         assertThat(sut.isInState(FieldBoxButton.State.CLOSED), is(true));
         assertThat(sut.getIcon(), is(sameInstance(ImageIcons.CLOSED.getResource())));
         verify(box, times(1)).setFlag(false);
-        verify(sut, times(1)).repaint();
+        verify(sut, atLeastOnce()).repaint();
     }
 
     @Test
@@ -95,9 +95,16 @@ public class FieldBoxButtonTest {
         sut.flag();
     }
 
-    @Test @Ignore
+    @Test
     public void flag() {
-        // TODO: Implement test
+        sut.setBox(box);
+        sut.setState(FieldBoxButton.State.CLOSED);
+        assertThat(sut.isInState(FieldBoxButton.State.FLAG), is(false));
+        sut.flag();
+        assertThat(sut.isInState(FieldBoxButton.State.FLAG), is(true));
+        assertThat(sut.getIcon(), is(sameInstance(ImageIcons.FLAG.getResource())));
+        verify(box, times(1)).setFlag(true);
+        verify(sut, atLeastOnce()).repaint();
     }
 
     @Test
