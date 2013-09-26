@@ -17,7 +17,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import org.apache.commons.lang3.Validate;
 
