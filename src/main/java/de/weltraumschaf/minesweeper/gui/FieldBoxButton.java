@@ -70,6 +70,10 @@ public class FieldBoxButton extends JLabel implements Observer {
      */
     private static final int EIGHT_NEIGHBORS = 8;
     /**
+     * Shared exception message.
+     */
+    private static final String BOX_MODEL_NULL_EMESSAGE = "Box model is null! Set box first.";
+    /**
      * The data model behind the button.
      */
     private FieldBox box;
@@ -97,6 +101,10 @@ public class FieldBoxButton extends JLabel implements Observer {
      */
     boolean isInState(final State s) {
         return state == s;
+    }
+
+    void setState(final State s) {
+        this.state = s;
     }
 
     /**
@@ -128,7 +136,7 @@ public class FieldBoxButton extends JLabel implements Observer {
      * Open the box.
      */
     public void open() {
-        Validate.notNull(box, "Box model is null! Set box first.");
+        Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
 
         if (isOpen()) {
             return;
@@ -182,8 +190,8 @@ public class FieldBoxButton extends JLabel implements Observer {
             return;
         }
 
+        Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
         state = State.CLOSED;
-        Validate.notNull(box, "Box model is null! Set box first.");
         box.setFlag(false);
         setIcon(ImageIcons.CLOSED.getResource());
         repaint();
@@ -199,7 +207,7 @@ public class FieldBoxButton extends JLabel implements Observer {
             return;
         }
 
-        Validate.notNull(box, "Box model is null! Set box first.");
+        Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
         box.setFlag(true);
         setIcon(ImageIcons.FLAG.getResource());
         state = State.FLAG;
@@ -221,7 +229,7 @@ public class FieldBoxButton extends JLabel implements Observer {
      * @return never {@code null}
      */
     ImageIcon determineIcon() {
-        Validate.notNull(box, "Box model is null! Set box first.");
+        Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
         final ImageIcon icon;
 
         if (box.isMine()) {
@@ -279,7 +287,7 @@ public class FieldBoxButton extends JLabel implements Observer {
 
     @Override
     public void update(final Observable observable, final Object arg) {
-        Validate.notNull(box, "Box model is null! Set box first.");
+        Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
         LOG.info(String.format("Update from observable %s", observable));
 
         if (box.isOpen()) {
@@ -306,7 +314,7 @@ public class FieldBoxButton extends JLabel implements Observer {
     /**
      * Represent the button state.
      */
-    private static enum State {
+    static enum State {
 
         /**
          * Button is closed.
