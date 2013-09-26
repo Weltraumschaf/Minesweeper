@@ -93,9 +93,26 @@ public class FieldBoxButtonTest {
         // TODO: Implement test
     }
 
-    @Test @Ignore
-    public void determineIcon() {
-        // TODO: Implement test
+    @Test
+    public void determineIcon_throwExceptionIfBoxIsNull() {
+        thrown.expect(NullPointerException.class);
+        thrown.expectMessage("Box model is null! Set box first.");
+        sut.determineIcon();
+    }
+
+    @Test
+    public void determineIcon_isMine() {
+        when(box.isMine()).thenReturn(Boolean.TRUE);
+        sut.setBox(box);
+        assertThat(sut.determineIcon(), is(sameInstance(ImageIcons.BOMB.getResource())));
+    }
+
+    @Test
+    public void determineIcon_isNotMine() {
+        when(box.isMine()).thenReturn(Boolean.FALSE);
+        when(box.countMinesInNeighborhood()).thenReturn(1);
+        sut.setBox(box);
+        assertThat(sut.determineIcon(), is(sameInstance(ImageIcons.ONE_NEIGHBOR.getResource())));
     }
 
     @Test
