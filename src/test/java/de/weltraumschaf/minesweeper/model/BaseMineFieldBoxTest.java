@@ -28,14 +28,14 @@ import static org.mockito.Mockito.*;
  */
 public class BaseMineFieldBoxTest {
 
-    //CHECKSTYLE:OFF
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
-    //CHECKSTYLE:ON
     /**
      * Count of neighbors.
      */
     private static final int NEIGHBOURCOUNT = 8;
+    //CHECKSTYLE:OFF
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
+    //CHECKSTYLE:ON
     /**
      * Dependency for SUT.
      */
