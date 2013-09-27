@@ -105,6 +105,7 @@ public final class MainWindow extends SwingFrame {
                 .addListener(newGameListener)
                 .setAccelerator('N')
                 .end();
+
         if (OperatingSystem.MACOSX != OS) {
             builder.item("Version")
                     .addListener(versionInfoListener)
