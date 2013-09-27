@@ -11,12 +11,16 @@
  */
 package de.weltraumschaf.minesweeper.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link MineField}.
@@ -34,6 +38,27 @@ public class MineFieldTest {
     @Before
     public void initializeFieldWithBoxes() {
         sut.initializeFieldWithBoxes(0, 0);
+    }
+
+    private FieldBox createClosedBox() {
+        final FieldBox box = mock(FieldBox.class);
+        when(box.isOpen()).thenReturn(Boolean.FALSE);
+        when(box.isFlag()).thenReturn(Boolean.FALSE);
+        return box;
+    }
+
+    private FieldBox createFlagBox() {
+        final FieldBox box = mock(FieldBox.class);
+        when(box.isOpen()).thenReturn(Boolean.FALSE);
+        when(box.isFlag()).thenReturn(Boolean.TRUE);
+        return box;
+    }
+
+    private FieldBox createOpenBox() {
+        final FieldBox box = mock(FieldBox.class);
+        when(box.isOpen()).thenReturn(Boolean.TRUE);
+        when(box.isFlag()).thenReturn(Boolean.FALSE);
+        return box;
     }
 
     @Test
@@ -164,4 +189,92 @@ public class MineFieldTest {
         assertThat(sut.getBox(3, 5).getX(), is(3));
     }
 
+    @Test
+    public void allBoxesOpenOrFlagged_emptyBoxes() {
+        final List<FieldBox> boxes = new ArrayList<FieldBox>();
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(true));
+    }
+
+    @Test
+    public void allBoxesOpenOrFlagged_allAreClosed() {
+        final List<FieldBox> boxes = Arrays.asList(
+                createClosedBox(),
+                createClosedBox(),
+                createClosedBox(),
+                createClosedBox(),
+                createClosedBox(),
+                createClosedBox());
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(false));
+    }
+
+    @Test
+    public void allBoxesOpenOrFlagged_someBoxesAreOpened() {
+        final List<FieldBox> boxes = Arrays.asList(
+                createClosedBox(),
+                createOpenBox(),
+                createClosedBox(),
+                createClosedBox(),
+                createOpenBox(),
+                createClosedBox());
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(false));
+    }
+
+    @Test
+    public void allBoxesOpenOrFlagged_allBoxesAreOpened() {
+        final List<FieldBox> boxes = Arrays.asList(
+                createOpenBox(),
+                createOpenBox(),
+                createOpenBox(),
+                createOpenBox(),
+                createOpenBox(),
+                createOpenBox());
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(true));
+    }
+
+    @Test
+    public void allBoxesOpenOrFlagged_someBoxesAreFlagged() {
+        final List<FieldBox> boxes = Arrays.asList(
+                createClosedBox(),
+                createFlagBox(),
+                createClosedBox(),
+                createClosedBox(),
+                createFlagBox(),
+                createClosedBox());
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(false));
+    }
+
+    @Test
+    public void allBoxesOpenOrFlagged_allBoxesAreFlagged() {
+        final List<FieldBox> boxes = Arrays.asList(
+                createFlagBox(),
+                createFlagBox(),
+                createFlagBox(),
+                createFlagBox(),
+                createFlagBox(),
+                createFlagBox());
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(true));
+    }
+
+    @Test
+    public void allBoxesOpenOrFlagged_someBoxesAreOpenedAndFlagged() {
+        final List<FieldBox> boxes = Arrays.asList(
+                createClosedBox(),
+                createOpenBox(),
+                createClosedBox(),
+                createClosedBox(),
+                createFlagBox(),
+                createClosedBox());
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(false));
+    }
+
+    public void allBoxesOpenOrFlagged_allBoxesAreOpenedAndFlagged() {
+        final List<FieldBox> boxes = Arrays.asList(
+                createOpenBox(),
+                createFlagBox(),
+                createOpenBox(),
+                createFlagBox(),
+                createOpenBox(),
+                createFlagBox());
+        assertThat(MineField.allBoxesOpenOrFlagged(boxes), is(true));
+    }
 }

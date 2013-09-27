@@ -288,7 +288,7 @@ public class MineField {
      * @return {@code true} if all fields are opened or flagged and no mine was opened, else {@code false}
      */
     public boolean hasWon() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return allBoxesOpenOrFlagged() && !isGameOver();
     }
 
     /**
@@ -298,5 +298,19 @@ public class MineField {
      */
     public Matrix<FieldBox> getBoxes() {
         return boxes;
+    }
+
+    private boolean allBoxesOpenOrFlagged() {
+        return allBoxesOpenOrFlagged(boxes.getAll());
+    }
+
+    static boolean allBoxesOpenOrFlagged(final List<FieldBox> boxes) {
+        for (final FieldBox box : boxes) {
+            if (!box.isOpen() && !box.isFlag()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
