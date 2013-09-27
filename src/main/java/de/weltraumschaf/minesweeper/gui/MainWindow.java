@@ -12,7 +12,9 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
+import de.weltraumschaf.commons.swing.MenuBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
+import de.weltraumschaf.commons.system.OperatingSystem;
 import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionListener;
@@ -35,6 +37,10 @@ public final class MainWindow extends SwingFrame {
      * Id for serialization.
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * Used for OS specific differences.
+     */
+    private static final OperatingSystem OS = OperatingSystem.determine(System.getProperty("os.name", ""));
     /**
      * Holds the game field.
      */
@@ -93,22 +99,24 @@ public final class MainWindow extends SwingFrame {
 
     @Override
     protected void initMenu() {
-        final JMenuBar menubar = MenuBarBuilder.builder()
+        final MenuBuilder builder = MenuBarBuilder.builder()
                 .menu("File")
                 .item("New")
                 .addListener(newGameListener)
-                .end()
-                .item("Version")
-                .addListener(versionInfoListener)
-                .end()
-                .separator()
-                .item("Quit")
-                .addListener(quitListener)
-                .end()
-                .end()
-                .create();
+                .setAccelerator('N')
+                .end();
+        if (OperatingSystem.MACOSX != OS) {
+            builder.item("Version")
+                    .addListener(versionInfoListener)
+                    .end()
+                    .separator()
+                    .item("Quit")
+                    .addListener(quitListener)
+                    .setAccelerator('Q')
+                    .end();
+        }
 
-        setJMenuBar(menubar);
+        setJMenuBar(builder.end().create());
     }
 
     @Override
@@ -149,5 +157,4 @@ public final class MainWindow extends SwingFrame {
         Validate.notNull(listener, "Listener must not be null!");
         quitListener = listener;
     }
-
 }
