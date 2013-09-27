@@ -25,9 +25,9 @@ import org.apache.commons.lang3.Validate;
 public class MineField {
 
     /**
-     * One quarter mines.
+     * 1/8 mines.
      */
-    private static final int MINE_FACTOR = 4;
+    private static final int MINE_FACTOR = 8;
     /**
      * Used to calculate percentage of mines and save boxes.
      */
