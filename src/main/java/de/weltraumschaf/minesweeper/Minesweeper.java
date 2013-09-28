@@ -38,10 +38,11 @@ class Minesweeper {
     }
 
     public void play() {
+        initMainWindow();
         final MineField mineField = new MineField();
         mineField.initializeFieldWithBoxes(0, 0);
         mainWindow.setMineField(mineField);
-        initMainWindow();
+        mainWindow.repaint();
     }
 
     private void initMainWindow() {
