@@ -26,8 +26,6 @@ class NewGameListener implements ActionListener {
 
     /**
      * Frame to which the listener was added.
-     *
-     * XXX: Consider if retrievable from {@link ActionEvent}.
      */
     private final MainWindow main;
 

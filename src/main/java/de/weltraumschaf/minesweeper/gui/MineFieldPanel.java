@@ -38,6 +38,10 @@ public class MineFieldPanel extends JPanel {
      */
     private final int height;
     /**
+     * Frame to which the listener was added.
+     */
+    private final MainWindow main;
+    /**
      * Whether the was initialized.
      */
     private boolean initialized;
@@ -48,11 +52,13 @@ public class MineFieldPanel extends JPanel {
      * @param width must not be less than 1
      * @param height must not be less than 1
      */
-    public MineFieldPanel(int width, int height) {
+    public MineFieldPanel(int width, int height, final MainWindow main) {
         super(new GridLayout(width, height));
         this.fieldButtons = new Matrix<FieldBoxButton>(FieldBoxButton.class, width, height);
         this.width = width;
         this.height = height;
+        Validate.notNull(main, "Main must not be null!");
+        this.main = main;
     }
 
     /**
@@ -68,7 +74,7 @@ public class MineFieldPanel extends JPanel {
         fieldButtons.initWithObjects();
 
         for (final FieldBoxButton btn : fieldButtons.getAll()) {
-            btn.addMouseListener(FieldBoxListeners.createClickListener());
+            btn.addMouseListener(FieldBoxListeners.createClickListener(main));
             add(btn);
         }
 

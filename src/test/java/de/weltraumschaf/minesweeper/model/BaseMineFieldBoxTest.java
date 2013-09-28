@@ -119,7 +119,7 @@ public class BaseMineFieldBoxTest {
         final Observer observer = mock(Observer.class);
         sut.addObserver(observer);
         assertThat(sut.isOpen(), is(false));
-        sut.setOpened();
+        sut.setOpened(true);
         assertThat(sut.isOpen(), is(true));
         verify(observer, times(1)).update(sut, null);
     }

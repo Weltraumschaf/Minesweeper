@@ -99,13 +99,13 @@ abstract class BaseMineFieldBox extends Observable implements FieldBox {
     }
 
     @Override
-    public void setOpened() {
-        if (this.opened) {
+    public void setOpened(final boolean open) {
+        if (this.opened == open) {
             return;
         }
 
         setChanged();
-        this.opened = true;
+        this.opened = open;
         notifyObservers();
     }
 

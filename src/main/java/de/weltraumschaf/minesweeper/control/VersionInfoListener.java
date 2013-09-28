@@ -28,8 +28,6 @@ class VersionInfoListener implements ActionListener {
 
     /**
      * Used to dispose.
-     *
-     * XXX: Consider if retrievable from {@link ActionEvent}.
      */
     private final MainWindow main;
     /**

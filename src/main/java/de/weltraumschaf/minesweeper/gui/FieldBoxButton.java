@@ -11,7 +11,6 @@
  */
 package de.weltraumschaf.minesweeper.gui;
 
-import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.util.Observable;
 import java.util.Observer;
@@ -32,7 +31,7 @@ public class FieldBoxButton extends JLabel implements Observer {
     /**
      * Log facility.
      */
-    private static final Logger LOG = GlobalLog.getLogger(FieldBoxButton.class);
+    private static final Logger LOG = Logger.getLogger(FieldBoxButton.class);
     /**
      * Zero mines in neighborhood.
      */
@@ -133,7 +132,7 @@ public class FieldBoxButton extends JLabel implements Observer {
         Validate.notNull(box, "Box must not be null!");
         this.box = box;
 
-        if (GlobalLog.debug()) {
+        if (LOG.isDebugEnabled()) {
             setToolTipText(box.toString());
         }
     }
@@ -163,13 +162,14 @@ public class FieldBoxButton extends JLabel implements Observer {
             }
         } else {
             setIcon(determineIcon());
+            box.setOpened(true);
 
             if (box.countMinesInNeighborhood() == 0) {
                 LOG.debug("Opened button has 0 mines in neighborhood.");
 
                 for (final FieldBox neighbor : box.getNeighbours()) {
                     LOG.debug(String.format("Open neighbor box %s.", neighbor));
-                    neighbor.setOpened();
+                    neighbor.setOpened(true);
                 }
             }
         }
@@ -199,6 +199,7 @@ public class FieldBoxButton extends JLabel implements Observer {
         Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
         state = State.CLOSED;
         box.setFlag(false);
+        box.setOpened(false);
         setIcon(ImageIcons.CLOSED.getResource());
         repaint();
     }
@@ -315,6 +316,11 @@ public class FieldBoxButton extends JLabel implements Observer {
         state = State.CLOSED;
         setIcon(ImageIcons.CLOSED.getResource());
         repaint();
+    }
+
+    @Override
+    public String toString() {
+        return "FieldBoxButton{box=" + box + ", state=" + state + '}';
     }
 
     /**

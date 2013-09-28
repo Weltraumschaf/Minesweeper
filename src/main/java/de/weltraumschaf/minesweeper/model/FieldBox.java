@@ -55,8 +55,10 @@ public interface FieldBox {
      * Set the box opened.
      *
      * Should only perform any action, if not opened yet.
+     *
+     * @param open {@code true} for open box, else {@code false}
      */
-    void setOpened();
+    void setOpened(final boolean open);
     /**
      * Get the field to which the box belongs.
      *

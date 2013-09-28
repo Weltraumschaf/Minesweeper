@@ -15,7 +15,6 @@ import de.weltraumschaf.commons.swing.MenuBarBuilder;
 import de.weltraumschaf.commons.swing.MenuBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
 import de.weltraumschaf.commons.system.OperatingSystem;
-import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionListener;
 import org.apache.commons.lang3.Validate;
@@ -31,7 +30,7 @@ public final class MainWindow extends SwingFrame {
     /**
      * Logging facility.
      */
-    private static final Logger LOG = GlobalLog.getLogger(MainWindow.class);
+    private static final Logger LOG = Logger.getLogger(MainWindow.class);
     /**
      * Id for serialization.
      */
@@ -73,7 +72,7 @@ public final class MainWindow extends SwingFrame {
         this.mineField = mineField;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setExitOnCloseWindow(true);
-        gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight());
+        gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight(), this);
         gamePanel.init();
     }
 
@@ -157,4 +156,5 @@ public final class MainWindow extends SwingFrame {
         Validate.notNull(listener, "Listener must not be null!");
         quitListener = listener;
     }
+
 }

@@ -11,13 +11,16 @@
  */
 package de.weltraumschaf.minesweeper.control;
 
-import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.gui.FieldBoxButton;
+import de.weltraumschaf.minesweeper.gui.MainWindow;
 import de.weltraumschaf.minesweeper.model.FieldBox;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
 /**
@@ -30,7 +33,22 @@ class FieldBoxButtonListener extends MouseAdapter {
     /**
      * Log facility.
      */
-    private static final Logger LOG = GlobalLog.getLogger(FieldBoxButtonListener.class);
+    private static final Logger LOG = Logger.getLogger(FieldBoxButtonListener.class);
+    /**
+     * Frame to which the listener was added.
+     */
+    private final MainWindow main;
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param main must not be {@code null}
+     */
+    public FieldBoxButtonListener(final MainWindow main) {
+        super();
+        Validate.notNull(main, "Main must not be null!");
+        this.main = main;
+    }
 
     @Override
     public void mouseClicked(final MouseEvent e) {
@@ -42,7 +60,7 @@ class FieldBoxButtonListener extends MouseAdapter {
         final FieldBoxButton originatingButton = (FieldBoxButton) e.getComponent();
 
         if (originatingButton.isOpen()) {
-            checkForWon(originatingButton.getBox().getField());
+            LOG.debug(String.format("Button %s already opened, exit.", originatingButton));
             return;
         }
 
@@ -58,7 +76,7 @@ class FieldBoxButtonListener extends MouseAdapter {
             LOG.debug(String.format("Left click on %s", originatingButton.getBox()));
 
             if (originatingButton.isFlag()) {
-                checkForWon(originatingButton.getBox().getField());
+                LOG.debug(String.format("Button %s flagged, exit.", originatingButton));
                 return;
             }
 
@@ -66,20 +84,56 @@ class FieldBoxButtonListener extends MouseAdapter {
         }
 
         originatingButton.getParent().repaint();
+        checkForWon(originatingButton.getBox().getField());
     }
 
     private void checkForWon(final MineField field) {
         LOG.debug("Check if game was won.");
 
+        if (LOG.isDebugEnabled()) {
+            debugFieldSate(field);
+        }
+
         if (field.hasWon()) {
             LOG.debug("Game won!");
-
-            for (final FieldBox box : field.getBoxes().getAll()) {
-                if (box.isFlag()) {
-                    box.setOpened();
-                }
-            }
+            JOptionPane.showMessageDialog(
+            main,
+            String.format("Game won!"),
+            main.getTitle(),
+            JOptionPane.PLAIN_MESSAGE);
+            openFlaggedBoxes(field);
         }
     }
 
+    private void debugFieldSate(final MineField field) {
+        final StringBuilder buffer = new StringBuilder("State of field:\n");
+
+        for (final List<FieldBox> row : field.getBoxes().getRows()) {
+            for (final FieldBox box : row) {
+                buffer.append('(').append(box.toString()).append(' ');
+
+                if (box.isOpen()) {
+                    buffer.append("OPEN ");
+                } else if (box.isFlag()) {
+                    buffer.append("FLAG ");
+                } else {
+                    buffer.append("CLOSE");
+                }
+
+                buffer.append(") ");
+            }
+
+            buffer.append('\n');
+        }
+
+        LOG.debug(buffer.toString());
+    }
+
+    private void openFlaggedBoxes(final MineField field) {
+        for (final FieldBox box : field.getBoxes().getAll()) {
+            if (box.isFlag()) {
+                box.setOpened(true);
+            }
+        }
+    }
 }

@@ -138,7 +138,7 @@ public class FieldBoxButtonTest {
         verify(sut, atLeastOnce()).repaint();
 
         for (final FieldBox neighbor : neighbors) {
-            verify(neighbor, times(1)).setOpened();
+            verify(neighbor, times(1)).setOpened(true);
         }
     }
 

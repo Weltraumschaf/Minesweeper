@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Represents a mine field which contains mine and save boxes randomly.
@@ -24,6 +25,10 @@ import org.apache.commons.lang3.Validate;
  */
 public class MineField {
 
+    /**
+     * Log facility.
+     */
+    private static final Logger LOG = Logger.getLogger(MineField.class);
     /**
      * 1/8 mines.
      */
@@ -269,7 +274,7 @@ public class MineField {
         gameOver = true;
 
         for (final FieldBox b : getBoxes().getAll()) {
-            b.setOpened();
+            b.setOpened(true);
         }
     }
 
@@ -288,7 +293,22 @@ public class MineField {
      * @return {@code true} if all fields are opened or flagged and no mine was opened, else {@code false}
      */
     public boolean hasWon() {
-        return allBoxesOpenOrFlagged() && !isGameOver();
+        LOG.debug("Determine if won...");
+
+        if (isGameOver()) {
+            LOG.debug("Game is over, not won!");
+            return false;
+        } else {
+            LOG.debug("Game is not over.");
+        }
+
+        if (allBoxesOpenOrFlagged()) {
+            LOG.debug("All boxes opened or flagged.");
+            return true;
+        } else {
+            LOG.debug("Not all boxes opened or flagged!");
+            return false;
+        }
     }
 
     /**
@@ -304,8 +324,8 @@ public class MineField {
         return allBoxesOpenOrFlagged(boxes.getAll());
     }
 
-    static boolean allBoxesOpenOrFlagged(final List<FieldBox> boxes) {
-        for (final FieldBox box : boxes) {
+    static boolean allBoxesOpenOrFlagged(final List<FieldBox> list) {
+        for (final FieldBox box : list) {
             if (!box.isOpen() && !box.isFlag()) {
                 return false;
             }
