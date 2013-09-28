@@ -295,9 +295,9 @@ public class FieldBoxButton extends JLabel implements Observer {
     @Override
     public void update(final Observable observable, final Object arg) {
         Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
-        LOG.debug(String.format("Update from observable %s", observable));
+        LOG.debug(String.format("Update button (state = %s) from observable (Box model: %s)", state, observable));
 
-        if (box.isOpen()) {
+        if (box.isOpen() && !box.isFlag()) {
             LOG.debug(String.format("Open box %s.", box));
             open();
         }
