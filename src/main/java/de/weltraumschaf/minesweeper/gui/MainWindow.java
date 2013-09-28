@@ -44,7 +44,7 @@ public final class MainWindow extends SwingFrame {
     /**
      * Holds the game field.
      */
-    private final MineFieldPanel gamePanel;
+    private MineFieldPanel gamePanel;
     /**
      * Model for the game play.
      */
@@ -68,13 +68,11 @@ public final class MainWindow extends SwingFrame {
      * @param title The window title.
      * @param mineField must not be null
      */
-    public MainWindow(final String title, final MineField mineField) {
+    public MainWindow(final String title) {
         super(title);
-        Validate.notNull(mineField, "Mine field must not be null!");
-        this.mineField = mineField;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setExitOnCloseWindow(true);
-        gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight(), this);
+        gamePanel = new MineFieldPanel(MineField.DEFAULT_WIDTH, MineField.DEFAULT_HEIGHT, this);
         gamePanel.init();
     }
 
@@ -90,11 +88,19 @@ public final class MainWindow extends SwingFrame {
     /**
      * Set the game mine field model.
      *
-     * @param mineField must not be {@code null}
+     * @param mf must not be {@code null}
      */
-    public void setMineField(final MineField mineField) {
-        Validate.notNull(mineField, "Mine field must not be null!");
-        this.mineField = mineField;
+    public void setMineField(final MineField mf) {
+        Validate.notNull(mf, "Mine field must not be null!");
+
+        if (mineField != null) {
+            if (mf.getWidth() != mineField.getWidth() || mf.getHeight() != mineField.getHeight()) {
+                gamePanel = new MineFieldPanel(mf.getWidth(), mf.getHeight(), this);
+                gamePanel.init();
+            }
+        }
+
+        mineField = mf;
     }
 
     @Override
@@ -161,5 +167,4 @@ public final class MainWindow extends SwingFrame {
         Validate.notNull(listener, "Listener must not be null!");
         quitListener = listener;
     }
-
 }

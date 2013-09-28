@@ -12,7 +12,10 @@
 
 package de.weltraumschaf.minesweeper.gui;
 
+import de.weltraumschaf.minesweeper.model.Score;
 import java.awt.GridLayout;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JPanel;
 
 /**
@@ -27,7 +30,7 @@ import javax.swing.JPanel;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class StatusBar extends JPanel {
+public class StatusBar extends JPanel implements Observer {
     private static final int ROWS = 1;
     private static final int COLS = 3;
 
@@ -42,6 +45,11 @@ public class StatusBar extends JPanel {
         add(timeElapsed);
         minesLeft.setValue("0");
         add(minesLeft);
+    }
+
+    @Override
+    public void update(final Observable observable, final Object arg) {
+     
     }
 
 }

@@ -57,34 +57,16 @@ public class App extends InvokableAdapter implements Runnable {
     }
 
     @Override
-    public void run() {
-        final MineField mineField;
-        final Game game = new Game();
-
-        if (getArgs().length == 2) {
-            final int width = Integer.parseInt(getArgs()[0]);
-            final int height = Integer.parseInt(getArgs()[1]);
-            Validate.isTrue(width > 0, "Width must not be less than 1!");
-            Validate.isTrue(height > 0, "Height must not be less than 1!");
-            mineField = new MineField(width, height);
-            game.resize(width, height);
-        } else {
-            mineField = new MineField();
-        }
-
-        mineField.initializeFieldWithBoxes(0, 0);
-        final MainWindow mainWindow = new MainWindow(NAME, mineField);
-        mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
-        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow));
-        mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
-        mainWindow.init();
-        mainWindow.setVisible(true);
-    }
-
-    @Override
     public void execute() throws Exception {
         setExiter(new NullExiter());
         version.load();
         SwingUtilities.invokeLater(this);
     }
+
+    @Override
+    public void run() {
+        final Minesweeper minesweeper = new Minesweeper(version);
+        minesweeper.play();
+    }
+
 }

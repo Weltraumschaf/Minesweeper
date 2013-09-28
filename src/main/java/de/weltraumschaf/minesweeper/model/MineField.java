@@ -40,11 +40,11 @@ public class MineField {
     /**
      * Default Width.
      */
-    private static final int DEFAULT_WIDTH = 8;
+    public static final int DEFAULT_WIDTH = 8;
     /**
      * Default height.
      */
-    private static final int DEFAULT_HEIGHT = 8;
+    public static final int DEFAULT_HEIGHT = 8;
     /**
      * How many boxes in the height.
      */
@@ -121,7 +121,7 @@ public class MineField {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width))
               .append(boxes.toString());
-        
+
         final double count = minesCount + savesCount;
         final double minesPercent = (HUNDRED_PERCENT / count) * minesCount;
         final double savesPercent = (HUNDRED_PERCENT / count) * savesCount;

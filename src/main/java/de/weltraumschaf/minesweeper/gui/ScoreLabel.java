@@ -12,13 +12,16 @@
 
 package de.weltraumschaf.minesweeper.gui;
 
+import de.weltraumschaf.minesweeper.model.Score;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JLabel;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class ScoreLabel extends JLabel {
+class ScoreLabel extends JLabel implements Observer {
 
     private int won;
     private int lost;
@@ -40,5 +43,16 @@ class ScoreLabel extends JLabel {
 
     private String renderText() {
         return String.format("Played: %d (won: %d, lost %d)", won + lost, won, lost);
+    }
+
+    @Override
+    public void update(final Observable observable, final Object arg) {
+        if (!(observable instanceof Score)) {
+            return;
+        }
+
+        final Score score = (Score) observable;
+        setWon(score.getGamesWon());
+        setLost(score.getGamesLost());
     }
 }
