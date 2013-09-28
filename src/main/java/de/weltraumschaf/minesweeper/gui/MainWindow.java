@@ -18,9 +18,8 @@ import de.weltraumschaf.commons.system.OperatingSystem;
 import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
-import javax.swing.JMenuBar;
 import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * The applications main window.
@@ -122,7 +121,7 @@ public final class MainWindow extends SwingFrame {
 
     @Override
     public void initPanel() {
-        LOG.info(String.format("Paint field:%n%s", mineField.toString()));
+        LOG.debug(String.format("Paint field:%n%s", mineField.toString()));
         // First init so that buttons are available.
         gamePanel.setModels(mineField.getBoxes());
         panel.add(gamePanel);

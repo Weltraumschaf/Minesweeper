@@ -15,10 +15,10 @@ import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Represents a mine filed box button.
@@ -165,10 +165,10 @@ public class FieldBoxButton extends JLabel implements Observer {
             setIcon(determineIcon());
 
             if (box.countMinesInNeighborhood() == 0) {
-                LOG.info("Opened button has 0 mines in neighborhood.");
+                LOG.debug("Opened button has 0 mines in neighborhood.");
 
                 for (final FieldBox neighbor : box.getNeighbours()) {
-                    LOG.info(String.format("Open neighbor box %s.", neighbor));
+                    LOG.debug(String.format("Open neighbor box %s.", neighbor));
                     neighbor.setOpened();
                 }
             }
@@ -294,10 +294,10 @@ public class FieldBoxButton extends JLabel implements Observer {
     @Override
     public void update(final Observable observable, final Object arg) {
         Validate.notNull(box, BOX_MODEL_NULL_EMESSAGE);
-        LOG.info(String.format("Update from observable %s", observable));
+        LOG.debug(String.format("Update from observable %s", observable));
 
         if (box.isOpen()) {
-            LOG.info(String.format("Open box %s.", box));
+            LOG.debug(String.format("Open box %s.", box));
             open();
         }
     }

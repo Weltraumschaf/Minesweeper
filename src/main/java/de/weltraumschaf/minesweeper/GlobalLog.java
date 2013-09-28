@@ -12,9 +12,8 @@
 
 package de.weltraumschaf.minesweeper;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 /**
  * Holds global log level.
@@ -22,11 +21,6 @@ import org.apache.commons.lang3.Validate;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class GlobalLog {
-
-    /**
-     * Current level.
-     */
-    private static final Level LEVEL = Level.OFF;
 
     /**
      * Hidden for pure static class.
@@ -41,28 +35,7 @@ public final class GlobalLog {
      * @return {@code true} if current level is ALL, else {@code false}
      */
     public static boolean debug() {
-        return Level.ALL.equals(getLevel());
-    }
-
-    /**
-     * Get the level.
-     *
-     * @return never {@code null}
-     */
-    public static Level getLevel() {
-        return LEVEL;
-    }
-
-    /**
-     * Set log level on a logger.
-     *
-     * @param logger must not be {@code null}
-     * @return the passed in logger
-     */
-    public static Logger setLevel(final Logger logger) {
-        Validate.notNull(logger, "Logger must not be null!");
-        logger.setLevel(getLevel());
-        return logger;
+        return Level.DEBUG.equals(getLogger(GlobalLog.class).getLevel());
     }
 
     /**
@@ -73,7 +46,7 @@ public final class GlobalLog {
      * @return never {@code null}
      */
     public static <T> Logger getLogger(final Class<T> type) {
-        return setLevel(Logger.getLogger(type.getName()));
+        return Logger.getLogger(type.getName());
     }
 
 }
