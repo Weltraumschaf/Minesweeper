@@ -15,10 +15,12 @@ package de.weltraumschaf.minesweeper;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.minesweeper.control.MenuItemListeners;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
-import de.weltraumschaf.minesweeper.model.MineField;
+import de.weltraumschaf.minesweeper.model.Game;
 import de.weltraumschaf.minesweeper.model.Score;
+import org.apache.commons.lang3.Validate;
 
 /**
+ * Represents the main application code: Play a minesweeper session.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
@@ -28,23 +30,44 @@ class Minesweeper {
      * Version information.
      */
     private final Version version;
-
+    /**
+     * Score of the current played session.
+     */
     private final Score score = new Score();
+    /**
+     * The games main windows.
+     */
     private final MainWindow mainWindow = new MainWindow("Minesweeper");
+    /**
+     * Current played game.
+     */
+    private Game currentGame;
 
-    public Minesweeper(Version version) {
+    /**
+     * Dedicated constructor.
+     *
+     * @param version must not be {@code null}
+     */
+    public Minesweeper(final Version version) {
         super();
+        Validate.notNull(version, "Version must not be null!");
         this.version = version;
     }
 
+    /**
+     * Play minesweeper.
+     */
     public void play() {
         initMainWindow();
-        final MineField mineField = new MineField();
-        mineField.initializeFieldWithBoxes(0, 0);
-        mainWindow.setMineField(mineField);
+        currentGame = newGame();
+        currentGame.start(0, 0);
+        mainWindow.setMineField(currentGame.getMineField());
         mainWindow.repaint();
     }
 
+    /**
+     * Initializes the main windows.
+     */
     private void initMainWindow() {
         mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
         mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow));
@@ -52,4 +75,14 @@ class Minesweeper {
         mainWindow.init();
         mainWindow.setVisible(true);
     }
+
+    /**
+     * Create a new game.
+     *
+     * @return always new instance
+     */
+    private Game newGame() {
+        return new Game();
+    }
+
 }

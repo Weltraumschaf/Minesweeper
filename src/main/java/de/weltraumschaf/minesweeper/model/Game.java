@@ -117,4 +117,13 @@ public class Game {
         watch.reset();
     }
 
+    /**
+     * Get field of game.
+     *
+     * @return never {@code null}
+     */
+    public MineField getMineField() {
+        return field;
+    }
+
 }

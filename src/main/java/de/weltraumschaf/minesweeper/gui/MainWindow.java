@@ -17,7 +17,6 @@ import de.weltraumschaf.commons.swing.SwingFrame;
 import de.weltraumschaf.commons.system.OperatingSystem;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionListener;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
@@ -92,6 +91,7 @@ public final class MainWindow extends SwingFrame {
      */
     public void setMineField(final MineField mf) {
         Validate.notNull(mf, "Mine field must not be null!");
+        LOG.debug(String.format("Set field:%n%s", mf.toString()));
 
         if (mineField != null) {
             if (mf.getWidth() != mineField.getWidth() || mf.getHeight() != mineField.getHeight()) {
@@ -101,6 +101,8 @@ public final class MainWindow extends SwingFrame {
         }
 
         mineField = mf;
+        // First init so that buttons are available.
+        gamePanel.setModels(mineField.getBoxes());
     }
 
     @Override
@@ -128,11 +130,7 @@ public final class MainWindow extends SwingFrame {
 
     @Override
     public void initPanel() {
-        LOG.debug(String.format("Paint field:%n%s", mineField.toString()));
-        // First init so that buttons are available.
-        gamePanel.setModels(mineField.getBoxes());
         panel.add(gamePanel);
-
         final StatusBar statusbar = new StatusBar();
         getContentPane().add(statusbar, BorderLayout.SOUTH);
         pack();
