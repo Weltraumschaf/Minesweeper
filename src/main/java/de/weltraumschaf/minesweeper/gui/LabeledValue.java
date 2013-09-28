@@ -13,35 +13,29 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import java.awt.GridLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * Status bar of game.
- *
- * Shows:
- * <ul>
- * <li>time elapsed</li>
- * <li>games played, won, lost</li>
- * <li>Mines not found yet</li>
- * </ul>
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class StatusBar extends JPanel {
+class LabeledValue extends JPanel {
     private static final int ROWS = 1;
-    private static final int COLS = 3;
+    private static final int COLS = 2;
 
-    private ScoreLabel score = new ScoreLabel();
-    private LabeledValue timeElapsed = new LabeledValue("Time:");
-    private LabeledValue minesLeft = new LabeledValue("Mines:");
+    private final JLabel label = new JLabel();
+    private final JLabel value = new JLabel();
 
-    public StatusBar() {
-        super(new GridLayout(ROWS, COLS, 1, 0));
-        add(score);
-        timeElapsed.setValue("0");
-        add(timeElapsed);
-        minesLeft.setValue("0");
-        add(minesLeft);
+    public LabeledValue(final String labelText) {
+        super(new GridLayout(ROWS, COLS));
+        label.setText(labelText);
+        add(label);
+        add(value);
+    }
+
+    public void setValue(final String valueText) {
+        value.setText(valueText);
     }
 
 }

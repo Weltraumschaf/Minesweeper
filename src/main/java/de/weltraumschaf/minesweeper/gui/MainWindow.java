@@ -16,6 +16,8 @@ import de.weltraumschaf.commons.swing.MenuBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
 import de.weltraumschaf.commons.system.OperatingSystem;
 import de.weltraumschaf.minesweeper.model.MineField;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
@@ -124,6 +126,9 @@ public final class MainWindow extends SwingFrame {
         // First init so that buttons are available.
         gamePanel.setModels(mineField.getBoxes());
         panel.add(gamePanel);
+
+        final StatusBar statusbar = new StatusBar();
+        getContentPane().add(statusbar, BorderLayout.SOUTH);
         pack();
     }
 
