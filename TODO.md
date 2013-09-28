@@ -5,4 +5,5 @@
 - Show lost/won games during session.
 - Add timer.
 - Add mines not flagged.
-- Check thath not too less mines.
+- Check that not too less mines.
+- First click must not be mine.
