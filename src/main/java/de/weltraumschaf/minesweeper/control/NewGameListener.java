@@ -11,7 +11,7 @@
  */
 package de.weltraumschaf.minesweeper.control;
 
-import de.weltraumschaf.minesweeper.Minesweeper;
+import de.weltraumschaf.minesweeper.model.Minesweeper;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionEvent;

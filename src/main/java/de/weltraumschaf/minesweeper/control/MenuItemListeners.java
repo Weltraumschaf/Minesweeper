@@ -12,7 +12,7 @@
 package de.weltraumschaf.minesweeper.control;
 
 import de.weltraumschaf.commons.Version;
-import de.weltraumschaf.minesweeper.Minesweeper;
+import de.weltraumschaf.minesweeper.model.Minesweeper;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
 import java.awt.event.ActionListener;
 
