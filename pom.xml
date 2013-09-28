@@ -3,7 +3,7 @@
 
     <groupId>de.weltraumschaf</groupId>
     <artifactId>minesweeper</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Minesweeper</name>
@@ -317,6 +317,48 @@
                         <phase>package</phase>
                         <goals>
                             <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <delete file="dist/windows/Minesweeper.zip"/>
+                                <delete file="dist/unix/Minesweeper.tar.bz2"/>
+                                <delete file="dist/unix/Minesweeper.tar.gz"/>
+
+                                <mkdir dir="dist/windows/Minesweeper"/>
+                                <copy todir="dist/windows/Minesweeper">
+                                    <fileset dir="bin/">
+                                        <include name="minesweeper.jar"/>
+                                        <include name="minesweeper.bat"/>
+                                    </fileset>
+                                </copy>
+
+                                <mkdir dir="dist/unix/Minesweeper"/>
+                                <copy todir="dist/unix/Minesweeper">
+                                    <fileset dir="bin/">
+                                        <include name="minesweeper.jar"/>
+                                        <include name="minesweeper"/>
+                                    </fileset>
+                                </copy>
+
+                                <zip destfile="dist/windows/Minesweeper.zip" basedir="dist/windows/Minesweeper"/>
+                                <tar destfile="dist/unix/Minesweeper.tar.gz" basedir="dist/unix/Minesweeper" compression="gzip"/>
+                                <tar destfile="dist/unix/Minesweeper.tar.bz2" basedir="dist/unix/Minesweeper" compression="bzip2"/>
+
+                                <delete dir="dist/windows/Minesweeper"/>
+                                <delete dir="dist/unix/Minesweeper"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>
