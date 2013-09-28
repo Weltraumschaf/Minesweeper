@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.minesweeper.model;
 
 import java.util.List;
@@ -132,7 +131,17 @@ abstract class BaseMineFieldBox extends Observable implements FieldBox {
 
     @Override
     public String toString() {
-        return String.format("[%s,%s]", x, y);
+        final String state;
+
+        if (isOpen()) {
+            state = "OPEN ";
+        } else if (isFlag()) {
+            state = "FLAG ";
+        } else {
+            state = "CLOSE";
+        }
+
+        return String.format("[%s,%s] %s", x, y, state);
     }
 
     @Override
@@ -144,5 +153,4 @@ abstract class BaseMineFieldBox extends Observable implements FieldBox {
     public int getY() {
         return y;
     }
-
 }

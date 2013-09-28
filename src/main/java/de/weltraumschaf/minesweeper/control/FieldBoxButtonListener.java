@@ -106,26 +106,7 @@ class FieldBoxButtonListener extends MouseAdapter {
     }
 
     private void debugFieldSate(final MineField field) {
-        final StringBuilder buffer = new StringBuilder("State of field:\n");
-
-        for (final List<FieldBox> row : field.getBoxes().getRows()) {
-            for (final FieldBox box : row) {
-                buffer.append('(').append(box.toString()).append(' ');
-
-                if (box.isOpen()) {
-                    buffer.append("OPEN ");
-                } else if (box.isFlag()) {
-                    buffer.append("FLAG ");
-                } else {
-                    buffer.append("CLOSE");
-                }
-
-                buffer.append(") ");
-            }
-
-            buffer.append('\n');
-        }
-
+        final StringBuilder buffer = new StringBuilder("State of field:\n").append(field.getBoxes().toString());
         LOG.debug(buffer.toString());
     }
 

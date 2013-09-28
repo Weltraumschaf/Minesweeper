@@ -33,7 +33,7 @@ public class MineBoxTest {
 
     @Test
     public void testToString() {
-        assertThat(sut.toString(), is(equalTo("\uD83D\uDCA3 [1,2]")));
+        assertThat(sut.toString(), is(equalTo("\uD83D\uDCA3 [1,2] CLOSE")));
     }
 
 }

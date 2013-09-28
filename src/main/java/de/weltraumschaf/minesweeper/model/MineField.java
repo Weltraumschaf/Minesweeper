@@ -119,16 +119,9 @@ public class MineField {
     @Override
     public String toString() {
         final StringBuilder buffer = new StringBuilder();
-        buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width));
-
-        for (final List<FieldBox> row : boxes.getRows()) {
-            for (final FieldBox box : row) {
-                buffer.append(box).append(' ');
-            }
-
-            buffer.append(String.format("%n"));
-        }
-
+        buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width))
+              .append(boxes.toString());
+        
         final double count = minesCount + savesCount;
         final double minesPercent = (HUNDRED_PERCENT / count) * minesCount;
         final double savesPercent = (HUNDRED_PERCENT / count) * savesCount;

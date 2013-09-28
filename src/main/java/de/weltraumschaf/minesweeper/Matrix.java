@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.minesweeper;
 
+import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,4 +204,21 @@ public final class Matrix<T> {
 
         return rows;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width));
+
+        for (final List<T> row : getRows()) {
+            for (final T cell : row) {
+                buffer.append('(').append(cell.toString()).append(')').append(' ');
+            }
+
+            buffer.append(String.format("%n"));
+        }
+
+        return buffer.toString();
+    }
+
 }
