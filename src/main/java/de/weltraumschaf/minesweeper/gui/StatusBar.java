@@ -12,7 +12,6 @@
 
 package de.weltraumschaf.minesweeper.gui;
 
-import de.weltraumschaf.minesweeper.model.Score;
 import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
@@ -49,7 +48,7 @@ public class StatusBar extends JPanel implements Observer {
 
     @Override
     public void update(final Observable observable, final Object arg) {
-     
+
     }
 
 }

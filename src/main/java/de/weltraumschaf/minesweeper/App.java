@@ -11,16 +11,11 @@
  */
 package de.weltraumschaf.minesweeper;
 
-import de.weltraumschaf.minesweeper.model.Minesweeper;
-import de.weltraumschaf.minesweeper.model.MineField;
-import de.weltraumschaf.minesweeper.gui.MainWindow;
+import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;
-import de.weltraumschaf.minesweeper.control.MenuItemListeners;
-import de.weltraumschaf.minesweeper.model.Game;
 import javax.swing.SwingUtilities;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Main application class.
@@ -66,7 +61,7 @@ public class App extends InvokableAdapter implements Runnable {
 
     @Override
     public void run() {
-        final Minesweeper minesweeper = new Minesweeper(version);
+        final MinesweeperSession minesweeper = new MinesweeperSession(version);
         minesweeper.play();
     }
 

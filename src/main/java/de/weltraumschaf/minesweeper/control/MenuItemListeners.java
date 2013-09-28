@@ -12,7 +12,7 @@
 package de.weltraumschaf.minesweeper.control;
 
 import de.weltraumschaf.commons.Version;
-import de.weltraumschaf.minesweeper.model.Minesweeper;
+import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
 import java.awt.event.ActionListener;
 
@@ -37,7 +37,7 @@ public final class MenuItemListeners {
      * @param session must not be {@code null}
      * @return always new instance, never {@code null}
      */
-    public static ActionListener createNewGameListener(final MainWindow main, final Minesweeper session) {
+    public static ActionListener createNewGameListener(final MainWindow main, final MinesweeperSession session) {
         return new NewGameListener(main, session);
     }
 

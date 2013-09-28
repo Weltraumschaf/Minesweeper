@@ -93,11 +93,9 @@ public final class MainWindow extends SwingFrame {
         Validate.notNull(mf, "Mine field must not be null!");
         LOG.debug(String.format("Set field:%n%s", mf.toString()));
 
-        if (mineField != null) {
-            if (mf.getWidth() != mineField.getWidth() || mf.getHeight() != mineField.getHeight()) {
-                gamePanel = new MineFieldPanel(mf.getWidth(), mf.getHeight(), this);
-                gamePanel.init();
-            }
+        if (shouldReinitializeGamePanel(mf)) {
+            gamePanel = new MineFieldPanel(mf.getWidth(), mf.getHeight(), this);
+            gamePanel.init();
         }
 
         mineField = mf;
@@ -165,4 +163,18 @@ public final class MainWindow extends SwingFrame {
         Validate.notNull(listener, "Listener must not be null!");
         quitListener = listener;
     }
+
+    /**
+     * Determines if the game panel should be initialized.
+     *
+     * This is the case if the passed in filed has different dimensions than {@link #mineField}.
+     *
+     * @param mf must not be {@code null}
+     * @return {@code true} if game panel should reinitialize, else {@code false}
+     */
+    private boolean shouldReinitializeGamePanel(final MineField mf) {
+        Validate.notNull(mf, "Passed in mine filed must not be null!");
+        return mineField != null && (mf.getWidth() != mineField.getWidth() || mf.getHeight() != mineField.getHeight());
+    }
+
 }

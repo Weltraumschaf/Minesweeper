@@ -15,8 +15,6 @@ package de.weltraumschaf.minesweeper.model;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.minesweeper.control.MenuItemListeners;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
-import de.weltraumschaf.minesweeper.model.Game;
-import de.weltraumschaf.minesweeper.model.Score;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -24,7 +22,7 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Minesweeper {
+public class MinesweeperSession {
 
     /**
      * Version information.
@@ -48,7 +46,7 @@ public class Minesweeper {
      *
      * @param version must not be {@code null}
      */
-    public Minesweeper(final Version version) {
+    public MinesweeperSession(final Version version) {
         super();
         Validate.notNull(version, "Version must not be null!");
         this.version = version;

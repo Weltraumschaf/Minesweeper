@@ -17,7 +17,6 @@ import de.weltraumschaf.minesweeper.model.FieldBox;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.Validate;
