@@ -24,7 +24,7 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class Minesweeper {
+public class Minesweeper {
 
     /**
      * Version information.
@@ -59,10 +59,7 @@ class Minesweeper {
      */
     public void play() {
         initMainWindow();
-        currentGame = newGame();
-        currentGame.start(0, 0);
-        mainWindow.setMineField(currentGame.getMineField());
-        mainWindow.repaint();
+        newGame();
     }
 
     /**
@@ -70,7 +67,7 @@ class Minesweeper {
      */
     private void initMainWindow() {
         mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
-        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow));
+        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow, this));
         mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
         mainWindow.init();
         mainWindow.setVisible(true);
@@ -78,11 +75,12 @@ class Minesweeper {
 
     /**
      * Create a new game.
-     *
-     * @return always new instance
      */
-    private Game newGame() {
-        return new Game();
+    public void  newGame() {
+        currentGame = new Game();
+        currentGame.start(0, 0);
+        mainWindow.setMineField(currentGame.getMineField());
+        mainWindow.repaint();
     }
 
 }
