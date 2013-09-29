@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MainWindow.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.gui</a> &gt; <span class="el_source">MainWindow.java</span></div><h1>MainWindow.java</h1><pre class="source lang-java linenums">/*
+ * LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf(at)googlemail(dot)com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf(at)googlemail(dot)com&gt;
+ */
+package de.weltraumschaf.minesweeper.gui;
+
+import de.weltraumschaf.commons.swing.MenuBarBuilder;
+import de.weltraumschaf.commons.swing.SwingFrame;
+import de.weltraumschaf.minesweeper.GlobalLog;
+import de.weltraumschaf.minesweeper.model.MineField;
+import java.awt.event.ActionListener;
+import java.util.logging.Logger;
+import javax.swing.JMenuBar;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * The applications main window.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public final class MainWindow extends SwingFrame {
+
+    /**
+     * Logging facility.
+     */
+<span class="nc" id="L33">    private static final Logger LOG = GlobalLog.getLogger(MainWindow.class);</span>
+    /**
+     * Id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
+    /**
+     * Holds the game field.
+     */
+    private final MineFieldPanel gamePanel;
+    /**
+     * Model for the game play.
+     */
+    private MineField mineField;
+    /**
+     * Listens for version menu item.
+     */
+    private ActionListener versionInfoListener;
+    /**
+     * Listens for new game menu item.
+     */
+    private ActionListener newGameListener;
+    /**
+     * Listens for quit menu item.
+     */
+    private ActionListener quitListener;
+
+    /**
+     * Initializes the main window with an title.
+     *
+     * @param title The window title.
+     * @param mineField must not be null
+     */
+    public MainWindow(final String title, final MineField mineField) {
+<span class="nc" id="L66">        super(title);</span>
+<span class="nc" id="L67">        Validate.notNull(mineField, &quot;Mine field must not be null!&quot;);</span>
+<span class="nc" id="L68">        this.mineField = mineField;</span>
+<span class="nc" id="L69">        setDefaultCloseOperation(DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L70">        setExitOnCloseWindow(true);</span>
+<span class="nc" id="L71">        gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight());</span>
+<span class="nc" id="L72">        gamePanel.init();</span>
+<span class="nc" id="L73">    }</span>
+
+    /**
+     * Get the game mine field model.
+     *
+     * @return never {@code null}
+     */
+    public MineField getMineField() {
+<span class="nc" id="L81">        return mineField;</span>
+    }
+
+    /**
+     * Set the game mine field model.
+     *
+     * @param mineField must not be {@code null}
+     */
+    public void setMineField(final MineField mineField) {
+<span class="nc" id="L90">        Validate.notNull(mineField, &quot;Mine field must not be null!&quot;);</span>
+<span class="nc" id="L91">        this.mineField = mineField;</span>
+<span class="nc" id="L92">    }</span>
+
+    @Override
+    protected void initMenu() {
+<span class="nc" id="L96">        final JMenuBar menubar = MenuBarBuilder.builder()</span>
+                .menu(&quot;File&quot;)
+                .item(&quot;New&quot;)
+                .addListener(newGameListener)
+                .end()
+                .item(&quot;Version&quot;)
+                .addListener(versionInfoListener)
+                .end()
+                .separator()
+                .item(&quot;Quit&quot;)
+                .addListener(quitListener)
+                .end()
+                .end()
+                .create();
+
+<span class="nc" id="L111">        setJMenuBar(menubar);</span>
+<span class="nc" id="L112">    }</span>
+
+    @Override
+    public void initPanel() {
+<span class="nc" id="L116">        LOG.info(String.format(&quot;Pain field:%n%s&quot;, mineField.toString()));</span>
+        // First init so that buttons are available.
+<span class="nc" id="L118">        gamePanel.setModels(mineField.getBoxes());</span>
+<span class="nc" id="L119">        panel.add(gamePanel);</span>
+<span class="nc" id="L120">        pack();</span>
+<span class="nc" id="L121">    }</span>
+
+    /**
+     * Set listener for version info menu item.
+     *
+     * @param listener must not be {@code null}
+     */
+    public void setVersionInfoListener(final ActionListener listener) {
+<span class="nc" id="L129">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
+<span class="nc" id="L130">        versionInfoListener = listener;</span>
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * Set listener for new game menu item.
+     *
+     * @param listener must not be {@code null}
+     */
+    public void setNewGameListener(final ActionListener listener) {
+<span class="nc" id="L139">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
+<span class="nc" id="L140">        newGameListener = listener;</span>
+<span class="nc" id="L141">    }</span>
+
+    /**
+     * Set listener for quit menu item.
+     *
+     * @param listener must not be {@code null}
+     */
+    public void setQuitListener(final ActionListener listener) {
+<span class="nc" id="L149">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
+<span class="nc" id="L150">        quitListener = listener;</span>
+<span class="nc" id="L151">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

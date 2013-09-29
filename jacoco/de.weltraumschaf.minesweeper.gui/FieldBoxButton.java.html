@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FieldBoxButton.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.gui</a> &gt; <span class="el_source">FieldBoxButton.java</span></div><h1>FieldBoxButton.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.minesweeper.gui;
+
+import de.weltraumschaf.minesweeper.GlobalLog;
+import de.weltraumschaf.minesweeper.model.FieldBox;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Represents a mine filed box button.
+ *
+ * A button has three states: Closed, open, flagged.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public class FieldBoxButton extends JButton implements Observer {
+
+    /**
+     * Log facility.
+     */
+<span class="nc" id="L35">    private static final Logger LOG = GlobalLog.getLogger(FieldBoxButton.class);</span>
+    /**
+     * Zero mines in neighborhood.
+     */
+    private static final int ZERO_NEIGHBORS = 0;
+    /**
+     * One mines in neighborhood.
+     */
+    private static final int ONE_NEIGHBORS = 1;
+    /**
+     * Two mines in neighborhood.
+     */
+    private static final int TWO_NEIGHBORS = 2;
+    /**
+     * Three mines in neighborhood.
+     */
+    private static final int THREE_NEIGHBORS = 3;
+    /**
+     * Four mines in neighborhood.
+     */
+    private static final int FOUR_NEIGHBORS = 4;
+    /**
+     * Five mines in neighborhood.
+     */
+    private static final int FIVE_NEIGHBORS = 5;
+    /**
+     * Six mines in neighborhood.
+     */
+    private static final int SIX_NEIGHBORS = 6;
+    /**
+     * Seven mines in neighborhood.
+     */
+    private static final int SEVEN_NEIGHBORS = 7;
+    /**
+     * Eight mines in neighborhood.
+     */
+    private static final int EIGHT_NEIGHBORS = 8;
+    /**
+     * The data model behind the button.
+     */
+    private FieldBox box;
+    /**
+     * State of the button.
+     *
+     * The button holds an own state additional to {@link #box} to prevent endless loops by observer notification.
+     */
+<span class="nc" id="L81">    private State state = State.CLOSED;</span>
+
+    /**
+     * Dedicated constructor.
+     *
+     * Initializes the button with closed icon.
+     */
+    public FieldBoxButton() {
+<span class="nc" id="L89">        super(ImageIcons.CLOSED.getResource());</span>
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Determine if button is in state.
+     *
+     * @param s state to check.
+     * @return {@code true} if button has passed in state, else {@code false}
+     */
+    boolean isInState(final State s) {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        return state == s;</span>
+    }
+
+    /**
+     * Get the box model.
+     *
+     * @return never {@code null}
+     */
+    public FieldBox getBox() {
+<span class="nc" id="L108">        return box;</span>
+    }
+
+    /**
+     * Set the box model.
+     *
+     * Must be set before any operation can be performed on the button.
+     *
+     * @param box must not be {@code null}
+     */
+    public void setBox(final FieldBox box) {
+<span class="nc" id="L119">        Validate.notNull(box, &quot;Box must not be null!&quot;);</span>
+<span class="nc" id="L120">        this.box = box;</span>
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (GlobalLog.debug()) {</span>
+<span class="nc" id="L123">            setToolTipText(box.toString());</span>
+        }
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * Open the box.
+     */
+    public void open() {
+<span class="nc" id="L131">        Validate.notNull(box, &quot;Box model is null! Set box first.&quot;);</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (isOpen()) {</span>
+<span class="nc" id="L134">            return;</span>
+        }
+
+<span class="nc" id="L137">        state = State.OPEN;</span>
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (box.isMine()) {</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            if (box.getField().isGameOver()) {</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                if (box.isFlag()) {</span>
+<span class="nc" id="L142">                    setIcon(ImageIcons.BOMB.getResource());</span>
+                } else {
+<span class="nc" id="L144">                    setIcon(ImageIcons.BOMB_EXPLODED.getResource());</span>
+                }
+            } else {
+<span class="nc" id="L147">                setIcon(ImageIcons.BOMB_EXPLODED.getResource());</span>
+<span class="nc" id="L148">                box.getField().setGameOver();</span>
+            }
+        } else {
+<span class="nc" id="L151">            setIcon(determineIcon());</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">            if (box.countMinesInNeighborhood() == 0) {</span>
+<span class="nc" id="L154">                LOG.info(&quot;Opened button has 0 mines in neighborhood.&quot;);</span>
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                for (final FieldBox neighbor : box.getNeighbours()) {</span>
+<span class="nc" id="L157">                    LOG.info(String.format(&quot;Open neighbor box %s.&quot;, neighbor));</span>
+<span class="nc" id="L158">                    neighbor.setOpened();</span>
+<span class="nc" id="L159">                }</span>
+            }
+        }
+
+<span class="nc" id="L163">        repaint();</span>
+<span class="nc" id="L164">    }</span>
+
+    /**
+     * Whether the box is open or not.
+     *
+     * @return {@code true} if button is open, else {@code false}
+     */
+    public boolean isOpen() {
+<span class="nc" id="L172">        return isInState(State.OPEN);</span>
+    }
+
+    /**
+     * Close the box.
+     *
+     * Already opened box can not be closed.
+     */
+    public void close() {
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (isInState(State.CLOSED)) {</span>
+<span class="nc" id="L182">            return;</span>
+        }
+
+<span class="nc" id="L185">        state = State.CLOSED;</span>
+<span class="nc" id="L186">        Validate.notNull(box, &quot;Box model is null! Set box first.&quot;);</span>
+<span class="nc" id="L187">        box.setFlag(false);</span>
+<span class="nc" id="L188">        setIcon(ImageIcons.CLOSED.getResource());</span>
+<span class="nc" id="L189">        repaint();</span>
+<span class="nc" id="L190">    }</span>
+
+    /**
+     * Flags a button to signal that there may be a mine.
+     *
+     * Only closed or not flagged buttons can be flagged.
+     */
+    public void flag() {
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (isInState(State.FLAG)) {</span>
+<span class="nc" id="L199">            return;</span>
+        }
+
+<span class="nc" id="L202">        Validate.notNull(box, &quot;Box model is null! Set box first.&quot;);</span>
+<span class="nc" id="L203">        box.setFlag(true);</span>
+<span class="nc" id="L204">        setIcon(ImageIcons.FLAG.getResource());</span>
+<span class="nc" id="L205">        state = State.FLAG;</span>
+<span class="nc" id="L206">        repaint();</span>
+<span class="nc" id="L207">    }</span>
+
+    /**
+     * Whether the button is flagged.
+     *
+     * @return {@code true} if the button is in flagged state, else {@code false}
+     */
+    public boolean isFlag() {
+<span class="nc" id="L215">        return isInState(State.FLAG);</span>
+    }
+
+    /**
+     * Determines the right icon image (either bomb or number for mines in neighberhood).
+     *
+     * @return never {@code null}
+     */
+    ImageIcon determineIcon() {
+<span class="nc" id="L224">        Validate.notNull(box, &quot;Box model is null! Set box first.&quot;);</span>
+        final ImageIcon icon;
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">        if (box.isMine()) {</span>
+<span class="nc" id="L228">            icon = ImageIcons.BOMB.getResource();</span>
+        } else {
+<span class="nc" id="L230">            icon = determineNumberIcon();</span>
+        }
+
+<span class="nc" id="L233">        return icon;</span>
+    }
+
+    /**
+     * Determines the number icons for mines in neighborhood.
+     *
+     * @return never {@code null}
+     */
+    ImageIcon determineNumberIcon() {
+        final ImageIcon icon;
+
+<span class="nc bnc" id="L244" title="All 10 branches missed.">        switch (box.countMinesInNeighborhood()) {</span>
+            case ZERO_NEIGHBORS:
+<span class="nc" id="L246">                icon = ImageIcons.BLANK.getResource();</span>
+<span class="nc" id="L247">                break;</span>
+            case ONE_NEIGHBORS:
+<span class="nc" id="L249">                icon = ImageIcons.ONE_NEIGHBOR.getResource();</span>
+<span class="nc" id="L250">                break;</span>
+            case TWO_NEIGHBORS:
+<span class="nc" id="L252">                icon = ImageIcons.TWO_NEIGHBOR.getResource();</span>
+<span class="nc" id="L253">                break;</span>
+            case THREE_NEIGHBORS:
+<span class="nc" id="L255">                icon = ImageIcons.THREE_NEIGHBOR.getResource();</span>
+<span class="nc" id="L256">                break;</span>
+            case FOUR_NEIGHBORS:
+<span class="nc" id="L258">                icon = ImageIcons.FOUR_NEIGHBOR.getResource();</span>
+<span class="nc" id="L259">                break;</span>
+            case FIVE_NEIGHBORS:
+<span class="nc" id="L261">                icon = ImageIcons.FIVE_NEIGHBOR.getResource();</span>
+<span class="nc" id="L262">                break;</span>
+            case SIX_NEIGHBORS:
+<span class="nc" id="L264">                icon = ImageIcons.SIX_NEIGHBOR.getResource();</span>
+<span class="nc" id="L265">                break;</span>
+            case SEVEN_NEIGHBORS:
+<span class="nc" id="L267">                icon = ImageIcons.SEVEN_NEIGHBOR.getResource();</span>
+<span class="nc" id="L268">                break;</span>
+            case EIGHT_NEIGHBORS:
+<span class="nc" id="L270">                icon = ImageIcons.EIGHT_NEIGHBOR.getResource();</span>
+<span class="nc" id="L271">                break;</span>
+            default:
+<span class="nc" id="L273">                throw new IllegalStateException(String.format(&quot;Unsupported neighbor count: %d!&quot;,</span>
+                        box.countMinesInNeighborhood()));
+        }
+
+<span class="nc" id="L277">        return icon;</span>
+    }
+
+    @Override
+    public void update(final Observable observable, final Object arg) {
+<span class="nc" id="L282">        Validate.notNull(box, &quot;Box model is null! Set box first.&quot;);</span>
+<span class="nc" id="L283">        LOG.info(String.format(&quot;Update from observable %s&quot;, observable));</span>
+
+<span class="nc bnc" id="L285" title="All 2 branches missed.">        if (box.isOpen()) {</span>
+<span class="nc" id="L286">            LOG.info(String.format(&quot;Open box %s.&quot;, box));</span>
+<span class="nc" id="L287">            open();</span>
+        }
+<span class="nc" id="L289">    }</span>
+
+    /**
+     * Resets the button.
+     *
+     * &lt;ul&gt;
+     * &lt;li&gt;set state to closed&lt;/li&gt;
+     * &lt;li&gt;set icon to closed&lt;/li&gt;
+     * &lt;li&gt;repaint button&lt;/li&gt;
+     * &lt;/ul&gt;
+     */
+    void reset() {
+<span class="nc" id="L301">        state = State.CLOSED;</span>
+<span class="nc" id="L302">        setIcon(ImageIcons.CLOSED.getResource());</span>
+<span class="nc" id="L303">        repaint();</span>
+<span class="nc" id="L304">    }</span>
+
+    /**
+     * Represent the button state.
+     */
+<span class="nc" id="L309">    private static enum State {</span>
+
+        /**
+         * Button is closed.
+         */
+<span class="nc" id="L314">        CLOSED,</span>
+        /**
+         * Button has flag.
+         */
+<span class="nc" id="L318">        FLAG,</span>
+        /**
+         * Button is open.
+         */
+<span class="nc" id="L322">        OPEN;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

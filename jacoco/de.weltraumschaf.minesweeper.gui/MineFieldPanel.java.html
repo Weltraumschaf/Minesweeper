@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MineFieldPanel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.gui</a> &gt; <span class="el_source">MineFieldPanel.java</span></div><h1>MineFieldPanel.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.minesweeper.gui;
+
+import de.weltraumschaf.minesweeper.Matrix;
+import de.weltraumschaf.minesweeper.control.FieldBoxListeners;
+import de.weltraumschaf.minesweeper.model.FieldBox;
+import java.awt.GridLayout;
+import javax.swing.JPanel;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Paints the game field.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public class MineFieldPanel extends JPanel {
+
+    /**
+     * Holds the game field buttons in a matrix.
+     */
+    private final Matrix&lt;FieldBoxButton&gt; fieldButtons;
+    /**
+     * Count of buttons in x-axis.
+     */
+    private final int width;
+    /**
+     * Count of buttons in y-axis.
+     */
+    private final int height;
+    /**
+     * Whether the was initialized.
+     */
+    private boolean initilaized;
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param width must not be less than 1
+     * @param height must not be less than 1
+     */
+    public MineFieldPanel(int width, int height) {
+<span class="nc" id="L52">        super(new GridLayout(width, height));</span>
+<span class="nc" id="L53">        this.fieldButtons = new Matrix&lt;FieldBoxButton&gt;(FieldBoxButton.class, width, height);</span>
+<span class="nc" id="L54">        this.width = width;</span>
+<span class="nc" id="L55">        this.height = height;</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Initializes the panel with default buttons with attached click listeners and add them to the panel.
+     *
+     * Executes only one time per instance.
+     */
+    public void init() {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (initilaized) {</span>
+<span class="nc" id="L65">            return;</span>
+        }
+
+<span class="nc" id="L68">        fieldButtons.initWithObjects();</span>
+
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        for (final FieldBoxButton btn : fieldButtons.getAll()) {</span>
+<span class="nc" id="L71">            btn.addMouseListener(FieldBoxListeners.createClickListener());</span>
+<span class="nc" id="L72">            add(btn);</span>
+<span class="nc" id="L73">        }</span>
+
+<span class="nc" id="L75">        initilaized = true;</span>
+<span class="nc" id="L76">    }</span>
+
+    /**
+     * Set the field box models.
+     *
+     * @param boxes must not be {@code null} and must have same size as {@link #fieldButtons}
+     */
+    public void setModels(final Matrix&lt;FieldBox&gt; boxes) {
+<span class="nc" id="L84">        Validate.notNull(boxes, &quot;Boxes must not be null!&quot;);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        Validate.isTrue(boxes.size() == fieldButtons.size(), &quot;Size of buttons and boxes matrix must be equal!&quot;);</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        for (int y = 0; y &lt; height; ++y) {</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            for (int x = 0; x &lt; width; ++x) {</span>
+<span class="nc" id="L89">                final FieldBox box = boxes.get(x, y);</span>
+<span class="nc" id="L90">                final FieldBoxButton btn = fieldButtons.get(x, y);</span>
+<span class="nc" id="L91">                box.addObserver(btn);</span>
+<span class="nc" id="L92">                btn.setBox(box);</span>
+<span class="nc" id="L93">                btn.reset();</span>
+            }
+        }
+<span class="nc" id="L96">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
