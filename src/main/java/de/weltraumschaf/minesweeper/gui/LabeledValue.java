@@ -20,7 +20,7 @@ import org.apache.commons.lang3.Validate;
 /**
  * UI element with a fixed label and a changeable value.
  *
- * It is a combination of two {@link JLabels} in a grid layout.
+ * It is a combination of two {@link JLabel labels} in a grid layout.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */

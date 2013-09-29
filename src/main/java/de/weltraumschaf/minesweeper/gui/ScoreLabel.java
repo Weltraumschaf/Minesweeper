@@ -65,7 +65,7 @@ class ScoreLabel extends JLabel implements Observer {
     /**
      * Set the number of lost games.
      *
-     * @param won must not be less than 0
+     * @param lost must not be less than 0
      */
     public void setLost(int lost) {
         Validate.isTrue(lost >= 0, "Lost number must not be less than 0!");
