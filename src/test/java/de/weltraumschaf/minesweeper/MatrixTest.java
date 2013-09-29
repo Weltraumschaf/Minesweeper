@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.minesweeper;
 
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -157,4 +158,55 @@ public class MatrixTest {
             assertThat(o, is(notNullValue()));
         }
     }
+
+    @Test
+    public void initWithObjects_throwsExceptionIfTypeHasNoNonArgconstructor() {
+        class Foo {
+
+            Foo(final String bar) {
+            }
+        }
+
+        final Matrix<Foo> innerSut = new Matrix<Foo>(Foo.class, 1, 1);
+        thrown.expect(IllegalStateException.class);
+        innerSut.initWithObjects();
+    }
+
+    @Test
+    public void getRows() {
+        final Matrix<String> innerSut = new Matrix<String>(String.class, 3, 3);
+        innerSut.set(0, 0, "0");
+        innerSut.set(1, 0, "1");
+        innerSut.set(2, 0, "2");
+        innerSut.set(0, 1, "3");
+        innerSut.set(1, 1, "4");
+        innerSut.set(2, 1, "5");
+        innerSut.set(0, 2, "6");
+        innerSut.set(1, 2, "7");
+        innerSut.set(2, 2, "8");
+
+        final List<List<String>> rows = innerSut.getRows();
+        assertThat(rows, hasSize(3));
+        assertThat(rows.get(0), hasSize(3));
+        assertThat(rows.get(0), contains("0", "1", "2"));
+        assertThat(rows.get(1), hasSize(3));
+        assertThat(rows.get(1), contains("3", "4", "5"));
+        assertThat(rows.get(2), hasSize(3));
+        assertThat(rows.get(2), contains("6", "7", "8"));
+    }
+
+    @Test
+    public void testToString() {
+        final Matrix<String> innerSut = new Matrix<String>(String.class, 3, 2);
+        innerSut.set(0, 0, "0");
+        innerSut.set(1, 0, "1");
+        innerSut.set(2, 0, "2");
+        innerSut.set(0, 1, "3");
+        innerSut.set(1, 1, "4");
+        innerSut.set(2, 1, "5");
+        assertThat(innerSut.toString(), is(equalTo(String.format("Mine filed (width: 2, height: 3)%n"
+                + "(0) (1) (2) %n"
+                + "(3) (4) (5) %n"))));
+    }
+
 }
