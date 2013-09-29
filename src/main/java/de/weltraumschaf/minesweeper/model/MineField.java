@@ -74,7 +74,7 @@ public class MineField {
      */
     private boolean gameOver;
     /**
-     * Whether {@link #initializeFieldWithBoxes(int, int)} was invoked at least once.
+     * Whether {@link #initializeFieldWithBoxes()} was invoked at least once.
      */
     private boolean initialized;
 
@@ -159,7 +159,7 @@ public class MineField {
      * +-----+-------+-----+
      * </pre>
      *
-     * Throws {@link IllegalStateException} if {@link #initializeFieldWithBoxes(int, int)} never called before.
+     * Throws {@link IllegalStateException} if {@link #initializeFieldWithBoxes()} never called before.
      *
      * @param rowId must not be less than 0
      * @param columnId must not be less than 0
@@ -233,7 +233,7 @@ public class MineField {
     /**
      * Get the field box a given position.
      *
-     * Throws {@link IllegalStateException} if {@link #initializeFieldWithBoxes(int, int)} never called before.
+     * Throws {@link IllegalStateException} if {@link #initializeFieldWithBoxes()} never called before.
      *
      * @param x must not be less than 0 and greater than {@link #getWidth()} - 1.
      * @param y must not be less than 0 and greater than {@link #getHeight()} - 1.
