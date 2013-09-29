@@ -161,12 +161,13 @@ public class MatrixTest {
 
     @Test
     public void initWithObjects_throwsExceptionIfTypeHasNoNonArgconstructor() {
+        //CHECKSTYLE:OFF
         class Foo {
 
             Foo(final String bar) {
             }
         }
-
+        //CHECKSTYLE:ON
         final Matrix<Foo> innerSut = new Matrix<Foo>(Foo.class, 1, 1);
         thrown.expect(IllegalStateException.class);
         innerSut.initWithObjects();
