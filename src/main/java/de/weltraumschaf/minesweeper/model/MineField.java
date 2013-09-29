@@ -62,14 +62,6 @@ public class MineField {
      */
     private final Random random = new Random();
     /**
-     * Number of mine boxes.
-     */
-    private int minesCount;
-    /**
-     * Number of save boxes.
-     */
-    private int savesCount;
-    /**
      * Whether a mine was opened and game is over.
      */
     private boolean gameOver;
@@ -110,19 +102,39 @@ public class MineField {
             }
         }
 
-        initialized = true;
+        setInitialized(true);
+    }
+
+    /**
+     * Set the state to initialized.
+     *
+     * @param initialized {@code true} if boxes are initialized, else {@code false}
+     */
+    void setInitialized(final boolean initialized) {
+        this.initialized = initialized;
     }
 
     @Override
     public String toString() {
         final StringBuilder buffer = new StringBuilder();
-        buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width))
+        buffer.append(String.format("Mine field (width: %s, height: %s)%n", getWidth(), getHeight()))
                 .append(boxes.toString());
+
+        int minesCount = 0;
+        int savesCount = 0;
+
+        for (final FieldBox box : boxes.getAll()) {
+            if (box.isMine()) {
+                ++minesCount;
+            } else {
+                ++savesCount;
+            }
+        }
 
         final double count = minesCount + savesCount;
         final double minesPercent = (HUNDRED_PERCENT / count) * minesCount;
         final double savesPercent = (HUNDRED_PERCENT / count) * savesCount;
-        buffer.append(String.format("Mines: %s (%.2f%%), saves: %s (%.2f%%)%n",
+        buffer.append(String.format("Mines: %s (%.2f %%), saves: %s (%.2f %%)",
                 minesCount, minesPercent, savesCount, savesPercent));
         return buffer.toString();
     }
@@ -138,10 +150,8 @@ public class MineField {
      */
     private BaseMineFieldBox createRandomBox(final int rowId, final int columnId) {
         if (random.nextInt() % MINE_FACTOR == 0) {
-            ++minesCount;
             return new MineBox(rowId, columnId, this);
         } else {
-            ++savesCount;
             return new SaveBox(rowId, columnId, this);
         }
     }
@@ -218,7 +228,7 @@ public class MineField {
      * @return never less than 1
      */
     public int getWidth() {
-        return height;
+        return width;
     }
 
     /**
@@ -227,7 +237,7 @@ public class MineField {
      * @return never less than 1
      */
     public int getHeight() {
-        return width;
+        return height;
     }
 
     /**
@@ -245,11 +255,18 @@ public class MineField {
                     "Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
         }
 
-        Validate.isTrue(x >= 0, "X must not be less than 0!");
-        Validate.isTrue(x < width, "X must not be less than MineField#getWidth()!");
-        Validate.isTrue(y >= 0, "Y must not be less than 0!");
-        Validate.isTrue(y < height, "Y must not be less than MineField#getHeight()!");
         return boxes.get(x, y);
+    }
+
+    /**
+     * Set the field box a given position.
+     *
+     * @param x must not be less than 0 and greater than {@link #getWidth()} - 1.
+     * @param y must not be less than 0 and greater than {@link #getHeight()} - 1.
+     * @param box must not be {@code null}
+     */
+    void setBox(final int x, final int y, final FieldBox box) {
+        boxes.set(x, y, box);
     }
 
     /**
@@ -310,7 +327,7 @@ public class MineField {
      *
      * @return {@code true} if all boxes are opened/flagged, else {@code false}
      */
-    private boolean allBoxesOpenOrFlagged() {
+    boolean allBoxesOpenOrFlagged() {
         return allBoxesOpenOrFlagged(boxes.getAll());
     }
 
@@ -331,4 +348,5 @@ public class MineField {
 
         return true;
     }
+
 }
