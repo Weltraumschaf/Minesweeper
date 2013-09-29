@@ -51,6 +51,7 @@ public class MineFieldPanel extends JPanel {
      *
      * @param width must not be less than 1
      * @param height must not be less than 1
+     * @param main must not be {@code null}
      */
     public MineFieldPanel(int width, int height, final MainWindow main) {
         super(new GridLayout(width, height));

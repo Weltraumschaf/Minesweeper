@@ -86,8 +86,14 @@ class FieldBoxButtonListener extends MouseAdapter {
         checkForWon(originatingButton.getBox().getField());
     }
 
+    /**
+     * Determines if the games was won and shows a dialog in case of won game.
+     *
+     * @param field must not be {@code null}
+     */
     private void checkForWon(final MineField field) {
         LOG.debug("Check if game was won.");
+        Validate.notNull(field, "Field must not be null!");
 
         if (LOG.isDebugEnabled()) {
             debugFieldSate(field);
@@ -96,20 +102,32 @@ class FieldBoxButtonListener extends MouseAdapter {
         if (field.hasWon()) {
             LOG.debug("Game won!");
             JOptionPane.showMessageDialog(
-            main,
-            String.format("Game won!"),
-            main.getTitle(),
-            JOptionPane.PLAIN_MESSAGE);
+                    main,
+                    String.format("Game won!"),
+                    main.getTitle(),
+                    JOptionPane.PLAIN_MESSAGE);
             openFlaggedBoxes(field);
         }
     }
 
+    /**
+     * Logs the state of the field for debugging.
+     *
+     * @param field must not be {@code null}
+     */
     private void debugFieldSate(final MineField field) {
-        final StringBuilder buffer = new StringBuilder("State of field:\n").append(field.getBoxes().toString());
-        LOG.debug(buffer.toString());
+        Validate.notNull(field, "Field must not be null!");
+        LOG.debug(String.format("State of field:%n%s", field.getBoxes()));
     }
 
+    /**
+     * Opens all flagged boxes.
+     *
+     * @param field must not be {@code null}
+     */
     private void openFlaggedBoxes(final MineField field) {
+        Validate.notNull(field, "Field must not be null!");
+
         for (final FieldBox box : field.getBoxes().getAll()) {
             if (box.isFlag()) {
                 box.setOpened(true);

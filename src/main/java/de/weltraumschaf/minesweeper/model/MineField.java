@@ -26,6 +26,14 @@ import org.apache.log4j.Logger;
 public class MineField {
 
     /**
+     * Default Width.
+     */
+    public static final int DEFAULT_WIDTH = 8;
+    /**
+     * Default height.
+     */
+    public static final int DEFAULT_HEIGHT = 8;
+    /**
      * Log facility.
      */
     private static final Logger LOG = Logger.getLogger(MineField.class);
@@ -37,14 +45,6 @@ public class MineField {
      * Used to calculate percentage of mines and save boxes.
      */
     private static final double HUNDRED_PERCENT = 100.0;
-    /**
-     * Default Width.
-     */
-    public static final int DEFAULT_WIDTH = 8;
-    /**
-     * Default height.
-     */
-    public static final int DEFAULT_HEIGHT = 8;
     /**
      * How many boxes in the height.
      */
@@ -120,7 +120,7 @@ public class MineField {
     public String toString() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(String.format("Mine filed (width: %s, height: %s)%n", height, width))
-              .append(boxes.toString());
+                .append(boxes.toString());
 
         final double count = minesCount + savesCount;
         final double minesPercent = (HUNDRED_PERCENT / count) * minesCount;
@@ -313,11 +313,24 @@ public class MineField {
         return boxes;
     }
 
+    /**
+     * Determines if all {@link FieldBox boxes} of the field are opened or flagged.
+     *
+     * @return {@code true} if all boxes are opened/flagged, else {@code false}
+     */
     private boolean allBoxesOpenOrFlagged() {
         return allBoxesOpenOrFlagged(boxes.getAll());
     }
 
+    /**
+     * Determines if all {@link FieldBox boxes} are opened or flagged.
+     *
+     * @param list must not be {@code null}
+     * @return {@code true} if all boxes are opened/flagged, else {@code false}
+     */
     static boolean allBoxesOpenOrFlagged(final List<FieldBox> list) {
+        Validate.notNull(list, "List must not be null!");
+
         for (final FieldBox box : list) {
             if (!box.isOpen() && !box.isFlag()) {
                 return false;

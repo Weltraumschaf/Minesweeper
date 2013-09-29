@@ -18,7 +18,7 @@ import java.util.Observer;
 import javax.swing.JPanel;
 
 /**
- * Status bar of game.
+ * UI element for status bar of game.
  *
  * Shows:
  * <ul>
@@ -30,25 +30,44 @@ import javax.swing.JPanel;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class StatusBar extends JPanel implements Observer {
+    /**
+     * Number of rows of used grid layout.
+     */
     private static final int ROWS = 1;
-    private static final int COLS = 3;
-
+    /**
+     * Number of columns of used grid layout.
+     */
+    private static final int COLUMS = 3;
+    /**
+     * Displays the score.
+     */
     private ScoreLabel score = new ScoreLabel();
-    private LabeledValue timeElapsed = new LabeledValue("Time:");
+    /**
+     * Displays the elapsed time.
+     */
+    private LabeledValue elapsedTime = new LabeledValue("Time:");
+    /**
+     * Displays mines not found.
+     */
     private LabeledValue minesLeft = new LabeledValue("Mines:");
 
+    /**
+     * Dedicated constructor.
+     *
+     * Initializes {@link #elapsedTime} and {@link #minesLeft} with {@code 0}.
+     */
     public StatusBar() {
-        super(new GridLayout(ROWS, COLS, 1, 0));
+        super(new GridLayout(ROWS, COLUMS));
         add(score);
-        timeElapsed.setValue("0");
-        add(timeElapsed);
+        elapsedTime.setValue("0");
+        add(elapsedTime);
         minesLeft.setValue("0");
         add(minesLeft);
     }
 
     @Override
     public void update(final Observable observable, final Object arg) {
-
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
 }

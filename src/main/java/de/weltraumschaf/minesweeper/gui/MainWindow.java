@@ -65,7 +65,6 @@ public final class MainWindow extends SwingFrame {
      * Initializes the main window with an title.
      *
      * @param title The window title.
-     * @param mineField must not be null
      */
     public MainWindow(final String title) {
         super(title);
