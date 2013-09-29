@@ -76,7 +76,7 @@ public class MinesweeperSession {
      */
     public void  newGame() {
         currentGame = new Game();
-        currentGame.start(0, 0);
+        currentGame.start();
         mainWindow.setMineField(currentGame.getMineField());
         mainWindow.repaint();
     }

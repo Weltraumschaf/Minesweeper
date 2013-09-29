@@ -48,17 +48,14 @@ public class Game {
 
     /**
      * Starts the game.
-     *
-     * @param x coordinate of first clocked box
-     * @param y coordinate of first clocked box
      */
-    public void start(final int x, final int y) {
+    public void start() {
         if (started) {
             throw new IllegalStateException("Game already started!");
         }
 
         started = true;
-        reset(x, y);
+        reset();
         watch.start();
     }
 
@@ -108,12 +105,10 @@ public class Game {
     }
 
     /**
-     *
-     * @param x coordinate of first clocked box
-     * @param y coordinate of first clocked box
+     * Initializes the mine field and reset the stop watch.
      */
-    private void reset(final int x, final int y) {
-        field.initializeFieldWithBoxes(x, y);
+    private void reset() {
+        field.initializeFieldWithBoxes();
         watch.reset();
     }
 

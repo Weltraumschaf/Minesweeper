@@ -37,7 +37,7 @@ public class MineFieldTest {
 
     @Before
     public void initializeFieldWithBoxes() {
-        sut.initializeFieldWithBoxes(0, 0);
+        sut.initializeFieldWithBoxes();
     }
 
     private FieldBox createClosedBox() {

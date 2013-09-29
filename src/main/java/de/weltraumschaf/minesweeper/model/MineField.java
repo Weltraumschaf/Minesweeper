@@ -102,14 +102,11 @@ public class MineField {
 
     /**
      * Set all fields in {@link #boxes} with an instance.
-     *
-     * @param x coordinate of first clicked box
-     * @param y coordinate of first clicked box
      */
-    public void initializeFieldWithBoxes(final int x, final int y) {
+    public void initializeFieldWithBoxes() {
         for (int rowId = 0; rowId < height; ++rowId) {
             for (int columnId = 0; columnId < width; ++columnId) {
-                boxes.set(columnId, rowId, createRandomBox(columnId, rowId, x, y));
+                boxes.set(columnId, rowId, createRandomBox(columnId, rowId));
             }
         }
 
@@ -137,15 +134,10 @@ public class MineField {
      *
      * @param rowId must not be less than 0
      * @param columnId must not be less than 0
-     * @param x coordinate of button which must not be a mine
-     * @param y coordinate of button which must not be a mine
      * @return always new instance
      */
-    private BaseMineFieldBox createRandomBox(final int rowId, final int columnId, final int x, final int y) {
-        if (rowId == x && columnId == y) {
-            ++savesCount;
-            return new SaveBox(rowId, columnId, this);
-        } else if (random.nextInt() % MINE_FACTOR == 0) {
+    private BaseMineFieldBox createRandomBox(final int rowId, final int columnId) {
+        if (random.nextInt() % MINE_FACTOR == 0) {
             ++minesCount;
             return new MineBox(rowId, columnId, this);
         } else {
