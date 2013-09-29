@@ -14,6 +14,7 @@ package de.weltraumschaf.minesweeper.model;
 import de.weltraumschaf.minesweeper.Matrix;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
@@ -134,7 +135,7 @@ public class MineField {
         final double count = minesCount + savesCount;
         final double minesPercent = (HUNDRED_PERCENT / count) * minesCount;
         final double savesPercent = (HUNDRED_PERCENT / count) * savesCount;
-        buffer.append(String.format("Mines: %s (%.2f %%), saves: %s (%.2f %%)",
+        buffer.append(String.format(Locale.ENGLISH, "Mines: %s (%.2f %%), saves: %s (%.2f %%)",
                 minesCount, minesPercent, savesCount, savesPercent));
         return buffer.toString();
     }

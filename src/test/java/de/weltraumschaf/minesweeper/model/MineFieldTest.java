@@ -332,7 +332,7 @@ public class MineFieldTest {
                 + "(1 [1,0] CLOSE) (1 [1,1] CLOSE) (0 [1,2] CLOSE) %n"
                 + "(0 [2,0] CLOSE) (0 [2,1] CLOSE) (0 [2,2] CLOSE) %n"
                 + "(0 [3,0] CLOSE) (0 [3,1] CLOSE) (0 [3,2] CLOSE) %n"
-                + "Mines: 1 (8,33 %%), saves: 11 (91,67 %%)"))));
+                + "Mines: 1 (8.33 %%), saves: 11 (91.67 %%)"))));
     }
 
     @Test
