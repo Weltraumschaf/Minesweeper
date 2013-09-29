@@ -11,7 +11,6 @@
  */
 package de.weltraumschaf.minesweeper;
 
-import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;

@@ -13,7 +13,6 @@ package de.weltraumschaf.minesweeper.control;
 
 import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
-import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.apache.commons.lang3.Validate;
@@ -26,10 +25,6 @@ import org.apache.commons.lang3.Validate;
 class NewGameListener implements ActionListener {
 
     /**
-     * Frame to which the listener was added.
-     */
-    private final MainWindow main;
-    /**
      * Current played session.
      */
     private final MinesweeperSession session;
@@ -37,13 +32,10 @@ class NewGameListener implements ActionListener {
     /**
      * Dedicated constructor.
      *
-     * @param main must not be {@code null}
      * @param session must not be {@code null}
      */
-    public NewGameListener(final MainWindow main, final MinesweeperSession session) {
+    public NewGameListener(final MinesweeperSession session) {
         super();
-        Validate.notNull(main, "Main must not be null!");
-        this.main = main;
         Validate.notNull(session, "Session must not be null!");
         this.session = session;
     }

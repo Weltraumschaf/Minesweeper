@@ -25,10 +25,6 @@ import javax.swing.SwingUtilities;
 public class App extends InvokableAdapter implements Runnable {
 
     /**
-     * Name of application.
-     */
-    private static final String NAME = "Minesweeper";
-    /**
      * Version information.
      */
     private final Version version;

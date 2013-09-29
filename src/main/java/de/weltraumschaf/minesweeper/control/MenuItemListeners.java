@@ -33,12 +33,11 @@ public final class MenuItemListeners {
     /**
      * Creates new game listener.
      *
-     * @param main must not be {@code null}
      * @param session must not be {@code null}
      * @return always new instance, never {@code null}
      */
-    public static ActionListener createNewGameListener(final MainWindow main, final MinesweeperSession session) {
-        return new NewGameListener(main, session);
+    public static ActionListener createNewGameListener(final MinesweeperSession session) {
+        return new NewGameListener(session);
     }
 
     /**
