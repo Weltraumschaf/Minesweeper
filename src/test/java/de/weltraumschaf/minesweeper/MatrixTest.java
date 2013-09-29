@@ -161,7 +161,8 @@ public class MatrixTest {
 
     @Test
     public void initWithObjects_throwsExceptionIfTypeHasNoNonArgconstructor() {
-        final Matrix<CllassWithArgumentConstructor> innerSut = new Matrix<CllassWithArgumentConstructor>(CllassWithArgumentConstructor.class, 1, 1);
+        final Matrix<CllassWithArgumentConstructor> innerSut =
+                new Matrix<CllassWithArgumentConstructor>(CllassWithArgumentConstructor.class, 1, 1);
         thrown.expect(IllegalStateException.class);
         innerSut.initWithObjects();
     }
@@ -199,7 +200,7 @@ public class MatrixTest {
         innerSut.set(1, 1, "4");
         innerSut.set(2, 1, "5");
         assertThat(innerSut.toString(), is(equalTo(String.format(
-                  "(0) (1) (2) %n"
+                "(0) (1) (2) %n"
                 + "(3) (4) (5) %n"))));
     }
 
