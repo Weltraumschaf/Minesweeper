@@ -416,4 +416,30 @@ public class MineFieldTest {
         assertThat(innerSut.isGameOver(), is(false));
     }
 
+    @Test
+    public void countUnflaggedMines() {
+        final MineField innerSut = new MineField(2, 2);
+        innerSut.setInitialized(true);
+        assertThat(innerSut.countUnflaggedMines(), is(0));
+        
+        final SaveBox box1 = new SaveBox(0, 0, innerSut);
+        box1.setOpened(true);
+        innerSut.setBox(0, 0, box1);
+        final MineBox box2 = new MineBox(0, 1, innerSut);
+        box2.setOpened(true);
+        innerSut.setBox(1, 0, box2);
+        final MineBox box3 = new MineBox(1, 0, innerSut);
+        box3.setOpened(true);
+        innerSut.setBox(0, 1, box3);
+        final SaveBox box4 = new SaveBox(1, 1, innerSut);
+        box4.setOpened(true);
+        innerSut.setBox(1, 1, box4);
+
+        assertThat(innerSut.countUnflaggedMines(), is(2));
+        box2.setFlag(true);
+        assertThat(innerSut.countUnflaggedMines(), is(1));
+        box3.setFlag(true);
+        assertThat(innerSut.countUnflaggedMines(), is(0));
+    }
+
 }

@@ -350,4 +350,21 @@ public class MineField {
         return true;
     }
 
+    /**
+     * Returns number of unflagged mines.
+     *
+     * @return not negative number
+     */
+    public int countUnflaggedMines() {
+        int count = 0;
+
+        for (final FieldBox box : boxes.getAll()) {
+            if (box.isMine() && !box.isFlag()) {
+                ++count;
+            }
+        }
+
+        return count;
+    }
+
 }
