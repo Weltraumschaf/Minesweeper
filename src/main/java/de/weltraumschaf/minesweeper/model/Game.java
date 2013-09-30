@@ -23,6 +23,11 @@ import org.apache.commons.lang3.time.StopWatch;
 public class Game {
 
     /**
+     * Format string for elapsed time.
+     */
+    private static final String TIME_FORMAT = "mm:ss";
+
+    /**
      * Mine field to play with.
      */
     private MineField field = new MineField();
@@ -98,7 +103,7 @@ public class Game {
      * @return never {@code null}
      */
     public String getTime() {
-        return DurationFormatUtils.formatDuration(watch.getTime(), "HH:mm:ss", true);
+        return DurationFormatUtils.formatDuration(watch.getTime(), TIME_FORMAT, true);
     }
 
     /**

@@ -16,6 +16,7 @@ import de.weltraumschaf.minesweeper.model.Score;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JLabel;
+import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
@@ -35,7 +36,7 @@ class ScoreLabel extends JLabel implements Observer {
     /**
      * Format of displayed label text.
      */
-    private static final String DISPLAY_FORMAT = "Played: %d (won: %d, lost %d)";
+    private static final String DISPLAY_FORMAT = "Played: %d (won: %d, lost: %d)";
 
     /**
      * Count of won games.

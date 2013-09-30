@@ -9,12 +9,10 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.minesweeper.gui;
 
-import java.awt.GridLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -24,23 +22,12 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class LabeledValue extends JPanel {
+class LabeledValue extends JLabel {
+
     /**
-     * Number of rows for grid layout.
+     * Fixed label text.
      */
-    private static final int ROWS = 1;
-    /**
-     * Number of columns for grid layout.
-     */
-    private static final int COLUMNS = 2;
-    /**
-     * Fixed value label.
-     */
-    private final JLabel label = new JLabel();
-    /**
-     * Changeable value label.
-     */
-    private final JLabel value = new JLabel();
+    private final String labelText;
 
     /**
      * Dedicated constructor.
@@ -50,11 +37,10 @@ class LabeledValue extends JPanel {
      * @param labelText must not be {@code null} or empty
      */
     public LabeledValue(final String labelText) {
-        super(new GridLayout(ROWS, COLUMNS));
+        super();
         Validate.notEmpty(labelText, "Label text must not be null or empty!");
-        label.setText(labelText);
-        add(label);
-        add(value);
+        this.labelText = labelText;
+        setText(renderText(""));
     }
 
     /**
@@ -64,7 +50,17 @@ class LabeledValue extends JPanel {
      */
     public void setValue(final String valueText) {
         Validate.notNull(valueText, "Value text must not be null!");
-        value.setText(valueText);
+        setText(renderText(valueText));
+    }
+
+    /**
+     * Renders the whole label string.
+     *
+     * @param valueText volatile value of label
+     * @return never {@code null}
+     */
+    private String renderText(final String valueText) {
+        return String.format("%s: %s", labelText, valueText);
     }
 
 }

@@ -13,10 +13,12 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.model.Score;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -32,14 +34,12 @@ import org.apache.commons.lang3.Validate;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class StatusBar extends JPanel implements Observer {
+
     /**
-     * Number of rows of used grid layout.
+     * Label text to separate the single parts of the status bar.
      */
-    private static final int ROWS = 1;
-    /**
-     * Number of columns of used grid layout.
-     */
-    private static final int COLUMS = 3;
+    private static final String SEPARATOR = " | ";
+
     /**
      * Displays the score.
      */
@@ -47,11 +47,11 @@ public class StatusBar extends JPanel implements Observer {
     /**
      * Displays the elapsed time.
      */
-    private LabeledValue elapsedTime = new LabeledValue("Time:");
+    private LabeledValue elapsedTime = new LabeledValue("Time");
     /**
      * Displays mines not found.
      */
-    private LabeledValue minesLeft = new LabeledValue("Mines:");
+    private LabeledValue minesLeft = new LabeledValue("Mines");
 
     /**
      * Dedicated constructor.
@@ -59,12 +59,15 @@ public class StatusBar extends JPanel implements Observer {
      * Initializes {@link #elapsedTime} and {@link #minesLeft} with {@code 0}.
      */
     public StatusBar() {
-        super(new GridLayout(ROWS, COLUMS));
+        super(new FlowLayout(FlowLayout.LEFT, 2, 0));
         add(scoreLabel);
+        add(new JLabel(SEPARATOR));
         elapsedTime.setValue("0");
         add(elapsedTime);
+        add(new JLabel(SEPARATOR));
         minesLeft.setValue("0");
         add(minesLeft);
+        setBorder(new BevelBorder(BevelBorder.LOWERED));
     }
 
     @Override
