@@ -13,10 +13,12 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.model.Score;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -32,14 +34,12 @@ import org.apache.commons.lang3.Validate;
  * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
  */
 public class StatusBar extends JPanel implements Observer {
+
     /**
-     * Number of rows of used grid layout.
+     * Label text to separate the single parts of the status bar.
      */
-    private static final int ROWS = 1;
-    /**
-     * Number of columns of used grid layout.
-     */
-    private static final int COLUMS = 3;
+    private static final String SEPARATOR = &quot; | &quot;;
+
     /**
      * Displays the score.
      */
@@ -47,11 +47,11 @@ public class StatusBar extends JPanel implements Observer {
     /**
      * Displays the elapsed time.
      */
-<span class="nc" id="L50">    private LabeledValue elapsedTime = new LabeledValue(&quot;Time:&quot;);</span>
+<span class="nc" id="L50">    private LabeledValue elapsedTime = new LabeledValue(&quot;Time&quot;);</span>
     /**
      * Displays mines not found.
      */
-<span class="nc" id="L54">    private LabeledValue minesLeft = new LabeledValue(&quot;Mines:&quot;);</span>
+<span class="nc" id="L54">    private LabeledValue minesLeft = new LabeledValue(&quot;Mines&quot;);</span>
 
     /**
      * Dedicated constructor.
@@ -59,20 +59,23 @@ public class StatusBar extends JPanel implements Observer {
      * Initializes {@link #elapsedTime} and {@link #minesLeft} with {@code 0}.
      */
     public StatusBar() {
-<span class="nc" id="L62">        super(new GridLayout(ROWS, COLUMS));</span>
+<span class="nc" id="L62">        super(new FlowLayout(FlowLayout.LEFT, 2, 0));</span>
 <span class="nc" id="L63">        add(scoreLabel);</span>
-<span class="nc" id="L64">        elapsedTime.setValue(&quot;0&quot;);</span>
-<span class="nc" id="L65">        add(elapsedTime);</span>
-<span class="nc" id="L66">        minesLeft.setValue(&quot;0&quot;);</span>
-<span class="nc" id="L67">        add(minesLeft);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L64">        add(new JLabel(SEPARATOR));</span>
+<span class="nc" id="L65">        elapsedTime.setValue(&quot;0&quot;);</span>
+<span class="nc" id="L66">        add(elapsedTime);</span>
+<span class="nc" id="L67">        add(new JLabel(SEPARATOR));</span>
+<span class="nc" id="L68">        minesLeft.setValue(&quot;0&quot;);</span>
+<span class="nc" id="L69">        add(minesLeft);</span>
+<span class="nc" id="L70">        setBorder(new BevelBorder(BevelBorder.LOWERED));</span>
+<span class="nc" id="L71">    }</span>
 
     @Override
     public void update(final Observable observable, final Object arg) {
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (observable instanceof Score) {</span>
-<span class="nc" id="L73">            scoreLabel.update(observable, arg);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (observable instanceof Score) {</span>
+<span class="nc" id="L76">            scoreLabel.update(observable, arg);</span>
         }
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L78">    }</span>
 
     /**
      * Updates the mines left.
@@ -80,9 +83,19 @@ public class StatusBar extends JPanel implements Observer {
      * @param count must not be less than 0
      */
     public void setMinesLeft(final int count) {
-<span class="nc bnc" id="L83" title="All 2 branches missed.">        Validate.isTrue(count &gt;= 0, &quot;Count must not be less than 0!&quot;);</span>
-<span class="nc" id="L84">        minesLeft.setValue(String.valueOf(count));</span>
-<span class="nc" id="L85">    }</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        Validate.isTrue(count &gt;= 0, &quot;Count must not be less than 0!&quot;);</span>
+<span class="nc" id="L87">        minesLeft.setValue(String.valueOf(count));</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Set the elapsed time.
+     *
+     * @param time must not be {@code null}
+     */
+    public void setElapsedTime(final String time) {
+<span class="nc" id="L96">        Validate.notNull(time, &quot;Time must not be null!&quot;);</span>
+<span class="nc" id="L97">        elapsedTime.setValue(time);</span>
+<span class="nc" id="L98">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

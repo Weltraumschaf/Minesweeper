@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.minesweeper.model;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
 /**
@@ -19,16 +20,21 @@ import org.apache.commons.lang3.time.StopWatch;
  *
  * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
  */
-<span class="nc" id="L22">public class Game {</span>
+<span class="nc" id="L23">public class Game {</span>
+
+    /**
+     * Format string for elapsed time.
+     */
+    private static final String TIME_FORMAT = &quot;mm:ss&quot;;
 
     /**
      * Mine field to play with.
      */
-<span class="nc" id="L27">    private MineField field = new MineField();</span>
+<span class="nc" id="L33">    private MineField field = new MineField();</span>
     /**
      * Watch to measure time for a game.
      */
-<span class="nc" id="L31">    private StopWatch watch = new StopWatch();</span>
+<span class="nc" id="L37">    private StopWatch watch = new StopWatch();</span>
     /**
      * Indicates if game was started.
      *
@@ -43,33 +49,33 @@ import org.apache.commons.lang3.time.StopWatch;
      * @param height must not be less than 1
      */
     public void resize(final int width, final int height) {
-<span class="nc" id="L46">        field = new MineField(height, width);</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L52">        field = new MineField(height, width);</span>
+<span class="nc" id="L53">    }</span>
 
     /**
      * Starts the game.
      */
     public void start() {
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (started) {</span>
-<span class="nc" id="L54">            throw new IllegalStateException(&quot;Game already started!&quot;);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (started) {</span>
+<span class="nc" id="L60">            throw new IllegalStateException(&quot;Game already started!&quot;);</span>
         }
 
-<span class="nc" id="L57">        started = true;</span>
-<span class="nc" id="L58">        reset();</span>
-<span class="nc" id="L59">        watch.start();</span>
-<span class="nc" id="L60">    }</span>
+<span class="nc" id="L63">        started = true;</span>
+<span class="nc" id="L64">        reset();</span>
+<span class="nc" id="L65">        watch.start();</span>
+<span class="nc" id="L66">    }</span>
 
     /**
      * Stop the game.
      */
     public void stop() {
-<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (!started) {</span>
-<span class="nc" id="L67">            throw new IllegalStateException(&quot;Game already stopped!&quot;);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (!started) {</span>
+<span class="nc" id="L73">            throw new IllegalStateException(&quot;Game already stopped!&quot;);</span>
         }
 
-<span class="nc" id="L70">        started = false;</span>
-<span class="nc" id="L71">        watch.stop();</span>
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L76">        started = false;</span>
+<span class="nc" id="L77">        watch.stop();</span>
+<span class="nc" id="L78">    }</span>
 
     /**
      * whether the game was won.
@@ -77,7 +83,7 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return {@code true} if game was won, else {@code false}
      */
     public boolean hasWon() {
-<span class="nc" id="L80">        return field.hasWon();</span>
+<span class="nc" id="L86">        return field.hasWon();</span>
     }
 
     /**
@@ -86,7 +92,7 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return {@code true} if mine was opened, else {@code false}
      */
     public boolean isGameOver() {
-<span class="nc" id="L89">        return field.isGameOver();</span>
+<span class="nc" id="L95">        return field.isGameOver();</span>
     }
 
     /**
@@ -97,20 +103,16 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return never {@code null}
      */
     public String getTime() {
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (started) {</span>
-<span class="nc" id="L101">            throw new IllegalStateException(&quot;Game is running! Call stop() first.&quot;);</span>
-        }
-
-<span class="nc" id="L104">        return watch.toString();</span>
+<span class="nc" id="L106">        return DurationFormatUtils.formatDuration(watch.getTime(), TIME_FORMAT, true);</span>
     }
 
     /**
      * Initializes the mine field and reset the stop watch.
      */
     private void reset() {
-<span class="nc" id="L111">        field.initializeFieldWithBoxes();</span>
-<span class="nc" id="L112">        watch.reset();</span>
-<span class="nc" id="L113">    }</span>
+<span class="nc" id="L113">        field.initializeFieldWithBoxes();</span>
+<span class="nc" id="L114">        watch.reset();</span>
+<span class="nc" id="L115">    }</span>
 
     /**
      * Get field of game.
@@ -118,7 +120,7 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return never {@code null}
      */
     public MineField getMineField() {
-<span class="nc" id="L121">        return field;</span>
+<span class="nc" id="L123">        return field;</span>
     }
 
 }

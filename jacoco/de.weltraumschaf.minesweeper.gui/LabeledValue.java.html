@@ -9,12 +9,10 @@
  *
  * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
  */
-
 package de.weltraumschaf.minesweeper.gui;
 
-import java.awt.GridLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -24,23 +22,12 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
  */
-class LabeledValue extends JPanel {
+class LabeledValue extends JLabel {
+
     /**
-     * Number of rows for grid layout.
+     * Fixed label text.
      */
-    private static final int ROWS = 1;
-    /**
-     * Number of columns for grid layout.
-     */
-    private static final int COLUMNS = 2;
-    /**
-     * Fixed value label.
-     */
-<span class="nc" id="L39">    private final JLabel label = new JLabel();</span>
-    /**
-     * Changeable value label.
-     */
-<span class="nc" id="L43">    private final JLabel value = new JLabel();</span>
+    private final String labelText;
 
     /**
      * Dedicated constructor.
@@ -50,12 +37,11 @@ class LabeledValue extends JPanel {
      * @param labelText must not be {@code null} or empty
      */
     public LabeledValue(final String labelText) {
-<span class="nc" id="L53">        super(new GridLayout(ROWS, COLUMNS));</span>
-<span class="nc" id="L54">        Validate.notEmpty(labelText, &quot;Label text must not be null or empty!&quot;);</span>
-<span class="nc" id="L55">        label.setText(labelText);</span>
-<span class="nc" id="L56">        add(label);</span>
-<span class="nc" id="L57">        add(value);</span>
-<span class="nc" id="L58">    }</span>
+<span class="nc" id="L40">        super();</span>
+<span class="nc" id="L41">        Validate.notEmpty(labelText, &quot;Label text must not be null or empty!&quot;);</span>
+<span class="nc" id="L42">        this.labelText = labelText;</span>
+<span class="nc" id="L43">        setText(renderText(&quot;&quot;));</span>
+<span class="nc" id="L44">    }</span>
 
     /**
      * Sets the changeable value text.
@@ -63,9 +49,19 @@ class LabeledValue extends JPanel {
      * @param valueText must not be {@code null}
      */
     public void setValue(final String valueText) {
-<span class="nc" id="L66">        Validate.notNull(valueText, &quot;Value text must not be null!&quot;);</span>
-<span class="nc" id="L67">        value.setText(valueText);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L52">        Validate.notNull(valueText, &quot;Value text must not be null!&quot;);</span>
+<span class="nc" id="L53">        setText(renderText(valueText));</span>
+<span class="nc" id="L54">    }</span>
+
+    /**
+     * Renders the whole label string.
+     *
+     * @param valueText volatile value of label
+     * @return never {@code null}
+     */
+    private String renderText(final String valueText) {
+<span class="nc" id="L63">        return String.format(&quot;%s: %s&quot;, labelText, valueText);</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

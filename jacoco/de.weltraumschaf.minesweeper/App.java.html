@@ -59,7 +59,14 @@ public class App extends InvokableAdapter implements Runnable {
     public void run() {
 <span class="nc" id="L60">        final MinesweeperSession minesweeper = new MinesweeperSession(version);</span>
 <span class="nc" id="L61">        minesweeper.play();</span>
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L62">        registerShutdownHook(new Runnable() {</span>
+
+            @Override
+            public void run() {
+<span class="nc" id="L66">                minesweeper.quit();</span>
+<span class="nc" id="L67">            }</span>
+        });
+<span class="nc" id="L69">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

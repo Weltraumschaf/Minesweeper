@@ -9,8 +9,8 @@
     <copyright>&#169;2013</copyright>
     <item>
       <title>File: 37,
-             Errors: 0,
-             Warnings: 0,
+             Errors: 2,
+             Warnings: 2,
              Infos: 0
       </title>
             <link>http://weltraumschaf.github.io/Minesweeper//checkstyle.html</link>
@@ -161,7 +161,7 @@
                   0
                 </td>
                 <td>
-                  0
+                  1
                 </td>
                 <td>
                   0
@@ -343,7 +343,7 @@
                   0
                 </td>
                 <td>
-                  0
+                  1
                 </td>
                 <td>
                   0
@@ -444,7 +444,7 @@
                   0
                 </td>
                 <td>
-                  0
+                  2
                 </td>
               </tr>
                           <tr>
