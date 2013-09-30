@@ -421,7 +421,7 @@ public class MineFieldTest {
         final MineField innerSut = new MineField(2, 2);
         innerSut.setInitialized(true);
         assertThat(innerSut.countUnflaggedMines(), is(0));
-        
+
         final SaveBox box1 = new SaveBox(0, 0, innerSut);
         box1.setOpened(true);
         innerSut.setBox(0, 0, box1);
