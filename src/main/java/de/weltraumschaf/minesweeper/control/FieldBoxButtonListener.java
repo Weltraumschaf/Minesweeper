@@ -84,6 +84,7 @@ class FieldBoxButtonListener extends MouseAdapter {
 
         originatingButton.getParent().repaint();
         checkForWon(originatingButton.getBox().getField());
+        main.getStatusbar().setMinesLeft(originatingButton.getBox().getField().countUnflaggedMines());
     }
 
     /**

@@ -17,6 +17,7 @@ import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
+import org.apache.commons.lang3.Validate;
 
 /**
  * UI element for status bar of game.
@@ -71,6 +72,16 @@ public class StatusBar extends JPanel implements Observer {
         if (observable instanceof Score) {
             scoreLabel.update(observable, arg);
         }
+    }
+
+    /**
+     * Updates the mines left.
+     *
+     * @param count must not be less than 0
+     */
+    public void setMinesLeft(final int count) {
+        Validate.isTrue(count >= 0, "Count must not be less than 0!");
+        minesLeft.setValue(String.valueOf(count));
     }
 
 }

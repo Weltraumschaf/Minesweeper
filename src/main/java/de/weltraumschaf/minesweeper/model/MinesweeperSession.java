@@ -79,9 +79,13 @@ public class MinesweeperSession {
         currentGame = new Game();
         currentGame.start();
         mainWindow.setMineField(currentGame.getMineField());
+        mainWindow.getStatusbar().setMinesLeft(currentGame.getMineField().countUnflaggedMines());
         mainWindow.repaint();
     }
 
+    /**
+     * Update the session score.
+     */
     private void updateScore() {
         if (null != currentGame) {
             if (currentGame.isGameOver()) {
