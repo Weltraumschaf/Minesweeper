@@ -64,6 +64,8 @@ public class MineField {
     private final Random random = new Random();
     /**
      * Whether a mine was opened and game is over.
+     *
+     * TODO Move into game
      */
     private boolean gameOver;
     /**

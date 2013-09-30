@@ -84,4 +84,14 @@ public class StatusBar extends JPanel implements Observer {
         minesLeft.setValue(String.valueOf(count));
     }
 
+    /**
+     * Set the elapsed time.
+     *
+     * @param time must not be {@code null}
+     */
+    public void setElapsedTime(final String time) {
+        Validate.notNull(time, "Time must not be null!");
+        elapsedTime.setValue(time);
+    }
+
 }

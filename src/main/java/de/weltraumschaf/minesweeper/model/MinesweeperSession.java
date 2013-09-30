@@ -14,7 +14,11 @@ package de.weltraumschaf.minesweeper.model;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.minesweeper.control.MenuItemListeners;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Represents the main application code: Play a minesweeper session.
@@ -23,6 +27,14 @@ import org.apache.commons.lang3.Validate;
  */
 public class MinesweeperSession {
 
+    /**
+     * Log facility.
+     */
+    private static final Logger LOG = Logger.getLogger(MinesweeperSession.class);
+    /**
+     * Timer delay.
+     */
+    private static final int TIMER_DELAY = 500;
     /**
      * Version information.
      */
@@ -63,11 +75,12 @@ public class MinesweeperSession {
      * Initializes the main windows.
      */
     private void initMainWindow() {
+        LOG.debug("Init main window.");
         mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
         mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));
         mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
         mainWindow.init();
-        score.addObserver(mainWindow.getStatusbar());
+        initStatusBar();
         mainWindow.setVisible(true);
     }
 
@@ -75,6 +88,7 @@ public class MinesweeperSession {
      * Create a new game.
      */
     public void newGame() {
+        LOG.debug("Make new game.");
         updateScore();
         currentGame = new Game();
         currentGame.start();
@@ -87,6 +101,8 @@ public class MinesweeperSession {
      * Update the session score.
      */
     private void updateScore() {
+        LOG.debug("Update score.");
+
         if (null != currentGame) {
             if (currentGame.isGameOver()) {
                 score.incrementGamesLost();
@@ -94,5 +110,20 @@ public class MinesweeperSession {
                 score.incrementGamesWon();
             }
         }
+    }
+
+    private void initStatusBar() {
+        LOG.debug("Init status bar.");
+        score.addObserver(mainWindow.getStatusbar());
+        final Timer timer = new Timer(TIMER_DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                mainWindow.getStatusbar().setElapsedTime(currentGame.getTime());
+            }
+        });
+        timer.setRepeats(true);
+        timer.setCoalesce(true);
+        timer.setInitialDelay(0);
+        timer.start();
     }
 }

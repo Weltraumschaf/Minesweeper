@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.minesweeper.model;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
 /**
@@ -97,11 +98,7 @@ public class Game {
      * @return never {@code null}
      */
     public String getTime() {
-        if (started) {
-            throw new IllegalStateException("Game is running! Call stop() first.");
-        }
-
-        return watch.toString();
+        return DurationFormatUtils.formatDuration(watch.getTime(), "HH:mm:ss", true);
     }
 
     /**
