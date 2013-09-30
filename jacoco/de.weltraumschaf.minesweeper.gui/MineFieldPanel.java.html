@@ -38,22 +38,29 @@ public class MineFieldPanel extends JPanel {
      */
     private final int height;
     /**
+     * Frame to which the listener was added.
+     */
+    private final MainWindow main;
+    /**
      * Whether the was initialized.
      */
-    private boolean initilaized;
+    private boolean initialized;
 
     /**
      * Dedicated constructor.
      *
      * @param width must not be less than 1
      * @param height must not be less than 1
+     * @param main must not be {@code null}
      */
-    public MineFieldPanel(int width, int height) {
-<span class="nc" id="L52">        super(new GridLayout(width, height));</span>
-<span class="nc" id="L53">        this.fieldButtons = new Matrix&lt;FieldBoxButton&gt;(FieldBoxButton.class, width, height);</span>
-<span class="nc" id="L54">        this.width = width;</span>
-<span class="nc" id="L55">        this.height = height;</span>
-<span class="nc" id="L56">    }</span>
+    public MineFieldPanel(int width, int height, final MainWindow main) {
+<span class="nc" id="L57">        super(new GridLayout(width, height));</span>
+<span class="nc" id="L58">        this.fieldButtons = new Matrix&lt;FieldBoxButton&gt;(FieldBoxButton.class, width, height);</span>
+<span class="nc" id="L59">        this.width = width;</span>
+<span class="nc" id="L60">        this.height = height;</span>
+<span class="nc" id="L61">        Validate.notNull(main, &quot;Main must not be null!&quot;);</span>
+<span class="nc" id="L62">        this.main = main;</span>
+<span class="nc" id="L63">    }</span>
 
     /**
      * Initializes the panel with default buttons with attached click listeners and add them to the panel.
@@ -61,19 +68,19 @@ public class MineFieldPanel extends JPanel {
      * Executes only one time per instance.
      */
     public void init() {
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (initilaized) {</span>
-<span class="nc" id="L65">            return;</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (initialized) {</span>
+<span class="nc" id="L72">            return;</span>
         }
 
-<span class="nc" id="L68">        fieldButtons.initWithObjects();</span>
+<span class="nc" id="L75">        fieldButtons.initWithObjects();</span>
 
-<span class="nc bnc" id="L70" title="All 2 branches missed.">        for (final FieldBoxButton btn : fieldButtons.getAll()) {</span>
-<span class="nc" id="L71">            btn.addMouseListener(FieldBoxListeners.createClickListener());</span>
-<span class="nc" id="L72">            add(btn);</span>
-<span class="nc" id="L73">        }</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (final FieldBoxButton btn : fieldButtons.getAll()) {</span>
+<span class="nc" id="L78">            btn.addMouseListener(FieldBoxListeners.createClickListener(main));</span>
+<span class="nc" id="L79">            add(btn);</span>
+<span class="nc" id="L80">        }</span>
 
-<span class="nc" id="L75">        initilaized = true;</span>
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L82">        initialized = true;</span>
+<span class="nc" id="L83">    }</span>
 
     /**
      * Set the field box models.
@@ -81,19 +88,19 @@ public class MineFieldPanel extends JPanel {
      * @param boxes must not be {@code null} and must have same size as {@link #fieldButtons}
      */
     public void setModels(final Matrix&lt;FieldBox&gt; boxes) {
-<span class="nc" id="L84">        Validate.notNull(boxes, &quot;Boxes must not be null!&quot;);</span>
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        Validate.isTrue(boxes.size() == fieldButtons.size(), &quot;Size of buttons and boxes matrix must be equal!&quot;);</span>
+<span class="nc" id="L91">        Validate.notNull(boxes, &quot;Boxes must not be null!&quot;);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        Validate.isTrue(boxes.size() == fieldButtons.size(), &quot;Size of buttons and boxes matrix must be equal!&quot;);</span>
 
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        for (int y = 0; y &lt; height; ++y) {</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">            for (int x = 0; x &lt; width; ++x) {</span>
-<span class="nc" id="L89">                final FieldBox box = boxes.get(x, y);</span>
-<span class="nc" id="L90">                final FieldBoxButton btn = fieldButtons.get(x, y);</span>
-<span class="nc" id="L91">                box.addObserver(btn);</span>
-<span class="nc" id="L92">                btn.setBox(box);</span>
-<span class="nc" id="L93">                btn.reset();</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        for (int y = 0; y &lt; height; ++y) {</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            for (int x = 0; x &lt; width; ++x) {</span>
+<span class="nc" id="L96">                final FieldBox box = boxes.get(x, y);</span>
+<span class="nc" id="L97">                final FieldBoxButton btn = fieldButtons.get(x, y);</span>
+<span class="nc" id="L98">                box.addObserver(btn);</span>
+<span class="nc" id="L99">                btn.setBox(box);</span>
+<span class="nc" id="L100">                btn.reset();</span>
             }
         }
-<span class="nc" id="L96">    }</span>
+<span class="nc" id="L103">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

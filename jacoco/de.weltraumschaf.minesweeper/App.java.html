@@ -11,15 +11,11 @@
  */
 package de.weltraumschaf.minesweeper;
 
-import de.weltraumschaf.minesweeper.model.MineField;
-import de.weltraumschaf.minesweeper.gui.MainWindow;
+import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;
-import de.weltraumschaf.minesweeper.control.MenuItemListeners;
-import de.weltraumschaf.minesweeper.model.Game;
 import javax.swing.SwingUtilities;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Main application class.
@@ -39,9 +35,9 @@ public class App extends InvokableAdapter implements Runnable {
      * @param args must not be {@code null}
      */
     public App(final String[] args) {
-<span class="nc" id="L42">        super(args);</span>
-<span class="nc" id="L43">        version = new Version(&quot;/de/weltraumschaf/minesweeper/version.properties&quot;);</span>
-<span class="nc" id="L44">    }</span>
+<span class="nc" id="L38">        super(args);</span>
+<span class="nc" id="L39">        version = new Version(&quot;/de/weltraumschaf/minesweeper/version.properties&quot;);</span>
+<span class="nc" id="L40">    }</span>
 
     /**
      * Main entry point of VM.
@@ -49,39 +45,21 @@ public class App extends InvokableAdapter implements Runnable {
      * @param args cli arguments from VM
      */
     public static void main(final String[] args) {
-<span class="nc" id="L52">        InvokableAdapter.main(new App(args));</span>
-<span class="nc" id="L53">    }</span>
-
-    @Override
-    public void run() {
-        final MineField mineField;
-<span class="nc" id="L58">        final Game game = new Game();</span>
-
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (getArgs().length == 2) {</span>
-<span class="nc" id="L61">            final int width = Integer.parseInt(getArgs()[0]);</span>
-<span class="nc" id="L62">            final int height = Integer.parseInt(getArgs()[1]);</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">            Validate.isTrue(width &gt; 0, &quot;Width must not be less than 1!&quot;);</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">            Validate.isTrue(height &gt; 0, &quot;Height must not be less than 1!&quot;);</span>
-<span class="nc" id="L65">            mineField = new MineField(width, height);</span>
-<span class="nc" id="L66">            game.resize(width, height);</span>
-<span class="nc" id="L67">        } else {</span>
-<span class="nc" id="L68">            mineField = new MineField();</span>
-        }
-
-<span class="nc" id="L71">        mineField.initializeFieldWithBoxes(0, 0);</span>
-<span class="nc" id="L72">        final MainWindow mainWindow = new MainWindow(&quot;Minesweeper&quot;, mineField);</span>
-<span class="nc" id="L73">        mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));</span>
-<span class="nc" id="L74">        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(mainWindow));</span>
-<span class="nc" id="L75">        mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));</span>
-<span class="nc" id="L76">        mainWindow.init();</span>
-<span class="nc" id="L77">        mainWindow.setVisible(true);</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L48">        InvokableAdapter.main(new App(args));</span>
+<span class="nc" id="L49">    }</span>
 
     @Override
     public void execute() throws Exception {
-<span class="nc" id="L82">        setExiter(new NullExiter());</span>
-<span class="nc" id="L83">        version.load();</span>
-<span class="nc" id="L84">        SwingUtilities.invokeLater(this);</span>
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L53">        setExiter(new NullExiter());</span>
+<span class="nc" id="L54">        version.load();</span>
+<span class="nc" id="L55">        SwingUtilities.invokeLater(this);</span>
+<span class="nc" id="L56">    }</span>
+
+    @Override
+    public void run() {
+<span class="nc" id="L60">        final MinesweeperSession minesweeper = new MinesweeperSession(version);</span>
+<span class="nc" id="L61">        minesweeper.play();</span>
+<span class="nc" id="L62">    }</span>
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

@@ -48,31 +48,28 @@ import org.apache.commons.lang3.time.StopWatch;
 
     /**
      * Starts the game.
-     *
-     * @param x coordinate of first clocked box
-     * @param y coordinate of first clocked box
      */
-    public void start(final int x, final int y) {
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (started) {</span>
-<span class="nc" id="L57">            throw new IllegalStateException(&quot;Game already started!&quot;);</span>
+    public void start() {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (started) {</span>
+<span class="nc" id="L54">            throw new IllegalStateException(&quot;Game already started!&quot;);</span>
         }
 
-<span class="nc" id="L60">        started = true;</span>
-<span class="nc" id="L61">        reset(x, y);</span>
-<span class="nc" id="L62">        watch.start();</span>
-<span class="nc" id="L63">    }</span>
+<span class="nc" id="L57">        started = true;</span>
+<span class="nc" id="L58">        reset();</span>
+<span class="nc" id="L59">        watch.start();</span>
+<span class="nc" id="L60">    }</span>
 
     /**
      * Stop the game.
      */
     public void stop() {
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (!started) {</span>
-<span class="nc" id="L70">            throw new IllegalStateException(&quot;Game already stopped!&quot;);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (!started) {</span>
+<span class="nc" id="L67">            throw new IllegalStateException(&quot;Game already stopped!&quot;);</span>
         }
 
-<span class="nc" id="L73">        started = false;</span>
-<span class="nc" id="L74">        watch.stop();</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L70">        started = false;</span>
+<span class="nc" id="L71">        watch.stop();</span>
+<span class="nc" id="L72">    }</span>
 
     /**
      * whether the game was won.
@@ -80,7 +77,7 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return {@code true} if game was won, else {@code false}
      */
     public boolean hasWon() {
-<span class="nc" id="L83">        return field.hasWon();</span>
+<span class="nc" id="L80">        return field.hasWon();</span>
     }
 
     /**
@@ -89,7 +86,7 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return {@code true} if mine was opened, else {@code false}
      */
     public boolean isGameOver() {
-<span class="nc" id="L92">        return field.isGameOver();</span>
+<span class="nc" id="L89">        return field.isGameOver();</span>
     }
 
     /**
@@ -100,22 +97,29 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return never {@code null}
      */
     public String getTime() {
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (started) {</span>
-<span class="nc" id="L104">            throw new IllegalStateException(&quot;Game is running! Call stop() first.&quot;);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (started) {</span>
+<span class="nc" id="L101">            throw new IllegalStateException(&quot;Game is running! Call stop() first.&quot;);</span>
         }
 
-<span class="nc" id="L107">        return watch.toString();</span>
+<span class="nc" id="L104">        return watch.toString();</span>
     }
 
     /**
-     *
-     * @param x coordinate of first clocked box
-     * @param y coordinate of first clocked box
+     * Initializes the mine field and reset the stop watch.
      */
-    private void reset(final int x, final int y) {
-<span class="nc" id="L116">        field.initializeFieldWithBoxes(x, y);</span>
-<span class="nc" id="L117">        watch.reset();</span>
-<span class="nc" id="L118">    }</span>
+    private void reset() {
+<span class="nc" id="L111">        field.initializeFieldWithBoxes();</span>
+<span class="nc" id="L112">        watch.reset();</span>
+<span class="nc" id="L113">    }</span>
+
+    /**
+     * Get field of game.
+     *
+     * @return never {@code null}
+     */
+    public MineField getMineField() {
+<span class="nc" id="L121">        return field;</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

@@ -11,8 +11,7 @@
  */
 package de.weltraumschaf.minesweeper.control;
 
-import de.weltraumschaf.minesweeper.gui.MainWindow;
-import de.weltraumschaf.minesweeper.model.MineField;
+import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.apache.commons.lang3.Validate;
@@ -25,31 +24,25 @@ import org.apache.commons.lang3.Validate;
 class NewGameListener implements ActionListener {
 
     /**
-     * Frame to which the listener was added.
-     *
-     * XXX: Consider if retrievable from {@link ActionEvent}.
+     * Current played session.
      */
-    private final MainWindow main;
+    private final MinesweeperSession session;
 
     /**
      * Dedicated constructor.
      *
-     * @param main must not be {@code null}
+     * @param session must not be {@code null}
      */
-    public NewGameListener(final MainWindow main) {
-<span class="nc" id="L40">        super();</span>
-<span class="nc" id="L41">        Validate.notNull(main, &quot;Main must not be null!&quot;);</span>
-<span class="nc" id="L42">        this.main = main;</span>
-<span class="nc" id="L43">    }</span>
+    public NewGameListener(final MinesweeperSession session) {
+<span class="nc" id="L37">        super();</span>
+<span class="nc" id="L38">        Validate.notNull(session, &quot;Session must not be null!&quot;);</span>
+<span class="nc" id="L39">        this.session = session;</span>
+<span class="nc" id="L40">    }</span>
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-<span class="nc" id="L47">        final MineField newField = new MineField(main.getMineField().getWidth(), main.getMineField().getHeight());</span>
-<span class="nc" id="L48">        newField.initializeFieldWithBoxes(0, 0);</span>
-<span class="nc" id="L49">        main.setMineField(newField);</span>
-<span class="nc" id="L50">        main.initPanel();</span>
-<span class="nc" id="L51">        main.repaint();</span>
-<span class="nc" id="L52">    }</span>
+<span class="nc" id="L44">        session.newGame();</span>
+<span class="nc" id="L45">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

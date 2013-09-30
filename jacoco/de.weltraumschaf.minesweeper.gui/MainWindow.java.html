@@ -12,13 +12,14 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.commons.swing.MenuBarBuilder;
+import de.weltraumschaf.commons.swing.MenuBuilder;
 import de.weltraumschaf.commons.swing.SwingFrame;
-import de.weltraumschaf.minesweeper.GlobalLog;
+import de.weltraumschaf.commons.system.OperatingSystem;
 import de.weltraumschaf.minesweeper.model.MineField;
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
-import javax.swing.JMenuBar;
 import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * The applications main window.
@@ -30,15 +31,23 @@ public final class MainWindow extends SwingFrame {
     /**
      * Logging facility.
      */
-<span class="nc" id="L33">    private static final Logger LOG = GlobalLog.getLogger(MainWindow.class);</span>
+<span class="nc" id="L34">    private static final Logger LOG = Logger.getLogger(MainWindow.class);</span>
     /**
      * Id for serialization.
      */
     private static final long serialVersionUID = 1L;
     /**
+     * Used for OS specific differences.
+     */
+<span class="nc" id="L42">    private static final OperatingSystem OS = OperatingSystem.determine(System.getProperty(&quot;os.name&quot;, &quot;&quot;));</span>
+    /**
+     * UI status bar.
+     */
+<span class="nc" id="L46">    private final StatusBar statusbar = new StatusBar();</span>
+    /**
      * Holds the game field.
      */
-    private final MineFieldPanel gamePanel;
+    private MineFieldPanel gamePanel;
     /**
      * Model for the game play.
      */
@@ -60,65 +69,72 @@ public final class MainWindow extends SwingFrame {
      * Initializes the main window with an title.
      *
      * @param title The window title.
-     * @param mineField must not be null
      */
-    public MainWindow(final String title, final MineField mineField) {
-<span class="nc" id="L66">        super(title);</span>
-<span class="nc" id="L67">        Validate.notNull(mineField, &quot;Mine field must not be null!&quot;);</span>
-<span class="nc" id="L68">        this.mineField = mineField;</span>
-<span class="nc" id="L69">        setDefaultCloseOperation(DISPOSE_ON_CLOSE);</span>
-<span class="nc" id="L70">        setExitOnCloseWindow(true);</span>
-<span class="nc" id="L71">        gamePanel = new MineFieldPanel(mineField.getWidth(), mineField.getHeight());</span>
-<span class="nc" id="L72">        gamePanel.init();</span>
-<span class="nc" id="L73">    }</span>
+    public MainWindow(final String title) {
+<span class="nc" id="L74">        super(title);</span>
+<span class="nc" id="L75">        setDefaultCloseOperation(DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L76">        setExitOnCloseWindow(true);</span>
+<span class="nc" id="L77">        gamePanel = new MineFieldPanel(MineField.DEFAULT_WIDTH, MineField.DEFAULT_HEIGHT, this);</span>
+<span class="nc" id="L78">        gamePanel.init();</span>
+<span class="nc" id="L79">    }</span>
 
     /**
-     * Get the game mine field model.
+     * Get the UI status bar.
      *
      * @return never {@code null}
      */
-    public MineField getMineField() {
-<span class="nc" id="L81">        return mineField;</span>
+    public StatusBar getStatusbar() {
+<span class="nc" id="L87">        return statusbar;</span>
     }
 
     /**
      * Set the game mine field model.
      *
-     * @param mineField must not be {@code null}
+     * @param mf must not be {@code null}
      */
-    public void setMineField(final MineField mineField) {
-<span class="nc" id="L90">        Validate.notNull(mineField, &quot;Mine field must not be null!&quot;);</span>
-<span class="nc" id="L91">        this.mineField = mineField;</span>
-<span class="nc" id="L92">    }</span>
+    public void setMineField(final MineField mf) {
+<span class="nc" id="L96">        Validate.notNull(mf, &quot;Mine field must not be null!&quot;);</span>
+<span class="nc" id="L97">        LOG.debug(String.format(&quot;Set field:%n%s&quot;, mf.toString()));</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (shouldReinitializeGamePanel(mf)) {</span>
+<span class="nc" id="L100">            gamePanel = new MineFieldPanel(mf.getWidth(), mf.getHeight(), this);</span>
+<span class="nc" id="L101">            gamePanel.init();</span>
+        }
+
+<span class="nc" id="L104">        mineField = mf;</span>
+        // First init so that buttons are available.
+<span class="nc" id="L106">        gamePanel.setModels(mineField.getBoxes());</span>
+<span class="nc" id="L107">    }</span>
 
     @Override
     protected void initMenu() {
-<span class="nc" id="L96">        final JMenuBar menubar = MenuBarBuilder.builder()</span>
+<span class="nc" id="L111">        final MenuBuilder builder = MenuBarBuilder.builder()</span>
                 .menu(&quot;File&quot;)
                 .item(&quot;New&quot;)
                 .addListener(newGameListener)
-                .end()
-                .item(&quot;Version&quot;)
-                .addListener(versionInfoListener)
-                .end()
-                .separator()
-                .item(&quot;Quit&quot;)
-                .addListener(quitListener)
-                .end()
-                .end()
-                .create();
+                .setAccelerator('N')
+                .end();
 
-<span class="nc" id="L111">        setJMenuBar(menubar);</span>
-<span class="nc" id="L112">    }</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (OperatingSystem.MACOSX != OS) {</span>
+<span class="nc" id="L119">            builder.item(&quot;Version&quot;)</span>
+                    .addListener(versionInfoListener)
+                    .end()
+                    .separator()
+                    .item(&quot;Quit&quot;)
+                    .addListener(quitListener)
+                    .setAccelerator('Q')
+                    .end();
+        }
+
+<span class="nc" id="L129">        setJMenuBar(builder.end().create());</span>
+<span class="nc" id="L130">    }</span>
 
     @Override
     public void initPanel() {
-<span class="nc" id="L116">        LOG.info(String.format(&quot;Pain field:%n%s&quot;, mineField.toString()));</span>
-        // First init so that buttons are available.
-<span class="nc" id="L118">        gamePanel.setModels(mineField.getBoxes());</span>
-<span class="nc" id="L119">        panel.add(gamePanel);</span>
-<span class="nc" id="L120">        pack();</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L134">        panel.add(gamePanel);</span>
+<span class="nc" id="L135">        getContentPane().add(statusbar, BorderLayout.SOUTH);</span>
+<span class="nc" id="L136">        pack();</span>
+<span class="nc" id="L137">    }</span>
 
     /**
      * Set listener for version info menu item.
@@ -126,9 +142,9 @@ public final class MainWindow extends SwingFrame {
      * @param listener must not be {@code null}
      */
     public void setVersionInfoListener(final ActionListener listener) {
-<span class="nc" id="L129">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
-<span class="nc" id="L130">        versionInfoListener = listener;</span>
-<span class="nc" id="L131">    }</span>
+<span class="nc" id="L145">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
+<span class="nc" id="L146">        versionInfoListener = listener;</span>
+<span class="nc" id="L147">    }</span>
 
     /**
      * Set listener for new game menu item.
@@ -136,9 +152,9 @@ public final class MainWindow extends SwingFrame {
      * @param listener must not be {@code null}
      */
     public void setNewGameListener(final ActionListener listener) {
-<span class="nc" id="L139">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
-<span class="nc" id="L140">        newGameListener = listener;</span>
-<span class="nc" id="L141">    }</span>
+<span class="nc" id="L155">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
+<span class="nc" id="L156">        newGameListener = listener;</span>
+<span class="nc" id="L157">    }</span>
 
     /**
      * Set listener for quit menu item.
@@ -146,9 +162,22 @@ public final class MainWindow extends SwingFrame {
      * @param listener must not be {@code null}
      */
     public void setQuitListener(final ActionListener listener) {
-<span class="nc" id="L149">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
-<span class="nc" id="L150">        quitListener = listener;</span>
-<span class="nc" id="L151">    }</span>
+<span class="nc" id="L165">        Validate.notNull(listener, &quot;Listener must not be null!&quot;);</span>
+<span class="nc" id="L166">        quitListener = listener;</span>
+<span class="nc" id="L167">    }</span>
+
+    /**
+     * Determines if the game panel should be initialized.
+     *
+     * This is the case if the passed in filed has different dimensions than {@link #mineField}.
+     *
+     * @param mf must not be {@code null}
+     * @return {@code true} if game panel should reinitialize, else {@code false}
+     */
+    private boolean shouldReinitializeGamePanel(final MineField mf) {
+<span class="nc" id="L178">        Validate.notNull(mf, &quot;Passed in mine filed must not be null!&quot;);</span>
+<span class="nc bnc" id="L179" title="All 6 branches missed.">        return mineField != null &amp;&amp; (mf.getWidth() != mineField.getWidth() || mf.getHeight() != mineField.getHeight());</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

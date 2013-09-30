@@ -11,78 +11,129 @@
  */
 package de.weltraumschaf.minesweeper.control;
 
-import de.weltraumschaf.minesweeper.GlobalLog;
 import de.weltraumschaf.minesweeper.gui.FieldBoxButton;
-import java.awt.Component;
+import de.weltraumschaf.minesweeper.gui.MainWindow;
+import de.weltraumschaf.minesweeper.model.FieldBox;
+import de.weltraumschaf.minesweeper.model.MineField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.logging.Logger;
-import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Listen for mouse clicks on a {@link FieldBoxButton}.
  *
  * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
  */
-<span class="nc" id="L28">class FieldBoxButtonListener extends MouseAdapter {</span>
+class FieldBoxButtonListener extends MouseAdapter {
 
     /**
      * Log facility.
      */
-<span class="nc" id="L33">    private static final Logger LOG = GlobalLog.getLogger(FieldBoxButtonListener.class);</span>
+<span class="nc" id="L35">    private static final Logger LOG = Logger.getLogger(FieldBoxButtonListener.class);</span>
+    /**
+     * Frame to which the listener was added.
+     */
+    private final MainWindow main;
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param main must not be {@code null}
+     */
+    public FieldBoxButtonListener(final MainWindow main) {
+<span class="nc" id="L47">        super();</span>
+<span class="nc" id="L48">        Validate.notNull(main, &quot;Main must not be null!&quot;);</span>
+<span class="nc" id="L49">        this.main = main;</span>
+<span class="nc" id="L50">    }</span>
 
     @Override
     public void mouseClicked(final MouseEvent e) {
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (!(e.getComponent() instanceof FieldBoxButton)) {</span>
-<span class="nc" id="L38">            return;</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (!(e.getComponent() instanceof FieldBoxButton)) {</span>
+<span class="nc" id="L55">            LOG.warn(&quot;Got click event from something else than FieldBoxButton!&quot;);</span>
+<span class="nc" id="L56">            return;</span>
         }
 
-<span class="nc" id="L41">        final FieldBoxButton originatingButton = (FieldBoxButton) e.getComponent();</span>
+<span class="nc" id="L59">        final FieldBoxButton originatingButton = (FieldBoxButton) e.getComponent();</span>
 
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (originatingButton.isOpen()) {</span>
-<span class="nc" id="L44">            return;</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (originatingButton.isOpen()) {</span>
+<span class="nc" id="L62">            LOG.debug(String.format(&quot;Button %s already opened, exit.&quot;, originatingButton));</span>
+<span class="nc" id="L63">            return;</span>
         }
 
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
-<span class="nc" id="L48">            LOG.info(String.format(&quot;Right click on %s.&quot;, originatingButton.getBox()));</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
+<span class="nc" id="L67">            LOG.debug(String.format(&quot;Right click on %s.&quot;, originatingButton.getBox()));</span>
 
-<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (originatingButton.isFlag()) {</span>
-<span class="nc" id="L51">                originatingButton.close();</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (originatingButton.isFlag()) {</span>
+<span class="nc" id="L70">                originatingButton.close();</span>
             } else {
-<span class="nc" id="L53">                originatingButton.flag();</span>
+<span class="nc" id="L72">                originatingButton.flag();</span>
             }
         } else {
-<span class="nc" id="L56">            LOG.info(String.format(&quot;Left click on %s&quot;, originatingButton.getBox()));</span>
+<span class="nc" id="L75">            LOG.debug(String.format(&quot;Left click on %s&quot;, originatingButton.getBox()));</span>
 
-<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (originatingButton.isFlag()) {</span>
-<span class="nc" id="L59">                return;</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (originatingButton.isFlag()) {</span>
+<span class="nc" id="L78">                LOG.debug(String.format(&quot;Button %s flagged, exit.&quot;, originatingButton));</span>
+<span class="nc" id="L79">                return;</span>
             }
 
-<span class="nc" id="L62">            originatingButton.open();</span>
+<span class="nc" id="L82">            originatingButton.open();</span>
         }
 
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (originatingButton.getBox().getField().isGameOver()) {</span>
-<span class="nc" id="L66">            SwingUtilities.invokeLater(new Runnable() {</span>
-                @Override
-                public void run() {
-<span class="nc bnc" id="L69" title="All 2 branches missed.">                    for (final Component comp : originatingButton.getParent().getComponents()) {</span>
-<span class="nc bnc" id="L70" title="All 2 branches missed.">                        if (comp instanceof JButton) {</span>
-<span class="nc" id="L71">                            final JButton button = (JButton) comp;</span>
-<span class="nc" id="L72">                            final MouseEvent me = new MouseEvent(button, // which</span>
-                                    MouseEvent.MOUSE_CLICKED, // what
-                                    System.currentTimeMillis(), // when
-                                    0, // no modifiers
-                                    button.getX(), button.getY(), // where: at (10, 10}
-                                    1, // only 1 click
-                                    false); // not a popup trigger
-<span class="nc" id="L79">                            button.dispatchEvent(me);</span>
-                        }
-                    }
-<span class="nc" id="L82">                }</span>
-            });
-        }
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L85">        originatingButton.getParent().repaint();</span>
+<span class="nc" id="L86">        checkForWon(originatingButton.getBox().getField());</span>
+<span class="nc" id="L87">        main.getStatusbar().setMinesLeft(originatingButton.getBox().getField().countUnflaggedMines());</span>
+<span class="nc" id="L88">    }</span>
 
+    /**
+     * Determines if the games was won and shows a dialog in case of won game.
+     *
+     * @param field must not be {@code null}
+     */
+    private void checkForWon(final MineField field) {
+<span class="nc" id="L96">        LOG.debug(&quot;Check if game was won.&quot;);</span>
+<span class="nc" id="L97">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (LOG.isDebugEnabled()) {</span>
+<span class="nc" id="L100">            debugFieldSate(field);</span>
+        }
+
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (field.hasWon()) {</span>
+<span class="nc" id="L104">            LOG.debug(&quot;Game won!&quot;);</span>
+<span class="nc" id="L105">            JOptionPane.showMessageDialog(</span>
+                    main,
+                    String.format(&quot;Game won!&quot;),
+                    main.getTitle(),
+                    JOptionPane.PLAIN_MESSAGE);
+<span class="nc" id="L110">            openFlaggedBoxes(field);</span>
+        }
+<span class="nc" id="L112">    }</span>
+
+    /**
+     * Logs the state of the field for debugging.
+     *
+     * @param field must not be {@code null}
+     */
+    private void debugFieldSate(final MineField field) {
+<span class="nc" id="L120">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
+<span class="nc" id="L121">        LOG.debug(String.format(&quot;State of field:%n%s&quot;, field.getBoxes()));</span>
+<span class="nc" id="L122">    }</span>
+
+    /**
+     * Opens all flagged boxes.
+     *
+     * @param field must not be {@code null}
+     */
+    private void openFlaggedBoxes(final MineField field) {
+<span class="nc" id="L130">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        for (final FieldBox box : field.getBoxes().getAll()) {</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            if (box.isFlag()) {</span>
+<span class="nc" id="L134">                box.setOpened(true);</span>
+            }
+<span class="nc" id="L136">        }</span>
+<span class="nc" id="L137">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

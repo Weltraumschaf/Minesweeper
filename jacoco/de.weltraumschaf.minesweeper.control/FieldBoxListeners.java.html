@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.minesweeper.control;
 
+import de.weltraumschaf.minesweeper.gui.MainWindow;
 import java.awt.event.MouseAdapter;
 
 /**
@@ -25,16 +26,17 @@ public final class FieldBoxListeners {
      * Hidden for pure static class.
      */
     private FieldBoxListeners() {
-<span class="nc" id="L28">        super();</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L29">        super();</span>
+<span class="nc" id="L30">    }</span>
 
     /**
      * Creates listener which reacts on right/left mouse clicks.
      *
+     * @param main must not be {@code null}
      * @return never {@code null}
      */
-    public static MouseAdapter createClickListener() {
-<span class="nc" id="L37">        return new FieldBoxButtonListener();</span>
+    public static MouseAdapter createClickListener(final MainWindow main) {
+<span class="nc" id="L39">        return new FieldBoxButtonListener(main);</span>
     }
 
 }

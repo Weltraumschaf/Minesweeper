@@ -28,8 +28,6 @@ class VersionInfoListener implements ActionListener {
 
     /**
      * Used to dispose.
-     *
-     * XXX: Consider if retrievable from {@link ActionEvent}.
      */
     private final MainWindow main;
     /**
@@ -44,17 +42,21 @@ class VersionInfoListener implements ActionListener {
      * @param version must not be {@code null}
      */
     public VersionInfoListener(final MainWindow main, final Version version) {
-<span class="nc" id="L47">        super();</span>
-<span class="nc" id="L48">        Validate.notNull(main, &quot;Main window must not be null!&quot;);</span>
-<span class="nc" id="L49">        this.main = main;</span>
-<span class="nc" id="L50">        Validate.notNull(version, &quot;Version window must not be null!&quot;);</span>
-<span class="nc" id="L51">        this.version = version;</span>
-<span class="nc" id="L52">    }</span>
+<span class="nc" id="L45">        super();</span>
+<span class="nc" id="L46">        Validate.notNull(main, &quot;Main window must not be null!&quot;);</span>
+<span class="nc" id="L47">        this.main = main;</span>
+<span class="nc" id="L48">        Validate.notNull(version, &quot;Version window must not be null!&quot;);</span>
+<span class="nc" id="L49">        this.version = version;</span>
+<span class="nc" id="L50">    }</span>
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-<span class="nc" id="L56">        JOptionPane.showMessageDialog(main, String.format(&quot;Version: %s&quot;, version.toString()));</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L54">        JOptionPane.showMessageDialog(</span>
+            main,
+            String.format(&quot;Version: %s&quot;, version.toString()),
+            main.getTitle(),
+            JOptionPane.PLAIN_MESSAGE);
+<span class="nc" id="L59">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

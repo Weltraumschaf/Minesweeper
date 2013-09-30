@@ -14,6 +14,7 @@ package de.weltraumschaf.minesweeper.gui;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.apache.commons.lang3.Validate;
 
@@ -22,64 +23,64 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
  */
-<span class="pc" id="L25">public enum ImageIcons {</span>
+<span class="pc" id="L26">public enum ImageIcons {</span>
 
     /**
      * Blank open box.
      *
      * Used for opened boxes with 0 mines in neighborhood.
      */
-<span class="fc" id="L32">    BLANK(&quot;blank.png&quot;),</span>
+<span class="fc" id="L33">    BLANK(&quot;blank.png&quot;),</span>
     /**
      * Flagged box.
      *
      * Signals that the user thinks there is a mine.
      */
-<span class="fc" id="L38">    FLAG(&quot;flag.png&quot;),</span>
+<span class="fc" id="L39">    FLAG(&quot;flag.png&quot;),</span>
     /**
      * Default image for a field box.
      */
-<span class="fc" id="L42">    CLOSED(&quot;closed.png&quot;),</span>
+<span class="fc" id="L43">    CLOSED(&quot;closed.png&quot;),</span>
     /**
      * Image for a opened mine.
      */
-<span class="fc" id="L46">    BOMB(&quot;bomb.png&quot;),</span>
+<span class="fc" id="L47">    BOMB(&quot;bomb.png&quot;),</span>
     /**
      * Image for a opened and exploded mine.
      */
-<span class="fc" id="L50">    BOMB_EXPLODED(&quot;bomb_exploded.png&quot;),</span>
+<span class="fc" id="L51">    BOMB_EXPLODED(&quot;bomb_exploded.png&quot;),</span>
     /**
      * Opened field box with one mine in neighborhood.
      */
-<span class="fc" id="L54">    ONE_NEIGHBOR(&quot;one_neighbor.png&quot;),</span>
+<span class="fc" id="L55">    ONE_NEIGHBOR(&quot;one_neighbor.png&quot;),</span>
     /**
      * Opened field box with two mine in neighborhood.
      */
-<span class="fc" id="L58">    TWO_NEIGHBOR(&quot;two_neighbor.png&quot;),</span>
+<span class="fc" id="L59">    TWO_NEIGHBOR(&quot;two_neighbor.png&quot;),</span>
     /**
      * Opened field box with three mine in neighborhood.
      */
-<span class="fc" id="L62">    THREE_NEIGHBOR(&quot;three_neighbor.png&quot;),</span>
+<span class="fc" id="L63">    THREE_NEIGHBOR(&quot;three_neighbor.png&quot;),</span>
     /**
      * Opened field box with four mine in neighborhood.
      */
-<span class="fc" id="L66">    FOUR_NEIGHBOR(&quot;four_neighbor.png&quot;),</span>
+<span class="fc" id="L67">    FOUR_NEIGHBOR(&quot;four_neighbor.png&quot;),</span>
     /**
      * Opened field box with five mine in neighborhood.
      */
-<span class="fc" id="L70">    FIVE_NEIGHBOR(&quot;five_neighbor.png&quot;),</span>
+<span class="fc" id="L71">    FIVE_NEIGHBOR(&quot;five_neighbor.png&quot;),</span>
     /**
      * Opened field box with six mine in neighborhood.
      */
-<span class="fc" id="L74">    SIX_NEIGHBOR(&quot;six_neighbor.png&quot;),</span>
+<span class="fc" id="L75">    SIX_NEIGHBOR(&quot;six_neighbor.png&quot;),</span>
     /**
      * Opened field box with seven mine in neighborhood.
      */
-<span class="fc" id="L78">    SEVEN_NEIGHBOR(&quot;seven_neighbor.png&quot;),</span>
+<span class="fc" id="L79">    SEVEN_NEIGHBOR(&quot;seven_neighbor.png&quot;),</span>
     /**
      * Opened field box with eight mine in neighborhood.
      */
-<span class="fc" id="L82">    EIGHT_NEIGHBOR(&quot;eight_neighbor.png&quot;);</span>
+<span class="fc" id="L83">    EIGHT_NEIGHBOR(&quot;eight_neighbor.png&quot;);</span>
     /**
      * Base package where icon binaries are.
      */
@@ -87,7 +88,7 @@ import org.apache.commons.lang3.Validate;
     /**
      * Cache to pre load each image binary one time.
      */
-<span class="fc" id="L90">    private static final Map&lt;ImageIcons, ImageIcon&gt; CACHE = new ConcurrentHashMap&lt;ImageIcons, ImageIcon&gt;();</span>
+<span class="fc" id="L91">    private static final Map&lt;ImageIcons, Icon&gt; CACHE = new ConcurrentHashMap&lt;ImageIcons, Icon&gt;();</span>
     /**
      * Base name of image.
      */
@@ -95,32 +96,32 @@ import org.apache.commons.lang3.Validate;
 
     static {
         // Initialize the cache.
-<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (final ImageIcons icn : values()) {</span>
-<span class="fc" id="L99">            CACHE.put(icn, icn.getResource());</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        for (final ImageIcons icn : values()) {</span>
+<span class="fc" id="L100">            CACHE.put(icn, icn.getResource());</span>
         }
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L102">    }</span>
 
     /**
      * Dedicated constructor.
      *
      * @param baseName must not be {@code null} or empty
      */
-<span class="fc" id="L108">    private ImageIcons(final String baseName) {</span>
-<span class="fc" id="L109">        Validate.notEmpty(baseName, &quot;Base name must not be null or empry!&quot;);</span>
-<span class="fc" id="L110">        this.baseName = baseName;</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc" id="L109">    private ImageIcons(final String baseName) {</span>
+<span class="fc" id="L110">        Validate.notEmpty(baseName, &quot;Base name must not be null or empry!&quot;);</span>
+<span class="fc" id="L111">        this.baseName = baseName;</span>
+<span class="fc" id="L112">    }</span>
 
     /**
      * Get image resource.
      *
      * @return never {@code null}, same instance
      */
-    public ImageIcon getResource() {
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (CACHE.containsKey(this)) {</span>
-<span class="fc" id="L120">            return CACHE.get(this);</span>
+    public Icon getResource() {
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (CACHE.containsKey(this)) {</span>
+<span class="fc" id="L121">            return CACHE.get(this);</span>
         }
 
-<span class="fc" id="L123">        return new ImageIcon(getClass().getClassLoader().getResource(BASE_PACKAGE + baseName));</span>
+<span class="fc" id="L124">        return new ImageIcon(getClass().getClassLoader().getResource(BASE_PACKAGE + baseName));</span>
     }
 
 }

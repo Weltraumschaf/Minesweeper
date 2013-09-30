@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Score.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.model</a> &gt; <span class="el_source">Score.java</span></div><h1>Score.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+
+package de.weltraumschaf.minesweeper.model;
+
+import java.util.Observable;
+
+/**
+ * Counts the number of won/lost gams of a session.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+<span class="fc" id="L22">public class Score extends Observable {</span>
+
+    /**
+     * Number of games won.
+     */
+    private int gamesWon;
+    /**
+     * Number of games lost.
+     */
+    private int gamesLost;
+
+    /**
+     * Increments count of won games.
+     *
+     * Also notify all observers.
+     */
+    public void incrementGamesWon() {
+<span class="fc" id="L39">        setChanged();</span>
+<span class="fc" id="L40">        ++gamesWon;</span>
+<span class="fc" id="L41">        notifyObservers();</span>
+<span class="fc" id="L42">    }</span>
+
+    /**
+     * Increments count of lost games.
+     *
+     * Also notify all observers.
+     */
+    public void incrementGamesLost() {
+<span class="fc" id="L50">        setChanged();</span>
+<span class="fc" id="L51">        ++gamesLost;</span>
+<span class="fc" id="L52">        notifyObservers();</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Get count of won games.
+     *
+     * @return not negative number
+     */
+    public int getGamesWon() {
+<span class="fc" id="L61">        return gamesWon;</span>
+    }
+
+    /**
+     * Get count of lost games.
+     *
+     * @return not negative number
+     */
+    public int getGamesLost() {
+<span class="fc" id="L70">        return gamesLost;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L75">        return &quot;Score{gamesWon=&quot; + gamesWon + &quot;, gamesLost=&quot; + gamesLost + '}';</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

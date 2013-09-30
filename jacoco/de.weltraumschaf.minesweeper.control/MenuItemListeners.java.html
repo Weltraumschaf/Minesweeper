@@ -12,6 +12,7 @@
 package de.weltraumschaf.minesweeper.control;
 
 import de.weltraumschaf.commons.Version;
+import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import de.weltraumschaf.minesweeper.gui.MainWindow;
 import java.awt.event.ActionListener;
 
@@ -26,17 +27,17 @@ public final class MenuItemListeners {
      * Hidden because pure static factory.
      */
     private MenuItemListeners() {
-<span class="nc" id="L29">        super();</span>
-<span class="nc" id="L30">    }</span>
+<span class="nc" id="L30">        super();</span>
+<span class="nc" id="L31">    }</span>
 
     /**
      * Creates new game listener.
      *
-     * @param main must not be {@code null}
+     * @param session must not be {@code null}
      * @return always new instance, never {@code null}
      */
-    public static ActionListener createNewGameListener(final MainWindow main) {
-<span class="nc" id="L39">        return new NewGameListener(main);</span>
+    public static ActionListener createNewGameListener(final MinesweeperSession session) {
+<span class="nc" id="L40">        return new NewGameListener(session);</span>
     }
 
     /**
@@ -47,7 +48,7 @@ public final class MenuItemListeners {
      * @return always new instance, never {@code null}
      */
     public static ActionListener createVersionListener(final MainWindow main, final Version version) {
-<span class="nc" id="L50">        return new VersionInfoListener(main, version);</span>
+<span class="nc" id="L51">        return new VersionInfoListener(main, version);</span>
     }
 
     /**
@@ -57,7 +58,7 @@ public final class MenuItemListeners {
      * @return always new instance, never {@code null}
      */
     public static ActionListener createQuitListener(final MainWindow main) {
-<span class="nc" id="L60">        return new QuitListener(main);</span>
+<span class="nc" id="L61">        return new QuitListener(main);</span>
     }
 
 }

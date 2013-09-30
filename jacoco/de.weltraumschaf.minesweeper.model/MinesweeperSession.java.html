@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MinesweeperSession.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeper</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.minesweeper.model</a> &gt; <span class="el_source">MinesweeperSession.java</span></div><h1>MinesweeperSession.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.minesweeper.model;
+
+import de.weltraumschaf.commons.Version;
+import de.weltraumschaf.minesweeper.control.MenuItemListeners;
+import de.weltraumschaf.minesweeper.gui.MainWindow;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Represents the main application code: Play a minesweeper session.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public class MinesweeperSession {
+
+    /**
+     * Version information.
+     */
+    private final Version version;
+    /**
+     * Score of the current played session.
+     */
+<span class="nc" id="L33">    private final Score score = new Score();</span>
+    /**
+     * The games main windows.
+     */
+<span class="nc" id="L37">    private final MainWindow mainWindow = new MainWindow(&quot;Minesweeper&quot;);</span>
+    /**
+     * Current played game.
+     */
+    private Game currentGame;
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param version must not be {@code null}
+     */
+    public MinesweeperSession(final Version version) {
+<span class="nc" id="L49">        super();</span>
+<span class="nc" id="L50">        Validate.notNull(version, &quot;Version must not be null!&quot;);</span>
+<span class="nc" id="L51">        this.version = version;</span>
+<span class="nc" id="L52">    }</span>
+
+    /**
+     * Play minesweeper.
+     */
+    public void play() {
+<span class="nc" id="L58">        initMainWindow();</span>
+<span class="nc" id="L59">        newGame();</span>
+<span class="nc" id="L60">    }</span>
+
+    /**
+     * Initializes the main windows.
+     */
+    private void initMainWindow() {
+<span class="nc" id="L66">        mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));</span>
+<span class="nc" id="L67">        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));</span>
+<span class="nc" id="L68">        mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));</span>
+<span class="nc" id="L69">        mainWindow.init();</span>
+<span class="nc" id="L70">        score.addObserver(mainWindow.getStatusbar());</span>
+<span class="nc" id="L71">        mainWindow.setVisible(true);</span>
+<span class="nc" id="L72">    }</span>
+
+    /**
+     * Create a new game.
+     */
+    public void newGame() {
+<span class="nc" id="L78">        updateScore();</span>
+<span class="nc" id="L79">        currentGame = new Game();</span>
+<span class="nc" id="L80">        currentGame.start();</span>
+<span class="nc" id="L81">        mainWindow.setMineField(currentGame.getMineField());</span>
+<span class="nc" id="L82">        mainWindow.getStatusbar().setMinesLeft(currentGame.getMineField().countUnflaggedMines());</span>
+<span class="nc" id="L83">        mainWindow.repaint();</span>
+<span class="nc" id="L84">    }</span>
+
+    /**
+     * Update the session score.
+     */
+    private void updateScore() {
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (null != currentGame) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">            if (currentGame.isGameOver()) {</span>
+<span class="nc" id="L92">                score.incrementGamesLost();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            } else if (currentGame.hasWon()) {</span>
+<span class="nc" id="L94">                score.incrementGamesWon();</span>
+            }
+        }
+<span class="nc" id="L97">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
