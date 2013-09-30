@@ -41,6 +41,10 @@ public final class MainWindow extends SwingFrame {
      */
     private static final OperatingSystem OS = OperatingSystem.determine(System.getProperty("os.name", ""));
     /**
+     * UI status bar.
+     */
+    private final StatusBar statusbar = new StatusBar();
+    /**
      * Holds the game field.
      */
     private MineFieldPanel gamePanel;
@@ -75,12 +79,12 @@ public final class MainWindow extends SwingFrame {
     }
 
     /**
-     * Get the game mine field model.
+     * Get the UI status bar.
      *
      * @return never {@code null}
      */
-    public MineField getMineField() {
-        return mineField;
+    public StatusBar getStatusbar() {
+        return statusbar;
     }
 
     /**
@@ -128,7 +132,6 @@ public final class MainWindow extends SwingFrame {
     @Override
     public void initPanel() {
         panel.add(gamePanel);
-        final StatusBar statusbar = new StatusBar();
         getContentPane().add(statusbar, BorderLayout.SOUTH);
         pack();
     }

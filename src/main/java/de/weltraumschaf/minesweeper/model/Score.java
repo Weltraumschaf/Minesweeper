@@ -70,4 +70,9 @@ public class Score extends Observable {
         return gamesLost;
     }
 
+    @Override
+    public String toString() {
+        return "Score{gamesWon=" + gamesWon + ", gamesLost=" + gamesLost + '}';
+    }
+
 }

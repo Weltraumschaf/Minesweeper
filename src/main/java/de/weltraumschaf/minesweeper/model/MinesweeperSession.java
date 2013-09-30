@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.minesweeper.model;
 
 import de.weltraumschaf.commons.Version;
@@ -68,17 +67,28 @@ public class MinesweeperSession {
         mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));
         mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
         mainWindow.init();
+        score.addObserver(mainWindow.getStatusbar());
         mainWindow.setVisible(true);
     }
 
     /**
      * Create a new game.
      */
-    public void  newGame() {
+    public void newGame() {
+        updateScore();
         currentGame = new Game();
         currentGame.start();
         mainWindow.setMineField(currentGame.getMineField());
         mainWindow.repaint();
     }
 
+    private void updateScore() {
+        if (null != currentGame) {
+            if (currentGame.isGameOver()) {
+                score.incrementGamesLost();
+            } else if (currentGame.hasWon()) {
+                score.incrementGamesWon();
+            }
+        }
+    }
 }

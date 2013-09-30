@@ -17,6 +17,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JLabel;
 import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * UI element to display number of games (sum, lost, and won).
@@ -27,6 +28,10 @@ import org.apache.commons.lang3.Validate;
  */
 class ScoreLabel extends JLabel implements Observer {
 
+    /**
+     * Logging facility.
+     */
+    private static final Logger LOG = Logger.getLogger(ScoreLabel.class);
     /**
      * Format of displayed label text.
      */
@@ -97,8 +102,10 @@ class ScoreLabel extends JLabel implements Observer {
         }
 
         final Score score = (Score) observable;
+        LOG.debug(String.format("Update score label with %s", score));
         setWon(score.getGamesWon());
         setLost(score.getGamesLost());
+        repaint();
     }
 
 }

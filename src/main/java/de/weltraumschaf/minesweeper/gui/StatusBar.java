@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.minesweeper.gui;
 
+import de.weltraumschaf.minesweeper.model.Score;
 import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
@@ -41,7 +42,7 @@ public class StatusBar extends JPanel implements Observer {
     /**
      * Displays the score.
      */
-    private ScoreLabel score = new ScoreLabel();
+    private ScoreLabel scoreLabel = new ScoreLabel();
     /**
      * Displays the elapsed time.
      */
@@ -58,7 +59,7 @@ public class StatusBar extends JPanel implements Observer {
      */
     public StatusBar() {
         super(new GridLayout(ROWS, COLUMS));
-        add(score);
+        add(scoreLabel);
         elapsedTime.setValue("0");
         add(elapsedTime);
         minesLeft.setValue("0");
@@ -67,7 +68,9 @@ public class StatusBar extends JPanel implements Observer {
 
     @Override
     public void update(final Observable observable, final Object arg) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        if (observable instanceof Score) {
+            scoreLabel.update(observable, arg);
+        }
     }
 
 }
