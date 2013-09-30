@@ -59,6 +59,13 @@ public class App extends InvokableAdapter implements Runnable {
     public void run() {
         final MinesweeperSession minesweeper = new MinesweeperSession(version);
         minesweeper.play();
+        registerShutdownHook(new Runnable() {
+
+            @Override
+            public void run() {
+                minesweeper.quit();
+            }
+        });
     }
 
 }

@@ -51,6 +51,7 @@ public class MinesweeperSession {
      * Current played game.
      */
     private Game currentGame;
+    private Timer timer;
 
     /**
      * Dedicated constructor.
@@ -69,6 +70,14 @@ public class MinesweeperSession {
     public void play() {
         initMainWindow();
         newGame();
+    }
+
+    /**
+     * Quit the game.
+     */
+    public void quit() {
+        LOG.debug("Quit minesweeper.");
+        timer.stop();
     }
 
     /**
@@ -112,10 +121,15 @@ public class MinesweeperSession {
         }
     }
 
+    /**
+     * Initialize the status bar.
+     *
+     * http://stackoverflow.com/questions/13366780/how-to-add-real-time-date-and-time-into-a-jframe-component-e-g-status-bar
+     */
     private void initStatusBar() {
         LOG.debug("Init status bar.");
         score.addObserver(mainWindow.getStatusbar());
-        final Timer timer = new Timer(TIMER_DELAY, new ActionListener() {
+        timer = new Timer(TIMER_DELAY, new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 mainWindow.getStatusbar().setElapsedTime(currentGame.getTime());
