@@ -61,4 +61,14 @@ public final class MenuItemListeners {
         return new QuitListener(main);
     }
 
+    /**
+     * Creates new resize field listener.
+     *
+     * @param main must not be {@code null}
+     * @return always new instance, never {@code null}
+     */
+    public static ActionListener createResizeFieldListener() {
+        return new ResizeFieldListener();
+    }
+
 }

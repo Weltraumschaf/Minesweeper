@@ -56,6 +56,7 @@ public final class MainWindow extends SwingFrame {
      * Listens for version menu item.
      */
     private ActionListener versionInfoListener;
+    private ActionListener resizeFieldListener;
     /**
      * Listens for new game menu item.
      */
@@ -113,10 +114,21 @@ public final class MainWindow extends SwingFrame {
                 .item("New")
                 .addListener(newGameListener)
                 .setAccelerator('N')
+                .end()
+                .separator()
+                .item(Size.SMALL.getActionCommand())
+                .addListener(resizeFieldListener)
+                .end()
+                .item(Size.MEDIUM.getActionCommand())
+                .addListener(resizeFieldListener)
+                .end()
+                .item(Size.LARGE.getActionCommand())
+                .addListener(resizeFieldListener)
                 .end();
 
         if (OperatingSystem.MACOSX != OS) {
-            builder.item("Version")
+            builder.separator()
+                    .item("Version")
                     .addListener(versionInfoListener)
                     .end()
                     .separator()
@@ -164,6 +176,16 @@ public final class MainWindow extends SwingFrame {
     public void setQuitListener(final ActionListener listener) {
         Validate.notNull(listener, "Listener must not be null!");
         quitListener = listener;
+    }
+
+    /**
+     * Set listener for field size menu items.
+     *
+     * @param listener must not be {@code null}
+     */
+    public void setResizeFieldListener(final ActionListener listener) {
+        Validate.notNull(listener, "Listener must not be null!");
+        resizeFieldListener = listener;
     }
 
     /**

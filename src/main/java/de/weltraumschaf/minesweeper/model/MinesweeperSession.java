@@ -91,6 +91,7 @@ public class MinesweeperSession {
         mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
         mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));
         mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
+        mainWindow.setResizeFieldListener(MenuItemListeners.createResizeFieldListener());
         mainWindow.init();
         initStatusBar();
         mainWindow.setVisible(true);
