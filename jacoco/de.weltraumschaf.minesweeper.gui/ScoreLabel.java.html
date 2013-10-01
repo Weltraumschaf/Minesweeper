@@ -16,7 +16,6 @@ import de.weltraumschaf.minesweeper.model.Score;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
@@ -32,7 +31,7 @@ class ScoreLabel extends JLabel implements Observer {
     /**
      * Logging facility.
      */
-<span class="nc" id="L35">    private static final Logger LOG = Logger.getLogger(ScoreLabel.class);</span>
+<span class="nc" id="L34">    private static final Logger LOG = Logger.getLogger(ScoreLabel.class);</span>
     /**
      * Format of displayed label text.
      */
@@ -53,9 +52,9 @@ class ScoreLabel extends JLabel implements Observer {
      * Set text with default values.
      */
     public ScoreLabel() {
-<span class="nc" id="L56">        super();</span>
-<span class="nc" id="L57">        setText(renderText());</span>
-<span class="nc" id="L58">    }</span>
+<span class="nc" id="L55">        super();</span>
+<span class="nc" id="L56">        setText(renderText());</span>
+<span class="nc" id="L57">    }</span>
 
     /**
      * Set the number of won games.
@@ -63,10 +62,10 @@ class ScoreLabel extends JLabel implements Observer {
      * @param won must not be less than 0
      */
     public void setWon(int won) {
-<span class="nc bnc" id="L66" title="All 2 branches missed.">        Validate.isTrue(won &gt;= 0, &quot;Won number must not be less than 0!&quot;);</span>
-<span class="nc" id="L67">        this.won = won;</span>
-<span class="nc" id="L68">        setText(renderText());</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        Validate.isTrue(won &gt;= 0, &quot;Won number must not be less than 0!&quot;);</span>
+<span class="nc" id="L66">        this.won = won;</span>
+<span class="nc" id="L67">        setText(renderText());</span>
+<span class="nc" id="L68">    }</span>
 
     /**
      * Set the number of lost games.
@@ -74,10 +73,10 @@ class ScoreLabel extends JLabel implements Observer {
      * @param lost must not be less than 0
      */
     public void setLost(int lost) {
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        Validate.isTrue(lost &gt;= 0, &quot;Lost number must not be less than 0!&quot;);</span>
-<span class="nc" id="L78">        this.lost = lost;</span>
-<span class="nc" id="L79">        setText(renderText());</span>
-<span class="nc" id="L80">    }</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        Validate.isTrue(lost &gt;= 0, &quot;Lost number must not be less than 0!&quot;);</span>
+<span class="nc" id="L77">        this.lost = lost;</span>
+<span class="nc" id="L78">        setText(renderText());</span>
+<span class="nc" id="L79">    }</span>
 
     /**
      * Renders the display text.
@@ -85,7 +84,7 @@ class ScoreLabel extends JLabel implements Observer {
      * @return never {@code null} or empty
      */
     private String renderText() {
-<span class="nc" id="L88">        return String.format(DISPLAY_FORMAT, won + lost, won, lost);</span>
+<span class="nc" id="L87">        return String.format(DISPLAY_FORMAT, won + lost, won, lost);</span>
     }
 
     /**
@@ -98,16 +97,16 @@ class ScoreLabel extends JLabel implements Observer {
      */
     @Override
     public void update(final Observable observable, final Object arg) {
-<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (!(observable instanceof Score)) {</span>
-<span class="nc" id="L102">            return;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (!(observable instanceof Score)) {</span>
+<span class="nc" id="L101">            return;</span>
         }
 
-<span class="nc" id="L105">        final Score score = (Score) observable;</span>
-<span class="nc" id="L106">        LOG.debug(String.format(&quot;Update score label with %s&quot;, score));</span>
-<span class="nc" id="L107">        setWon(score.getGamesWon());</span>
-<span class="nc" id="L108">        setLost(score.getGamesLost());</span>
-<span class="nc" id="L109">        repaint();</span>
-<span class="nc" id="L110">    }</span>
+<span class="nc" id="L104">        final Score score = (Score) observable;</span>
+<span class="nc" id="L105">        LOG.debug(String.format(&quot;Update score label with %s&quot;, score));</span>
+<span class="nc" id="L106">        setWon(score.getGamesWon());</span>
+<span class="nc" id="L107">        setLost(score.getGamesLost());</span>
+<span class="nc" id="L108">        repaint();</span>
+<span class="nc" id="L109">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

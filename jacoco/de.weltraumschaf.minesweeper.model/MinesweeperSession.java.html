@@ -51,6 +51,9 @@ public class MinesweeperSession {
      * Current played game.
      */
     private Game currentGame;
+    /**
+     * Used to update the stop watch in the status bar.
+     */
     private Timer timer;
 
     /**
@@ -59,86 +62,84 @@ public class MinesweeperSession {
      * @param version must not be {@code null}
      */
     public MinesweeperSession(final Version version) {
-<span class="nc" id="L62">        super();</span>
-<span class="nc" id="L63">        Validate.notNull(version, &quot;Version must not be null!&quot;);</span>
-<span class="nc" id="L64">        this.version = version;</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L65">        super();</span>
+<span class="nc" id="L66">        Validate.notNull(version, &quot;Version must not be null!&quot;);</span>
+<span class="nc" id="L67">        this.version = version;</span>
+<span class="nc" id="L68">    }</span>
 
     /**
      * Play minesweeper.
      */
     public void play() {
-<span class="nc" id="L71">        initMainWindow();</span>
-<span class="nc" id="L72">        newGame();</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L74">        initMainWindow();</span>
+<span class="nc" id="L75">        newGame();</span>
+<span class="nc" id="L76">    }</span>
 
     /**
      * Quit the game.
      */
     public void quit() {
-<span class="nc" id="L79">        LOG.debug(&quot;Quit minesweeper.&quot;);</span>
-<span class="nc" id="L80">        timer.stop();</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L82">        LOG.debug(&quot;Quit minesweeper.&quot;);</span>
+<span class="nc" id="L83">        timer.stop();</span>
+<span class="nc" id="L84">    }</span>
 
     /**
      * Initializes the main windows.
      */
     private void initMainWindow() {
-<span class="nc" id="L87">        LOG.debug(&quot;Init main window.&quot;);</span>
-<span class="nc" id="L88">        mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));</span>
-<span class="nc" id="L89">        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));</span>
-<span class="nc" id="L90">        mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));</span>
-<span class="nc" id="L91">        mainWindow.init();</span>
-<span class="nc" id="L92">        initStatusBar();</span>
-<span class="nc" id="L93">        mainWindow.setVisible(true);</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L90">        LOG.debug(&quot;Init main window.&quot;);</span>
+<span class="nc" id="L91">        mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));</span>
+<span class="nc" id="L92">        mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));</span>
+<span class="nc" id="L93">        mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));</span>
+<span class="nc" id="L94">        mainWindow.init();</span>
+<span class="nc" id="L95">        initStatusBar();</span>
+<span class="nc" id="L96">        mainWindow.setVisible(true);</span>
+<span class="nc" id="L97">    }</span>
 
     /**
      * Create a new game.
      */
     public void newGame() {
-<span class="nc" id="L100">        LOG.debug(&quot;Make new game.&quot;);</span>
-<span class="nc" id="L101">        updateScore();</span>
-<span class="nc" id="L102">        currentGame = new Game();</span>
-<span class="nc" id="L103">        currentGame.start();</span>
-<span class="nc" id="L104">        mainWindow.setMineField(currentGame.getMineField());</span>
-<span class="nc" id="L105">        mainWindow.getStatusbar().setMinesLeft(currentGame.getMineField().countUnflaggedMines());</span>
-<span class="nc" id="L106">        mainWindow.repaint();</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L103">        LOG.debug(&quot;Make new game.&quot;);</span>
+<span class="nc" id="L104">        updateScore();</span>
+<span class="nc" id="L105">        currentGame = new Game();</span>
+<span class="nc" id="L106">        currentGame.start();</span>
+<span class="nc" id="L107">        mainWindow.setMineField(currentGame.getMineField());</span>
+<span class="nc" id="L108">        mainWindow.getStatusbar().setMinesLeft(currentGame.getMineField().countUnflaggedMines());</span>
+<span class="nc" id="L109">        mainWindow.repaint();</span>
+<span class="nc" id="L110">    }</span>
 
     /**
      * Update the session score.
      */
     private void updateScore() {
-<span class="nc" id="L113">        LOG.debug(&quot;Update score.&quot;);</span>
+<span class="nc" id="L116">        LOG.debug(&quot;Update score.&quot;);</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (null != currentGame) {</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (currentGame.isGameOver()) {</span>
-<span class="nc" id="L117">                score.incrementGamesLost();</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">            } else if (currentGame.hasWon()) {</span>
-<span class="nc" id="L119">                score.incrementGamesWon();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (null != currentGame) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (currentGame.isGameOver()) {</span>
+<span class="nc" id="L120">                score.incrementGamesLost();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            } else if (currentGame.hasWon()) {</span>
+<span class="nc" id="L122">                score.incrementGamesWon();</span>
             }
         }
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L125">    }</span>
 
     /**
      * Initialize the status bar.
-     *
-     * http://stackoverflow.com/questions/13366780/how-to-add-real-time-date-and-time-into-a-jframe-component-e-g-status-bar
      */
     private void initStatusBar() {
-<span class="nc" id="L130">        LOG.debug(&quot;Init status bar.&quot;);</span>
-<span class="nc" id="L131">        score.addObserver(mainWindow.getStatusbar());</span>
-<span class="nc" id="L132">        timer = new Timer(TIMER_DELAY, new ActionListener() {</span>
+<span class="nc" id="L131">        LOG.debug(&quot;Init status bar.&quot;);</span>
+<span class="nc" id="L132">        score.addObserver(mainWindow.getStatusbar());</span>
+<span class="nc" id="L133">        timer = new Timer(TIMER_DELAY, new ActionListener() {</span>
             @Override
             public void actionPerformed(final ActionEvent e) {
-<span class="nc" id="L135">                mainWindow.getStatusbar().setElapsedTime(currentGame.getTime());</span>
-<span class="nc" id="L136">            }</span>
+<span class="nc" id="L136">                mainWindow.getStatusbar().setElapsedTime(currentGame.getTime());</span>
+<span class="nc" id="L137">            }</span>
         });
-<span class="nc" id="L138">        timer.setRepeats(true);</span>
-<span class="nc" id="L139">        timer.setCoalesce(true);</span>
-<span class="nc" id="L140">        timer.setInitialDelay(0);</span>
-<span class="nc" id="L141">        timer.start();</span>
-<span class="nc" id="L142">    }</span>
+<span class="nc" id="L139">        timer.setRepeats(true);</span>
+<span class="nc" id="L140">        timer.setCoalesce(true);</span>
+<span class="nc" id="L141">        timer.setInitialDelay(0);</span>
+<span class="nc" id="L142">        timer.start();</span>
+<span class="nc" id="L143">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

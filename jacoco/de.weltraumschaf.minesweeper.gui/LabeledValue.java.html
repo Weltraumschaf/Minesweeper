@@ -12,7 +12,6 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -37,11 +36,11 @@ class LabeledValue extends JLabel {
      * @param labelText must not be {@code null} or empty
      */
     public LabeledValue(final String labelText) {
-<span class="nc" id="L40">        super();</span>
-<span class="nc" id="L41">        Validate.notEmpty(labelText, &quot;Label text must not be null or empty!&quot;);</span>
-<span class="nc" id="L42">        this.labelText = labelText;</span>
-<span class="nc" id="L43">        setText(renderText(&quot;&quot;));</span>
-<span class="nc" id="L44">    }</span>
+<span class="nc" id="L39">        super();</span>
+<span class="nc" id="L40">        Validate.notEmpty(labelText, &quot;Label text must not be null or empty!&quot;);</span>
+<span class="nc" id="L41">        this.labelText = labelText;</span>
+<span class="nc" id="L42">        setText(renderText(&quot;&quot;));</span>
+<span class="nc" id="L43">    }</span>
 
     /**
      * Sets the changeable value text.
@@ -49,9 +48,9 @@ class LabeledValue extends JLabel {
      * @param valueText must not be {@code null}
      */
     public void setValue(final String valueText) {
-<span class="nc" id="L52">        Validate.notNull(valueText, &quot;Value text must not be null!&quot;);</span>
-<span class="nc" id="L53">        setText(renderText(valueText));</span>
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L51">        Validate.notNull(valueText, &quot;Value text must not be null!&quot;);</span>
+<span class="nc" id="L52">        setText(renderText(valueText));</span>
+<span class="nc" id="L53">    }</span>
 
     /**
      * Renders the whole label string.
@@ -60,7 +59,7 @@ class LabeledValue extends JLabel {
      * @return never {@code null}
      */
     private String renderText(final String valueText) {
-<span class="nc" id="L63">        return String.format(&quot;%s: %s&quot;, labelText, valueText);</span>
+<span class="nc" id="L62">        return String.format(&quot;%s: %s&quot;, labelText, valueText);</span>
     }
 
 }
