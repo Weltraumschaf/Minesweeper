@@ -37,7 +37,6 @@
     <body>
         <breadcrumbs>
             <item name="Weltraumschaf" href="http://www.weltraumschaf.de"/>
-            <item name="Continious Integration" href="http://ci.weltraumschaf.de/job/Minesweeper/"/>
         </breadcrumbs>
         <menu name="${project.name}">
             <item name="Home" href="index.html"/>
