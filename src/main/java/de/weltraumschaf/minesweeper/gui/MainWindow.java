@@ -103,7 +103,7 @@ public final class MainWindow extends SwingFrame {
 
         mineField = mf;
         // First init so that buttons are available.
-        gamePanel.setModels(mineField.getBoxes());
+        gamePanel.setModels(mineField.getBoxes(), mineField.getGame());
     }
 
     @Override

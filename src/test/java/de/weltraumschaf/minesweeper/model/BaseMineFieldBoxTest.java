@@ -39,7 +39,7 @@ public class BaseMineFieldBoxTest {
     /**
      * Dependency for SUT.
      */
-    private final MineField field = new MineField(2, 2);
+    private final MineField field = new MineField(2, 2, new Game());
 
     @Test
     public void constructThrowsExceptionIfRowIdLesThanZero() {

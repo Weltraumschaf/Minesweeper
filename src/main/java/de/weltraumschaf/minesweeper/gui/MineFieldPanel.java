@@ -14,6 +14,7 @@ package de.weltraumschaf.minesweeper.gui;
 import de.weltraumschaf.minesweeper.Matrix;
 import de.weltraumschaf.minesweeper.control.FieldBoxListeners;
 import de.weltraumschaf.minesweeper.model.FieldBox;
+import de.weltraumschaf.minesweeper.model.Game;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import org.apache.commons.lang3.Validate;
@@ -87,7 +88,7 @@ public class MineFieldPanel extends JPanel {
      *
      * @param boxes must not be {@code null} and must have same size as {@link #fieldButtons}
      */
-    public void setModels(final Matrix<FieldBox> boxes) {
+    public void setModels(final Matrix<FieldBox> boxes, final Game game) {
         Validate.notNull(boxes, "Boxes must not be null!");
         Validate.isTrue(boxes.size() == fieldButtons.size(), "Size of buttons and boxes matrix must be equal!");
 
@@ -97,6 +98,7 @@ public class MineFieldPanel extends JPanel {
                 final FieldBoxButton btn = fieldButtons.get(x, y);
                 box.addObserver(btn);
                 btn.setBox(box);
+                btn.setGame(game);
                 btn.reset();
             }
         }

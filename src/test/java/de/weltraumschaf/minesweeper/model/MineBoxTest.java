@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.*;
  */
 public class MineBoxTest {
 
-    private final MineField field = new MineField(2, 2);
+    private final MineField field = new MineField(2, 2, new Game());
     private final MineBox sut = new MineBox(1, 2, field);
 
     @Test

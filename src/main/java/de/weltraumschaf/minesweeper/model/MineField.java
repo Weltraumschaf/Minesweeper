@@ -62,12 +62,7 @@ public class MineField {
      * Used to initialize the box matrix randomly.
      */
     private final Random random = new Random();
-    /**
-     * Whether a mine was opened and game is over.
-     *
-     * TODO Move into game
-     */
-    private boolean gameOver;
+    private final Game game;
     /**
      * Whether {@link #initializeFieldWithBoxes()} was invoked at least once.
      */
@@ -76,8 +71,8 @@ public class MineField {
     /**
      * Initializes width and height with {@link #DEFAULT_WIDTH} and {@link #DEFAULT_HEIGHT}.
      */
-    public MineField() {
-        this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
+    public MineField(final Game game) {
+        this(DEFAULT_HEIGHT, DEFAULT_WIDTH, game);
     }
 
     /**
@@ -86,12 +81,14 @@ public class MineField {
      * @param height must not be less than 1
      * @param width must not be less than 1
      */
-    public MineField(final int height, final int width) {
+    public MineField(final int height, final int width, final Game game) {
         super();
         Validate.isTrue(height > 0, "Height must not be less than 1!");
         this.height = height;
         Validate.isTrue(width > 0, "Width must not be less than 1!");
         this.width = width;
+        Validate.notNull(game, "Game must not be null!");
+        this.game = game;
         this.boxes = new Matrix<FieldBox>(FieldBox.class, width, height);
     }
 
@@ -273,50 +270,6 @@ public class MineField {
     }
 
     /**
-     * Set the game as lost if a mine was opened.
-     */
-    public void setGameOver() {
-        gameOver = true;
-
-        for (final FieldBox b : getBoxes().getAll()) {
-            b.setOpened(true);
-        }
-    }
-
-    /**
-     * Whether the game was lost.
-     *
-     * @return {@code true} if a mine was opened, else {@code false}
-     */
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    /**
-     * Whether the game was won.
-     *
-     * @return {@code true} if all fields are opened or flagged and no mine was opened, else {@code false}
-     */
-    public boolean hasWon() {
-        LOG.debug("Determine if won...");
-
-        if (isGameOver()) {
-            LOG.debug("Game is over, not won!");
-            return false;
-        } else {
-            LOG.debug("Game is not over.");
-        }
-
-        if (allBoxesOpenOrFlagged()) {
-            LOG.debug("All boxes opened or flagged.");
-            return true;
-        } else {
-            LOG.debug("Not all boxes opened or flagged!");
-            return false;
-        }
-    }
-
-    /**
      * Get the boxes.
      *
      * @return never {@code null}
@@ -367,6 +320,10 @@ public class MineField {
         }
 
         return count;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
 }

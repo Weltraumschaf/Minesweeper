@@ -13,6 +13,7 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.model.FieldBox;
+import de.weltraumschaf.minesweeper.model.Game;
 import de.weltraumschaf.minesweeper.model.MineField;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +37,8 @@ public class FieldBoxButtonTest {
     //CHECKSTYLE:ON
     private final FieldBoxButton sut = spy(new FieldBoxButton());
     private final FieldBox box = mock(FieldBox.class);
-    private final MineField field = mock(MineField.class);
+    private final Game game = mock(Game.class);
+    private final MineField field = spy(new MineField(game));
 
     @Test
     public void setState_throwsExceptionIfNull() {
@@ -68,11 +70,12 @@ public class FieldBoxButtonTest {
 
     @Test
     public void open_isMineAndGameOverAndIsFlagged() {
-        when(field.isGameOver()).thenReturn(Boolean.TRUE);
+        when(game.isGameOver()).thenReturn(Boolean.TRUE);
         when(box.getField()).thenReturn(field);
         when(box.isFlag()).thenReturn(Boolean.TRUE);
         when(box.isMine()).thenReturn(Boolean.TRUE);
         sut.setBox(box);
+        sut.setGame(game);
         assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
         sut.open();
         assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB.getResource())));
@@ -82,11 +85,12 @@ public class FieldBoxButtonTest {
 
     @Test
     public void open_isMineAndGameOverAndIsNotFlagged() {
-        when(field.isGameOver()).thenReturn(Boolean.TRUE);
+        when(game.isGameOver()).thenReturn(Boolean.TRUE);
         when(box.getField()).thenReturn(field);
         when(box.isFlag()).thenReturn(Boolean.FALSE);
         when(box.isMine()).thenReturn(Boolean.TRUE);
         sut.setBox(box);
+        sut.setGame(game);
         assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
         sut.open();
         assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB_EXPLODED.getResource())));
@@ -96,16 +100,17 @@ public class FieldBoxButtonTest {
 
     @Test
     public void open_isMineAndGameNotOver() {
-        when(field.isGameOver()).thenReturn(Boolean.FALSE);
+        when(game.isGameOver()).thenReturn(Boolean.FALSE);
         when(box.getField()).thenReturn(field);
         when(box.isMine()).thenReturn(Boolean.TRUE);
         sut.setBox(box);
+        sut.setGame(game);
         assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
         sut.open();
         assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB_EXPLODED.getResource())));
         assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(true));
         verify(sut, atLeastOnce()).repaint();
-        verify(field, times(1)).setGameOver();
+        verify(game, times(1)).setGameOver();
     }
 
     @Test

@@ -12,8 +12,10 @@
 
 package de.weltraumschaf.minesweeper.model;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.log4j.Logger;
 
 /**
  * Represents a whole game.
@@ -23,6 +25,10 @@ import org.apache.commons.lang3.time.StopWatch;
 public class Game {
 
     /**
+     * Log facility.
+     */
+    private static final Logger LOG = Logger.getLogger(Game.class);
+    /**
      * Format string for elapsed time.
      */
     private static final String TIME_FORMAT = "mm:ss";
@@ -30,7 +36,7 @@ public class Game {
     /**
      * Mine field to play with.
      */
-    private MineField field = new MineField();
+    private MineField field;
     /**
      * Watch to measure time for a game.
      */
@@ -41,6 +47,15 @@ public class Game {
      * Started means first click on a field was done.
      */
     private boolean started;
+    /**
+     * Whether a mine was opened and game is over.
+     */
+    private boolean gameOver;
+
+    public Game() {
+        super();
+        field = new MineField(this);
+    }
 
     /**
      * Changes the size of the mine field.
@@ -49,7 +64,7 @@ public class Game {
      * @param height must not be less than 1
      */
     public void resize(final int width, final int height) {
-        field = new MineField(height, width);
+        field = new MineField(height, width, this);
     }
 
     /**
@@ -78,21 +93,47 @@ public class Game {
     }
 
     /**
-     * whether the game was won.
+     * Whether the game was won.
      *
-     * @return {@code true} if game was won, else {@code false}
+     * @return {@code true} if all fields are opened or flagged and no mine was opened, else {@code false}
      */
     public boolean hasWon() {
-        return field.hasWon();
+        LOG.debug("Determine if won...");
+
+        if (isGameOver()) {
+            LOG.debug("Game is over, not won!");
+            return false;
+        } else {
+            LOG.debug("Game is not over.");
+        }
+
+        if (field.allBoxesOpenOrFlagged()) {
+            LOG.debug("All boxes opened or flagged.");
+            return true;
+        } else {
+            LOG.debug("Not all boxes opened or flagged!");
+            return false;
+        }
     }
 
     /**
-     * Whether the game is over.
+     * Set the game as lost if a mine was opened.
+     */
+    public void setGameOver() {
+        gameOver = true;
+
+        for (final FieldBox b : field.getBoxes().getAll()) {
+            b.setOpened(true);
+        }
+    }
+
+    /**
+     * Whether the game was lost.
      *
-     * @return {@code true} if mine was opened, else {@code false}
+     * @return {@code true} if a mine was opened, else {@code false}
      */
     public boolean isGameOver() {
-        return field.isGameOver();
+        return gameOver;
     }
 
     /**
@@ -121,6 +162,11 @@ public class Game {
      */
     public MineField getMineField() {
         return field;
+    }
+
+    public void setMineField(final MineField field) {
+        Validate.notNull(field, "Must not be null!");
+        this.field = field;
     }
 
 }

@@ -33,7 +33,7 @@ public class MineFieldTest {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
     //CHECKSTYLE:ON
-    private final MineField sut = new MineField();
+    private final MineField sut = new MineField(new Game());
 
     @Before
     public void initializeFieldWithBoxes() {
@@ -65,14 +65,14 @@ public class MineFieldTest {
     public void throwsExceptionIfConstructWithHeightLessThanOne() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Height must not be less than 1!");
-        new MineField(0, 1);
+        new MineField(0, 1, new Game());
     }
 
     @Test
     public void throwsExceptionIfConstructWithWidthLessThanOne() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Width must not be less than 1!");
-        new MineField(1, 0);
+        new MineField(1, 0, new Game());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class MineFieldTest {
     public void getNeighboursOfBox_throwsExceptionInNotInitialized() {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
-        new MineField(1, 1).getNeighboursOfBox(0, 0);
+        new MineField(1, 1, new Game()).getNeighboursOfBox(0, 0);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class MineFieldTest {
     public void getBox_throwsExceptionInNotInitialized() {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.");
-        new MineField(1, 1).getBox(0, 0);
+        new MineField(1, 1, new Game()).getBox(0, 0);
     }
 
     @Test
@@ -279,7 +279,7 @@ public class MineFieldTest {
 
     @Test
     public void allBoxesOpenOrFlagged_memberBoxesAllClosed() {
-        final MineField innerSut = new MineField(2, 2);
+        final MineField innerSut = new MineField(2, 2, new Game());
         innerSut.setInitialized(true);
         final SaveBox saveBox1 = new SaveBox(0, 0, innerSut);
         innerSut.setBox(0, 0, saveBox1);
@@ -294,7 +294,7 @@ public class MineFieldTest {
 
     @Test
     public void allBoxesOpenOrFlagged_memberBoxesAllOpened() {
-        final MineField innerSut = new MineField(2, 2);
+        final MineField innerSut = new MineField(2, 2, new Game());
         innerSut.setInitialized(true);
         final SaveBox saveBox1 = new SaveBox(0, 0, innerSut);
         saveBox1.setOpened(true);
@@ -313,7 +313,7 @@ public class MineFieldTest {
 
     @Test
     public void testToString() {
-        final MineField innerSut = new MineField(4, 3);
+        final MineField innerSut = new MineField(4, 3, new Game());
         innerSut.setInitialized(true);
         innerSut.setBox(0, 0, new MineBox(0, 0, innerSut));
         innerSut.setBox(1, 0, new SaveBox(0, 1, innerSut));
@@ -336,89 +336,8 @@ public class MineFieldTest {
     }
 
     @Test
-    public void setGameOver() {
-        final MineField innerSut = new MineField(2, 2);
-        innerSut.setInitialized(true);
-        final SaveBox saveBox1 = spy(new SaveBox(0, 0, innerSut));
-        innerSut.setBox(0, 0, saveBox1);
-        final SaveBox saveBox2 = spy(new SaveBox(0, 1, innerSut));
-        innerSut.setBox(1, 0, saveBox2);
-        final SaveBox saveBox3 = spy(new SaveBox(1, 0, innerSut));
-        innerSut.setBox(0, 1, saveBox3);
-        final SaveBox saveBox4 = spy(new SaveBox(1, 1, innerSut));
-        innerSut.setBox(1, 1, saveBox4);
-
-        assertThat(innerSut.isGameOver(), is(false));
-        innerSut.setGameOver();
-        assertThat(innerSut.isGameOver(), is(true));
-
-        verify(saveBox1, times(1)).setOpened(true);
-        verify(saveBox2, times(1)).setOpened(true);
-        verify(saveBox3, times(1)).setOpened(true);
-        verify(saveBox4, times(1)).setOpened(true);
-    }
-
-    @Test
-    public void hasWon_gameOver() {
-        final MineField innerSut = new MineField(2, 2);
-        innerSut.setInitialized(true);
-        final SaveBox saveBox1 = new SaveBox(0, 0, innerSut);
-        innerSut.setBox(0, 0, saveBox1);
-        final SaveBox saveBox2 = new SaveBox(0, 1, innerSut);
-        innerSut.setBox(1, 0, saveBox2);
-        final SaveBox saveBox3 = new SaveBox(1, 0, innerSut);
-        innerSut.setBox(0, 1, saveBox3);
-        final SaveBox saveBox4 = new SaveBox(1, 1, innerSut);
-        innerSut.setBox(1, 1, saveBox4);
-
-        assertThat(innerSut.hasWon(), is(false));
-        assertThat(innerSut.isGameOver(), is(false));
-        innerSut.setGameOver();
-        assertThat(innerSut.hasWon(), is(false));
-        assertThat(innerSut.isGameOver(), is(true));
-    }
-
-    @Test
-    public void hasWon_notGameOverAllClosed() {
-        final MineField innerSut = new MineField(2, 2);
-        innerSut.setInitialized(true);
-        final SaveBox saveBox1 = new SaveBox(0, 0, innerSut);
-        innerSut.setBox(0, 0, saveBox1);
-        final SaveBox saveBox2 = new SaveBox(0, 1, innerSut);
-        innerSut.setBox(1, 0, saveBox2);
-        final SaveBox saveBox3 = new SaveBox(1, 0, innerSut);
-        innerSut.setBox(0, 1, saveBox3);
-        final SaveBox saveBox4 = new SaveBox(1, 1, innerSut);
-        innerSut.setBox(1, 1, saveBox4);
-
-        assertThat(innerSut.hasWon(), is(false));
-        assertThat(innerSut.isGameOver(), is(false));
-    }
-
-    @Test
-    public void hasWon_notGameOverAllOpen() {
-        final MineField innerSut = new MineField(2, 2);
-        innerSut.setInitialized(true);
-        final SaveBox saveBox1 = new SaveBox(0, 0, innerSut);
-        saveBox1.setOpened(true);
-        innerSut.setBox(0, 0, saveBox1);
-        final SaveBox saveBox2 = new SaveBox(0, 1, innerSut);
-        saveBox2.setOpened(true);
-        innerSut.setBox(1, 0, saveBox2);
-        final SaveBox saveBox3 = new SaveBox(1, 0, innerSut);
-        saveBox3.setOpened(true);
-        innerSut.setBox(0, 1, saveBox3);
-        final SaveBox saveBox4 = new SaveBox(1, 1, innerSut);
-        saveBox4.setOpened(true);
-        innerSut.setBox(1, 1, saveBox4);
-
-        assertThat(innerSut.hasWon(), is(true));
-        assertThat(innerSut.isGameOver(), is(false));
-    }
-
-    @Test
     public void countUnflaggedMines() {
-        final MineField innerSut = new MineField(2, 2);
+        final MineField innerSut = new MineField(2, 2, new Game());
         innerSut.setInitialized(true);
         assertThat(innerSut.countUnflaggedMines(), is(0));
 

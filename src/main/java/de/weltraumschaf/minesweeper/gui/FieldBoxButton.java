@@ -12,6 +12,7 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import de.weltraumschaf.minesweeper.model.FieldBox;
+import de.weltraumschaf.minesweeper.model.Game;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.Icon;
@@ -76,6 +77,7 @@ public class FieldBoxButton extends JLabel implements Observer {
      * The data model behind the button.
      */
     private FieldBox box;
+    private Game game;
     /**
      * State of the button.
      *
@@ -115,6 +117,8 @@ public class FieldBoxButton extends JLabel implements Observer {
     /**
      * Get the box model.
      *
+     * XXX Remove?
+     *
      * @return never {@code null}
      */
     public FieldBox getBox() {
@@ -137,6 +141,11 @@ public class FieldBoxButton extends JLabel implements Observer {
         }
     }
 
+    public void setGame(final Game game) {
+        Validate.notNull(game, "Game must not be null!");
+        this.game = game;
+    }
+
     /**
      * Open the box.
      */
@@ -150,7 +159,7 @@ public class FieldBoxButton extends JLabel implements Observer {
         state = State.OPEN;
 
         if (box.isMine()) {
-            if (box.getField().isGameOver()) {
+            if (game.isGameOver()) {
                 if (box.isFlag()) {
                     setIcon(ImageIcons.BOMB.getResource());
                 } else {
@@ -158,7 +167,7 @@ public class FieldBoxButton extends JLabel implements Observer {
                 }
             } else {
                 setIcon(ImageIcons.BOMB_EXPLODED.getResource());
-                box.getField().setGameOver();
+                game.setGameOver();
             }
         } else {
             setIcon(determineIcon());

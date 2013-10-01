@@ -100,7 +100,7 @@ class FieldBoxButtonListener extends MouseAdapter {
             debugFieldSate(field);
         }
 
-        if (field.hasWon()) {
+        if (field.getGame().hasWon()) {
             LOG.debug("Game won!");
             JOptionPane.showMessageDialog(
                     main,
