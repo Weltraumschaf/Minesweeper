@@ -75,7 +75,6 @@ public class FieldBoxButtonTest {
         when(box.isFlag()).thenReturn(Boolean.TRUE);
         when(box.isMine()).thenReturn(Boolean.TRUE);
         sut.setBox(box);
-        sut.setGame(game);
         assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
         sut.open();
         assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB.getResource())));
@@ -90,7 +89,6 @@ public class FieldBoxButtonTest {
         when(box.isFlag()).thenReturn(Boolean.FALSE);
         when(box.isMine()).thenReturn(Boolean.TRUE);
         sut.setBox(box);
-        sut.setGame(game);
         assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
         sut.open();
         assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB_EXPLODED.getResource())));
@@ -104,7 +102,6 @@ public class FieldBoxButtonTest {
         when(box.getField()).thenReturn(field);
         when(box.isMine()).thenReturn(Boolean.TRUE);
         sut.setBox(box);
-        sut.setGame(game);
         assertThat(sut.isInState(FieldBoxButton.State.OPEN), is(false));
         sut.open();
         assertThat(sut.getIcon(), is(sameInstance(ImageIcons.BOMB_EXPLODED.getResource())));

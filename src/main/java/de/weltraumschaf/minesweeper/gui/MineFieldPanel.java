@@ -88,7 +88,7 @@ public class MineFieldPanel extends JPanel {
      *
      * @param boxes must not be {@code null} and must have same size as {@link #fieldButtons}
      */
-    public void setModels(final Matrix<FieldBox> boxes, final Game game) {
+    public void setModels(final Matrix<FieldBox> boxes) {
         Validate.notNull(boxes, "Boxes must not be null!");
         Validate.isTrue(boxes.size() == fieldButtons.size(), "Size of buttons and boxes matrix must be equal!");
 
@@ -98,7 +98,6 @@ public class MineFieldPanel extends JPanel {
                 final FieldBoxButton btn = fieldButtons.get(x, y);
                 box.addObserver(btn);
                 btn.setBox(box);
-                btn.setGame(game);
                 btn.reset();
             }
         }

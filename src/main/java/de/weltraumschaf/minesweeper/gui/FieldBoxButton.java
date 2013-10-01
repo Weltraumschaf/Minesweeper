@@ -77,7 +77,7 @@ public class FieldBoxButton extends JLabel implements Observer {
      * The data model behind the button.
      */
     private FieldBox box;
-    private Game game;
+
     /**
      * State of the button.
      *
@@ -117,8 +117,6 @@ public class FieldBoxButton extends JLabel implements Observer {
     /**
      * Get the box model.
      *
-     * XXX Remove?
-     *
      * @return never {@code null}
      */
     public FieldBox getBox() {
@@ -141,11 +139,6 @@ public class FieldBoxButton extends JLabel implements Observer {
         }
     }
 
-    public void setGame(final Game game) {
-        Validate.notNull(game, "Game must not be null!");
-        this.game = game;
-    }
-
     /**
      * Open the box.
      */
@@ -159,6 +152,8 @@ public class FieldBoxButton extends JLabel implements Observer {
         state = State.OPEN;
 
         if (box.isMine()) {
+            final Game game = box.getField().getGame();
+
             if (game.isGameOver()) {
                 if (box.isFlag()) {
                     setIcon(ImageIcons.BOMB.getResource());
