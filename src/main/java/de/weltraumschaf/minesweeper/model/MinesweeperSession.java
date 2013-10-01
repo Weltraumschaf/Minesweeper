@@ -91,7 +91,7 @@ public class MinesweeperSession {
         mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
         mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));
         mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
-        mainWindow.setResizeFieldListener(MenuItemListeners.createResizeFieldListener());
+        mainWindow.setResizeFieldListener(MenuItemListeners.createResizeFieldListener(this, mainWindow));
         mainWindow.init();
         initStatusBar();
         mainWindow.setVisible(true);
@@ -142,4 +142,14 @@ public class MinesweeperSession {
         timer.setInitialDelay(0);
         timer.start();
     }
+
+    /**
+     * Get the current game.
+     *
+     * @return never {@code null}
+     */
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
 }

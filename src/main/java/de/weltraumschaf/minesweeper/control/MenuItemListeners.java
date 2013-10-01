@@ -64,11 +64,12 @@ public final class MenuItemListeners {
     /**
      * Creates new resize field listener.
      *
+     * @param session must not be {@code null}
      * @param main must not be {@code null}
      * @return always new instance, never {@code null}
      */
-    public static ActionListener createResizeFieldListener() {
-        return new ResizeFieldListener();
+    public static ActionListener createResizeFieldListener(final MinesweeperSession session, final MainWindow main) {
+        return new ResizeFieldListener(session, main);
     }
 
 }

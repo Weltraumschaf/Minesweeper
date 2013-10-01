@@ -70,6 +70,7 @@ public class Game {
      */
     public void resize(final int width, final int height) {
         mineField = new MineField(height, width, this);
+        reset();
     }
 
     /**
