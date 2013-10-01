@@ -43,7 +43,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.NewGameListener.java">de/weltraumschaf/minesweeper/control/NewGameListener.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.VersionInfoListener.java">de/weltraumschaf/minesweeper/control/VersionInfoListener.java</a>
                 </td>
                 <td>
                   0
@@ -57,7 +57,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.VersionInfoListener.java">de/weltraumschaf/minesweeper/control/VersionInfoListener.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.NewGameListener.java">de/weltraumschaf/minesweeper/control/NewGameListener.java</a>
                 </td>
                 <td>
                   0
@@ -337,7 +337,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.gui.StatusBar.java">de/weltraumschaf/minesweeper/gui/StatusBar.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.gui.LabeledValue.java">de/weltraumschaf/minesweeper/gui/LabeledValue.java</a>
                 </td>
                 <td>
                   0
@@ -351,7 +351,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.gui.LabeledValue.java">de/weltraumschaf/minesweeper/gui/LabeledValue.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.gui.StatusBar.java">de/weltraumschaf/minesweeper/gui/StatusBar.java</a>
                 </td>
                 <td>
                   0
@@ -379,7 +379,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.gui.package-info.java">de/weltraumschaf/minesweeper/gui/package-info.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.QuitListener.java">de/weltraumschaf/minesweeper/control/QuitListener.java</a>
                 </td>
                 <td>
                   0
@@ -393,7 +393,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.QuitListener.java">de/weltraumschaf/minesweeper/control/QuitListener.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.gui.package-info.java">de/weltraumschaf/minesweeper/gui/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -477,7 +477,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.FieldBoxButtonListener.java">de/weltraumschaf/minesweeper/control/FieldBoxButtonListener.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.FieldBoxListeners.java">de/weltraumschaf/minesweeper/control/FieldBoxListeners.java</a>
                 </td>
                 <td>
                   0
@@ -491,7 +491,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.FieldBoxListeners.java">de/weltraumschaf/minesweeper/control/FieldBoxListeners.java</a>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.control.FieldBoxButtonListener.java">de/weltraumschaf/minesweeper/control/FieldBoxButtonListener.java</a>
                 </td>
                 <td>
                   0
