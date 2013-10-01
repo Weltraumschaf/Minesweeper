@@ -3,7 +3,7 @@
 
     <groupId>de.weltraumschaf</groupId>
     <artifactId>minesweeper</artifactId>
-    <version>0.3.6</version>
+    <version>0.3.7-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Minesweeper</name>
