@@ -51,6 +51,9 @@ public class MinesweeperSession {
      * Current played game.
      */
     private Game currentGame;
+    /**
+     * Used to update the stop watch in the status bar.
+     */
     private Timer timer;
 
     /**
@@ -123,8 +126,6 @@ public class MinesweeperSession {
 
     /**
      * Initialize the status bar.
-     *
-     * http://stackoverflow.com/questions/13366780/how-to-add-real-time-date-and-time-into-a-jframe-component-e-g-status-bar
      */
     private void initStatusBar() {
         LOG.debug("Init status bar.");

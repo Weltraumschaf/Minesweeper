@@ -12,7 +12,6 @@
 package de.weltraumschaf.minesweeper.gui;
 
 import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 
 /**

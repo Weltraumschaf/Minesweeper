@@ -16,7 +16,6 @@ import de.weltraumschaf.minesweeper.model.Score;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
