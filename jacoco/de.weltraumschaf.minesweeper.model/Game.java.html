@@ -12,16 +12,22 @@
 
 package de.weltraumschaf.minesweeper.model;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.log4j.Logger;
 
 /**
  * Represents a whole game.
  *
  * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
  */
-<span class="nc" id="L23">public class Game {</span>
+public class Game {
 
+    /**
+     * Log facility.
+     */
+<span class="fc" id="L30">    private static final Logger LOG = Logger.getLogger(Game.class);</span>
     /**
      * Format string for elapsed time.
      */
@@ -30,17 +36,31 @@ import org.apache.commons.lang3.time.StopWatch;
     /**
      * Mine field to play with.
      */
-<span class="nc" id="L33">    private MineField field = new MineField();</span>
+    private MineField mineField;
     /**
      * Watch to measure time for a game.
      */
-<span class="nc" id="L37">    private StopWatch watch = new StopWatch();</span>
+<span class="fc" id="L43">    private StopWatch watch = new StopWatch();</span>
     /**
      * Indicates if game was started.
      *
      * Started means first click on a field was done.
      */
     private boolean started;
+    /**
+     * Whether a mine was opened and game is over.
+     */
+    private boolean gameOver;
+
+    /**
+     * Dedicated constructor.
+     *
+     * Initializes {@link #mineField} with a default instance.
+     */
+    public Game() {
+<span class="fc" id="L61">        super();</span>
+<span class="fc" id="L62">        mineField = new MineField(this);</span>
+<span class="fc" id="L63">    }</span>
 
     /**
      * Changes the size of the mine field.
@@ -49,50 +69,76 @@ import org.apache.commons.lang3.time.StopWatch;
      * @param height must not be less than 1
      */
     public void resize(final int width, final int height) {
-<span class="nc" id="L52">        field = new MineField(height, width);</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L72">        mineField = new MineField(height, width, this);</span>
+<span class="nc" id="L73">    }</span>
 
     /**
      * Starts the game.
      */
     public void start() {
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (started) {</span>
-<span class="nc" id="L60">            throw new IllegalStateException(&quot;Game already started!&quot;);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (started) {</span>
+<span class="nc" id="L80">            throw new IllegalStateException(&quot;Game already started!&quot;);</span>
         }
 
-<span class="nc" id="L63">        started = true;</span>
-<span class="nc" id="L64">        reset();</span>
-<span class="nc" id="L65">        watch.start();</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L83">        started = true;</span>
+<span class="nc" id="L84">        reset();</span>
+<span class="nc" id="L85">        watch.start();</span>
+<span class="nc" id="L86">    }</span>
 
     /**
      * Stop the game.
      */
     public void stop() {
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (!started) {</span>
-<span class="nc" id="L73">            throw new IllegalStateException(&quot;Game already stopped!&quot;);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (!started) {</span>
+<span class="nc" id="L93">            throw new IllegalStateException(&quot;Game already stopped!&quot;);</span>
         }
 
-<span class="nc" id="L76">        started = false;</span>
-<span class="nc" id="L77">        watch.stop();</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L96">        started = false;</span>
+<span class="nc" id="L97">        watch.stop();</span>
+<span class="nc" id="L98">    }</span>
 
     /**
-     * whether the game was won.
+     * Whether the game was won.
      *
-     * @return {@code true} if game was won, else {@code false}
+     * @return {@code true} if all fields are opened or flagged and no mine was opened, else {@code false}
      */
     public boolean hasWon() {
-<span class="nc" id="L86">        return field.hasWon();</span>
+<span class="fc" id="L106">        LOG.debug(&quot;Determine if won...&quot;);</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (isGameOver()) {</span>
+<span class="fc" id="L109">            LOG.debug(&quot;Game is over, not won!&quot;);</span>
+<span class="fc" id="L110">            return false;</span>
+        } else {
+<span class="fc" id="L112">            LOG.debug(&quot;Game is not over.&quot;);</span>
+        }
+
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        if (mineField.allBoxesOpenOrFlagged()) {</span>
+<span class="fc" id="L116">            LOG.debug(&quot;All boxes opened or flagged.&quot;);</span>
+<span class="fc" id="L117">            return true;</span>
+        } else {
+<span class="fc" id="L119">            LOG.debug(&quot;Not all boxes opened or flagged!&quot;);</span>
+<span class="fc" id="L120">            return false;</span>
+        }
     }
 
     /**
-     * Whether the game is over.
+     * Set the game as lost if a mine was opened.
+     */
+    public void setGameOver() {
+<span class="fc" id="L128">        gameOver = true;</span>
+
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        for (final FieldBox b : mineField.getBoxes().getAll()) {</span>
+<span class="fc" id="L131">            b.setOpened(true);</span>
+<span class="fc" id="L132">        }</span>
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * Whether the game was lost.
      *
-     * @return {@code true} if mine was opened, else {@code false}
+     * @return {@code true} if a mine was opened, else {@code false}
      */
     public boolean isGameOver() {
-<span class="nc" id="L95">        return field.isGameOver();</span>
+<span class="fc" id="L141">        return gameOver;</span>
     }
 
     /**
@@ -103,16 +149,16 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return never {@code null}
      */
     public String getTime() {
-<span class="nc" id="L106">        return DurationFormatUtils.formatDuration(watch.getTime(), TIME_FORMAT, true);</span>
+<span class="nc" id="L152">        return DurationFormatUtils.formatDuration(watch.getTime(), TIME_FORMAT, true);</span>
     }
 
     /**
      * Initializes the mine field and reset the stop watch.
      */
     private void reset() {
-<span class="nc" id="L113">        field.initializeFieldWithBoxes();</span>
-<span class="nc" id="L114">        watch.reset();</span>
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L159">        mineField.initializeFieldWithBoxes();</span>
+<span class="nc" id="L160">        watch.reset();</span>
+<span class="nc" id="L161">    }</span>
 
     /**
      * Get field of game.
@@ -120,8 +166,18 @@ import org.apache.commons.lang3.time.StopWatch;
      * @return never {@code null}
      */
     public MineField getMineField() {
-<span class="nc" id="L123">        return field;</span>
+<span class="nc" id="L169">        return mineField;</span>
     }
+
+    /**
+     * Set the mine field.
+     *
+     * @param field must not be {@code null}
+     */
+    public void setMineField(final MineField field) {
+<span class="fc" id="L178">        Validate.notNull(field, &quot;Must not be null!&quot;);</span>
+<span class="fc" id="L179">        this.mineField = field;</span>
+<span class="fc" id="L180">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

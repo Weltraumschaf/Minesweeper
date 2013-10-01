@@ -8,7 +8,7 @@
     <language>en-us</language>
     <copyright>&#169;2013</copyright>
     <item>
-      <title>File: 37,
+      <title>File: 38,
              Errors: 0,
              Warnings: 0,
              Infos: 0
@@ -100,6 +100,20 @@
                           <tr>
                 <td>
                   <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.model.SaveBoxTest.java">de/weltraumschaf/minesweeper/model/SaveBoxTest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://weltraumschaf.github.io/Minesweeper//checkstyle.html#de.weltraumschaf.minesweeper.model.GameTest.java">de/weltraumschaf/minesweeper/model/GameTest.java</a>
                 </td>
                 <td>
                   0

@@ -83,8 +83,8 @@ class FieldBoxButtonListener extends MouseAdapter {
         }
 
 <span class="nc" id="L85">        originatingButton.getParent().repaint();</span>
-<span class="nc" id="L86">        checkForWon(originatingButton.getBox().getField());</span>
-<span class="nc" id="L87">        main.getStatusbar().setMinesLeft(originatingButton.getBox().getField().countUnflaggedMines());</span>
+<span class="nc" id="L86">        main.getStatusbar().setMinesLeft(originatingButton.getBox().getField().countUnflaggedMines());</span>
+<span class="nc" id="L87">        checkForWon(originatingButton.getBox().getField());</span>
 <span class="nc" id="L88">    }</span>
 
     /**
@@ -100,16 +100,17 @@ class FieldBoxButtonListener extends MouseAdapter {
 <span class="nc" id="L100">            debugFieldSate(field);</span>
         }
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (field.hasWon()) {</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (field.getGame().hasWon()) {</span>
 <span class="nc" id="L104">            LOG.debug(&quot;Game won!&quot;);</span>
-<span class="nc" id="L105">            JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L105">            field.getGame().stop();</span>
+<span class="nc" id="L106">            JOptionPane.showMessageDialog(</span>
                     main,
                     String.format(&quot;Game won!&quot;),
                     main.getTitle(),
                     JOptionPane.PLAIN_MESSAGE);
-<span class="nc" id="L110">            openFlaggedBoxes(field);</span>
+<span class="nc" id="L111">            openFlaggedBoxes(field);</span>
         }
-<span class="nc" id="L112">    }</span>
+<span class="nc" id="L113">    }</span>
 
     /**
      * Logs the state of the field for debugging.
@@ -117,9 +118,9 @@ class FieldBoxButtonListener extends MouseAdapter {
      * @param field must not be {@code null}
      */
     private void debugFieldSate(final MineField field) {
-<span class="nc" id="L120">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
-<span class="nc" id="L121">        LOG.debug(String.format(&quot;State of field:%n%s&quot;, field.getBoxes()));</span>
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L121">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
+<span class="nc" id="L122">        LOG.debug(String.format(&quot;State of field:%n%s&quot;, field.getBoxes()));</span>
+<span class="nc" id="L123">    }</span>
 
     /**
      * Opens all flagged boxes.
@@ -127,13 +128,13 @@ class FieldBoxButtonListener extends MouseAdapter {
      * @param field must not be {@code null}
      */
     private void openFlaggedBoxes(final MineField field) {
-<span class="nc" id="L130">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
+<span class="nc" id="L131">        Validate.notNull(field, &quot;Field must not be null!&quot;);</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">        for (final FieldBox box : field.getBoxes().getAll()) {</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">            if (box.isFlag()) {</span>
-<span class="nc" id="L134">                box.setOpened(true);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        for (final FieldBox box : field.getBoxes().getAll()) {</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (box.isFlag()) {</span>
+<span class="nc" id="L135">                box.setOpened(true);</span>
             }
-<span class="nc" id="L136">        }</span>
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L137">        }</span>
+<span class="nc" id="L138">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

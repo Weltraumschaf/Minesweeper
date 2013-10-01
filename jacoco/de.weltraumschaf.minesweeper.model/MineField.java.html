@@ -63,11 +63,9 @@ public class MineField {
      */
 <span class="fc" id="L64">    private final Random random = new Random();</span>
     /**
-     * Whether a mine was opened and game is over.
-     *
-     * TODO Move into game
+     * Game to which a field belongs.
      */
-    private boolean gameOver;
+    private final Game game;
     /**
      * Whether {@link #initializeFieldWithBoxes()} was invoked at least once.
      */
@@ -75,9 +73,11 @@ public class MineField {
 
     /**
      * Initializes width and height with {@link #DEFAULT_WIDTH} and {@link #DEFAULT_HEIGHT}.
+     *
+     * @param game must not be {@code null}
      */
-    public MineField() {
-<span class="fc" id="L80">        this(DEFAULT_HEIGHT, DEFAULT_WIDTH);</span>
+    public MineField(final Game game) {
+<span class="fc" id="L80">        this(DEFAULT_HEIGHT, DEFAULT_WIDTH, game);</span>
 <span class="fc" id="L81">    }</span>
 
     /**
@@ -85,28 +85,33 @@ public class MineField {
      *
      * @param height must not be less than 1
      * @param width must not be less than 1
+     * @param game must not be {@code null}
      */
-    public MineField(final int height, final int width) {
-<span class="fc" id="L90">        super();</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        Validate.isTrue(height &gt; 0, &quot;Height must not be less than 1!&quot;);</span>
-<span class="fc" id="L92">        this.height = height;</span>
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        Validate.isTrue(width &gt; 0, &quot;Width must not be less than 1!&quot;);</span>
-<span class="fc" id="L94">        this.width = width;</span>
-<span class="fc" id="L95">        this.boxes = new Matrix&lt;FieldBox&gt;(FieldBox.class, width, height);</span>
-<span class="fc" id="L96">    }</span>
+    public MineField(final int height, final int width, final Game game) {
+<span class="fc" id="L91">        super();</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        Validate.isTrue(height &gt; 0, &quot;Height must not be less than 1!&quot;);</span>
+<span class="fc" id="L93">        this.height = height;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        Validate.isTrue(width &gt; 0, &quot;Width must not be less than 1!&quot;);</span>
+<span class="fc" id="L95">        this.width = width;</span>
+<span class="fc" id="L96">        Validate.notNull(game, &quot;Game must not be null!&quot;);</span>
+<span class="fc" id="L97">        this.game = game;</span>
+<span class="fc" id="L98">        this.boxes = new Matrix&lt;FieldBox&gt;(FieldBox.class, width, height);</span>
+<span class="fc" id="L99">    }</span>
 
     /**
      * Set all fields in {@link #boxes} with an instance.
      */
     public void initializeFieldWithBoxes() {
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (int rowId = 0; rowId &lt; height; ++rowId) {</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">            for (int columnId = 0; columnId &lt; width; ++columnId) {</span>
-<span class="fc" id="L104">                boxes.set(columnId, rowId, createRandomBox(columnId, rowId));</span>
+<span class="fc" id="L105">        LOG.debug(&quot;Initialize field with boxes.&quot;);</span>
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (int rowId = 0; rowId &lt; height; ++rowId) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            for (int columnId = 0; columnId &lt; width; ++columnId) {</span>
+<span class="fc" id="L109">                boxes.set(columnId, rowId, createRandomBox(columnId, rowId));</span>
             }
         }
 
-<span class="fc" id="L108">        setInitialized(true);</span>
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L113">        setInitialized(true);</span>
+<span class="fc" id="L114">    }</span>
 
     /**
      * Set the state to initialized.
@@ -114,32 +119,32 @@ public class MineField {
      * @param initialized {@code true} if boxes are initialized, else {@code false}
      */
     void setInitialized(final boolean initialized) {
-<span class="fc" id="L117">        this.initialized = initialized;</span>
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L122">        this.initialized = initialized;</span>
+<span class="fc" id="L123">    }</span>
 
     @Override
     public String toString() {
-<span class="fc" id="L122">        final StringBuilder buffer = new StringBuilder();</span>
-<span class="fc" id="L123">        buffer.append(String.format(&quot;Mine field (width: %s, height: %s)%n&quot;, getWidth(), getHeight()))</span>
+<span class="fc" id="L127">        final StringBuilder buffer = new StringBuilder();</span>
+<span class="fc" id="L128">        buffer.append(String.format(&quot;Mine field (width: %s, height: %s)%n&quot;, getWidth(), getHeight()))</span>
                 .append(boxes.toString());
 
-<span class="fc" id="L126">        int minesCount = 0;</span>
-<span class="fc" id="L127">        int savesCount = 0;</span>
+<span class="fc" id="L131">        int minesCount = 0;</span>
+<span class="fc" id="L132">        int savesCount = 0;</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">        for (final FieldBox box : boxes.getAll()) {</span>
-<span class="fc bfc" id="L130" title="All 2 branches covered.">            if (box.isMine()) {</span>
-<span class="fc" id="L131">                ++minesCount;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (final FieldBox box : boxes.getAll()) {</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">            if (box.isMine()) {</span>
+<span class="fc" id="L136">                ++minesCount;</span>
             } else {
-<span class="fc" id="L133">                ++savesCount;</span>
+<span class="fc" id="L138">                ++savesCount;</span>
             }
-<span class="fc" id="L135">        }</span>
+<span class="fc" id="L140">        }</span>
 
-<span class="fc" id="L137">        final double count = minesCount + savesCount;</span>
-<span class="fc" id="L138">        final double minesPercent = (HUNDRED_PERCENT / count) * minesCount;</span>
-<span class="fc" id="L139">        final double savesPercent = (HUNDRED_PERCENT / count) * savesCount;</span>
-<span class="fc" id="L140">        buffer.append(String.format(Locale.ENGLISH, &quot;Mines: %s (%.2f %%), saves: %s (%.2f %%)&quot;,</span>
+<span class="fc" id="L142">        final double count = minesCount + savesCount;</span>
+<span class="fc" id="L143">        final double minesPercent = (HUNDRED_PERCENT / count) * minesCount;</span>
+<span class="fc" id="L144">        final double savesPercent = (HUNDRED_PERCENT / count) * savesCount;</span>
+<span class="fc" id="L145">        buffer.append(String.format(Locale.ENGLISH, &quot;Mines: %s (%.2f %%), saves: %s (%.2f %%)&quot;,</span>
                 minesCount, minesPercent, savesCount, savesPercent));
-<span class="fc" id="L142">        return buffer.toString();</span>
+<span class="fc" id="L147">        return buffer.toString();</span>
     }
 
     /**
@@ -152,10 +157,10 @@ public class MineField {
      * @return always new instance
      */
     private BaseMineFieldBox createRandomBox(final int rowId, final int columnId) {
-<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (random.nextInt() % MINE_FACTOR == 0) {</span>
-<span class="fc" id="L156">            return new MineBox(rowId, columnId, this);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (random.nextInt() % MINE_FACTOR == 0) {</span>
+<span class="fc" id="L161">            return new MineBox(rowId, columnId, this);</span>
         } else {
-<span class="fc" id="L158">            return new SaveBox(rowId, columnId, this);</span>
+<span class="fc" id="L163">            return new SaveBox(rowId, columnId, this);</span>
         }
     }
 
@@ -179,50 +184,50 @@ public class MineField {
      * @return never {@code null}, maybe empty list
      */
     List&lt;FieldBox&gt; getNeighboursOfBox(final int rowId, final int columnId) {
-<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (!initialized) {</span>
-<span class="fc" id="L183">            throw new IllegalStateException(</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        if (!initialized) {</span>
+<span class="fc" id="L188">            throw new IllegalStateException(</span>
                     &quot;Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.&quot;);
         }
 
-<span class="fc bfc" id="L187" title="All 2 branches covered.">        Validate.isTrue(rowId &gt;= 0, &quot;Row id must not be less than 0!&quot;);</span>
-<span class="fc bfc" id="L188" title="All 2 branches covered.">        Validate.isTrue(columnId &gt;= 0, &quot;Column id must not be less than 0!&quot;);</span>
-<span class="fc" id="L189">        int rowIdStart = rowId - 1;</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        Validate.isTrue(rowId &gt;= 0, &quot;Row id must not be less than 0!&quot;);</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        Validate.isTrue(columnId &gt;= 0, &quot;Column id must not be less than 0!&quot;);</span>
+<span class="fc" id="L194">        int rowIdStart = rowId - 1;</span>
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">        if (rowIdStart &lt; 0) {</span>
-<span class="fc" id="L192">            rowIdStart = 0;</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        if (rowIdStart &lt; 0) {</span>
+<span class="fc" id="L197">            rowIdStart = 0;</span>
         }
 
-<span class="fc" id="L195">        int columnIdStart = columnId - 1;</span>
+<span class="fc" id="L200">        int columnIdStart = columnId - 1;</span>
 
-<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (columnIdStart &lt; 0) {</span>
-<span class="fc" id="L198">            columnIdStart = 0;</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (columnIdStart &lt; 0) {</span>
+<span class="fc" id="L203">            columnIdStart = 0;</span>
         }
 
-<span class="fc" id="L201">        int rowIdStop = rowId + 1;</span>
+<span class="fc" id="L206">        int rowIdStop = rowId + 1;</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (rowIdStop &gt; width - 1) {</span>
-<span class="fc" id="L204">            rowIdStop = width - 1;</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (rowIdStop &gt; width - 1) {</span>
+<span class="fc" id="L209">            rowIdStop = width - 1;</span>
         }
 
-<span class="fc" id="L207">        int columnIdStop = columnId + 1;</span>
+<span class="fc" id="L212">        int columnIdStop = columnId + 1;</span>
 
-<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (columnIdStop &gt; height - 1) {</span>
-<span class="fc" id="L210">            columnIdStop = height - 1;</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (columnIdStop &gt; height - 1) {</span>
+<span class="fc" id="L215">            columnIdStop = height - 1;</span>
         }
 
-<span class="fc" id="L213">        final List&lt;FieldBox&gt; neighbours = new ArrayList&lt;FieldBox&gt;();</span>
+<span class="fc" id="L218">        final List&lt;FieldBox&gt; neighbours = new ArrayList&lt;FieldBox&gt;();</span>
 
-<span class="fc bfc" id="L215" title="All 2 branches covered.">        for (int x = rowIdStart; x &lt;= rowIdStop; ++x) {</span>
-<span class="fc bfc" id="L216" title="All 2 branches covered.">            for (int y = columnIdStart; y &lt;= columnIdStop; ++y) {</span>
-<span class="fc bfc" id="L217" title="All 4 branches covered.">                if (x == rowId &amp;&amp; y == columnId) {</span>
-<span class="fc" id="L218">                    continue; // Ignore self.</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        for (int x = rowIdStart; x &lt;= rowIdStop; ++x) {</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">            for (int y = columnIdStart; y &lt;= columnIdStop; ++y) {</span>
+<span class="fc bfc" id="L222" title="All 4 branches covered.">                if (x == rowId &amp;&amp; y == columnId) {</span>
+<span class="fc" id="L223">                    continue; // Ignore self.</span>
                 }
 
-<span class="fc" id="L221">                neighbours.add(boxes.get(x, y));</span>
+<span class="fc" id="L226">                neighbours.add(boxes.get(x, y));</span>
             }
         }
 
-<span class="fc" id="L225">        return neighbours;</span>
+<span class="fc" id="L230">        return neighbours;</span>
     }
 
     /**
@@ -231,7 +236,7 @@ public class MineField {
      * @return never less than 1
      */
     public int getWidth() {
-<span class="fc" id="L234">        return width;</span>
+<span class="fc" id="L239">        return width;</span>
     }
 
     /**
@@ -240,7 +245,7 @@ public class MineField {
      * @return never less than 1
      */
     public int getHeight() {
-<span class="fc" id="L243">        return height;</span>
+<span class="fc" id="L248">        return height;</span>
     }
 
     /**
@@ -253,12 +258,12 @@ public class MineField {
      * @return never {@code null}
      */
     public FieldBox getBox(final int x, final int y) {
-<span class="fc bfc" id="L256" title="All 2 branches covered.">        if (!initialized) {</span>
-<span class="fc" id="L257">            throw new IllegalStateException(</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (!initialized) {</span>
+<span class="fc" id="L262">            throw new IllegalStateException(</span>
                     &quot;Field not initialized! Invoke MineField#initializeFieldWithBoxes() first.&quot;);
         }
 
-<span class="fc" id="L261">        return boxes.get(x, y);</span>
+<span class="fc" id="L266">        return boxes.get(x, y);</span>
     }
 
     /**
@@ -269,52 +274,8 @@ public class MineField {
      * @param box must not be {@code null}
      */
     void setBox(final int x, final int y, final FieldBox box) {
-<span class="fc" id="L272">        boxes.set(x, y, box);</span>
-<span class="fc" id="L273">    }</span>
-
-    /**
-     * Set the game as lost if a mine was opened.
-     */
-    public void setGameOver() {
-<span class="fc" id="L279">        gameOver = true;</span>
-
-<span class="fc bfc" id="L281" title="All 2 branches covered.">        for (final FieldBox b : getBoxes().getAll()) {</span>
-<span class="fc" id="L282">            b.setOpened(true);</span>
-<span class="fc" id="L283">        }</span>
-<span class="fc" id="L284">    }</span>
-
-    /**
-     * Whether the game was lost.
-     *
-     * @return {@code true} if a mine was opened, else {@code false}
-     */
-    public boolean isGameOver() {
-<span class="fc" id="L292">        return gameOver;</span>
-    }
-
-    /**
-     * Whether the game was won.
-     *
-     * @return {@code true} if all fields are opened or flagged and no mine was opened, else {@code false}
-     */
-    public boolean hasWon() {
-<span class="fc" id="L301">        LOG.debug(&quot;Determine if won...&quot;);</span>
-
-<span class="fc bfc" id="L303" title="All 2 branches covered.">        if (isGameOver()) {</span>
-<span class="fc" id="L304">            LOG.debug(&quot;Game is over, not won!&quot;);</span>
-<span class="fc" id="L305">            return false;</span>
-        } else {
-<span class="fc" id="L307">            LOG.debug(&quot;Game is not over.&quot;);</span>
-        }
-
-<span class="fc bfc" id="L310" title="All 2 branches covered.">        if (allBoxesOpenOrFlagged()) {</span>
-<span class="fc" id="L311">            LOG.debug(&quot;All boxes opened or flagged.&quot;);</span>
-<span class="fc" id="L312">            return true;</span>
-        } else {
-<span class="fc" id="L314">            LOG.debug(&quot;Not all boxes opened or flagged!&quot;);</span>
-<span class="fc" id="L315">            return false;</span>
-        }
-    }
+<span class="fc" id="L277">        boxes.set(x, y, box);</span>
+<span class="fc" id="L278">    }</span>
 
     /**
      * Get the boxes.
@@ -322,7 +283,7 @@ public class MineField {
      * @return never {@code null}
      */
     public Matrix&lt;FieldBox&gt; getBoxes() {
-<span class="fc" id="L325">        return boxes;</span>
+<span class="fc" id="L286">        return boxes;</span>
     }
 
     /**
@@ -331,7 +292,7 @@ public class MineField {
      * @return {@code true} if all boxes are opened/flagged, else {@code false}
      */
     boolean allBoxesOpenOrFlagged() {
-<span class="fc" id="L334">        return allBoxesOpenOrFlagged(boxes.getAll());</span>
+<span class="fc" id="L295">        return allBoxesOpenOrFlagged(boxes.getAll());</span>
     }
 
     /**
@@ -341,15 +302,15 @@ public class MineField {
      * @return {@code true} if all boxes are opened/flagged, else {@code false}
      */
     static boolean allBoxesOpenOrFlagged(final List&lt;FieldBox&gt; list) {
-<span class="fc" id="L344">        Validate.notNull(list, &quot;List must not be null!&quot;);</span>
+<span class="fc" id="L305">        Validate.notNull(list, &quot;List must not be null!&quot;);</span>
 
-<span class="fc bfc" id="L346" title="All 2 branches covered.">        for (final FieldBox box : list) {</span>
-<span class="fc bfc" id="L347" title="All 4 branches covered.">            if (!box.isOpen() &amp;&amp; !box.isFlag()) {</span>
-<span class="fc" id="L348">                return false;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        for (final FieldBox box : list) {</span>
+<span class="fc bfc" id="L308" title="All 4 branches covered.">            if (!box.isOpen() &amp;&amp; !box.isFlag()) {</span>
+<span class="fc" id="L309">                return false;</span>
             }
-<span class="fc" id="L350">        }</span>
+<span class="fc" id="L311">        }</span>
 
-<span class="fc" id="L352">        return true;</span>
+<span class="fc" id="L313">        return true;</span>
     }
 
     /**
@@ -358,15 +319,24 @@ public class MineField {
      * @return not negative number
      */
     public int countUnflaggedMines() {
-<span class="fc" id="L361">        int count = 0;</span>
+<span class="fc" id="L322">        int count = 0;</span>
 
-<span class="fc bfc" id="L363" title="All 2 branches covered.">        for (final FieldBox box : boxes.getAll()) {</span>
-<span class="fc bfc" id="L364" title="All 4 branches covered.">            if (box.isMine() &amp;&amp; !box.isFlag()) {</span>
-<span class="fc" id="L365">                ++count;</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">        for (final FieldBox box : boxes.getAll()) {</span>
+<span class="fc bfc" id="L325" title="All 4 branches covered.">            if (box.isMine() &amp;&amp; !box.isFlag()) {</span>
+<span class="fc" id="L326">                ++count;</span>
             }
-<span class="fc" id="L367">        }</span>
+<span class="fc" id="L328">        }</span>
 
-<span class="fc" id="L369">        return count;</span>
+<span class="fc" id="L330">        return count;</span>
+    }
+
+    /**
+     * Get associated game.
+     *
+     * @return never {@code null}
+     */
+    public Game getGame() {
+<span class="fc" id="L339">        return game;</span>
     }
 
 }

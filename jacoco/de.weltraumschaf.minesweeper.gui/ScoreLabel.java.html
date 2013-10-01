@@ -35,7 +35,7 @@ class ScoreLabel extends JLabel implements Observer {
     /**
      * Format of displayed label text.
      */
-    private static final String DISPLAY_FORMAT = &quot;Played: %d (won: %d, lost: %d)&quot;;
+    private static final String DISPLAY_FORMAT = &quot;Won: %d, Lost: %d&quot;;
 
     /**
      * Count of won games.
@@ -84,7 +84,7 @@ class ScoreLabel extends JLabel implements Observer {
      * @return never {@code null} or empty
      */
     private String renderText() {
-<span class="nc" id="L87">        return String.format(DISPLAY_FORMAT, won + lost, won, lost);</span>
+<span class="nc" id="L87">        return String.format(DISPLAY_FORMAT, won, lost);</span>
     }
 
     /**
