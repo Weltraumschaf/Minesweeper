@@ -14,7 +14,6 @@ package de.weltraumschaf.minesweeper.gui;
 import de.weltraumschaf.minesweeper.Matrix;
 import de.weltraumschaf.minesweeper.control.FieldBoxListeners;
 import de.weltraumschaf.minesweeper.model.FieldBox;
-import de.weltraumschaf.minesweeper.model.Game;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import org.apache.commons.lang3.Validate;

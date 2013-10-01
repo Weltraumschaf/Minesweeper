@@ -62,6 +62,9 @@ public class MineField {
      * Used to initialize the box matrix randomly.
      */
     private final Random random = new Random();
+    /**
+     * Game to which a field belongs.
+     */
     private final Game game;
     /**
      * Whether {@link #initializeFieldWithBoxes()} was invoked at least once.
@@ -70,6 +73,8 @@ public class MineField {
 
     /**
      * Initializes width and height with {@link #DEFAULT_WIDTH} and {@link #DEFAULT_HEIGHT}.
+     *
+     * @param game must not be {@code null}
      */
     public MineField(final Game game) {
         this(DEFAULT_HEIGHT, DEFAULT_WIDTH, game);
@@ -80,6 +85,7 @@ public class MineField {
      *
      * @param height must not be less than 1
      * @param width must not be less than 1
+     * @param game must not be {@code null}
      */
     public MineField(final int height, final int width, final Game game) {
         super();
@@ -96,6 +102,8 @@ public class MineField {
      * Set all fields in {@link #boxes} with an instance.
      */
     public void initializeFieldWithBoxes() {
+        LOG.debug("Initialize field with boxes.");
+
         for (int rowId = 0; rowId < height; ++rowId) {
             for (int columnId = 0; columnId < width; ++columnId) {
                 boxes.set(columnId, rowId, createRandomBox(columnId, rowId));
@@ -322,6 +330,11 @@ public class MineField {
         return count;
     }
 
+    /**
+     * Get associated game.
+     *
+     * @return never {@code null}
+     */
     public Game getGame() {
         return game;
     }

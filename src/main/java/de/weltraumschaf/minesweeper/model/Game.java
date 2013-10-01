@@ -36,7 +36,7 @@ public class Game {
     /**
      * Mine field to play with.
      */
-    private MineField field;
+    private MineField mineField;
     /**
      * Watch to measure time for a game.
      */
@@ -52,9 +52,14 @@ public class Game {
      */
     private boolean gameOver;
 
+    /**
+     * Dedicated constructor.
+     *
+     * Initializes {@link #mineField} with a default instance.
+     */
     public Game() {
         super();
-        field = new MineField(this);
+        mineField = new MineField(this);
     }
 
     /**
@@ -64,7 +69,7 @@ public class Game {
      * @param height must not be less than 1
      */
     public void resize(final int width, final int height) {
-        field = new MineField(height, width, this);
+        mineField = new MineField(height, width, this);
     }
 
     /**
@@ -107,7 +112,7 @@ public class Game {
             LOG.debug("Game is not over.");
         }
 
-        if (field.allBoxesOpenOrFlagged()) {
+        if (mineField.allBoxesOpenOrFlagged()) {
             LOG.debug("All boxes opened or flagged.");
             return true;
         } else {
@@ -122,7 +127,7 @@ public class Game {
     public void setGameOver() {
         gameOver = true;
 
-        for (final FieldBox b : field.getBoxes().getAll()) {
+        for (final FieldBox b : mineField.getBoxes().getAll()) {
             b.setOpened(true);
         }
     }
@@ -151,7 +156,7 @@ public class Game {
      * Initializes the mine field and reset the stop watch.
      */
     private void reset() {
-        field.initializeFieldWithBoxes();
+        mineField.initializeFieldWithBoxes();
         watch.reset();
     }
 
@@ -161,12 +166,17 @@ public class Game {
      * @return never {@code null}
      */
     public MineField getMineField() {
-        return field;
+        return mineField;
     }
 
+    /**
+     * Set the mine field.
+     *
+     * @param field must not be {@code null}
+     */
     public void setMineField(final MineField field) {
         Validate.notNull(field, "Must not be null!");
-        this.field = field;
+        this.mineField = field;
     }
 
 }
