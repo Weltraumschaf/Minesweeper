@@ -83,8 +83,8 @@ class FieldBoxButtonListener extends MouseAdapter {
         }
 
         originatingButton.getParent().repaint();
-        checkForWon(originatingButton.getBox().getField());
         main.getStatusbar().setMinesLeft(originatingButton.getBox().getField().countUnflaggedMines());
+        checkForWon(originatingButton.getBox().getField());
     }
 
     /**
@@ -102,6 +102,7 @@ class FieldBoxButtonListener extends MouseAdapter {
 
         if (field.getGame().hasWon()) {
             LOG.debug("Game won!");
+            field.getGame().stop();
             JOptionPane.showMessageDialog(
                     main,
                     String.format("Game won!"),

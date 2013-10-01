@@ -168,6 +168,7 @@ public class FieldBoxButton extends JLabel implements Observer {
             } else {
                 setIcon(ImageIcons.BOMB_EXPLODED.getResource());
                 game.setGameOver();
+                game.stop();
             }
         } else {
             setIcon(determineIcon());
