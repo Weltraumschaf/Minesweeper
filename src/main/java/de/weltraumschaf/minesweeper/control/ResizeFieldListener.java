@@ -60,8 +60,6 @@ class ResizeFieldListener implements ActionListener {
         game.stop();
         game.resize(size.getWidth(), size.getHeight());
         main.setMineField(game.getMineField());
-        main.pack();
-        main.repaint();
         game.start();
     }
 

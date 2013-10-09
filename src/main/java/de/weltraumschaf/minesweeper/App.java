@@ -16,6 +16,7 @@ import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;
 import javax.swing.SwingUtilities;
+import org.apache.log4j.Logger;
 
 /**
  * Main application class.
@@ -24,6 +25,10 @@ import javax.swing.SwingUtilities;
  */
 public class App extends InvokableAdapter implements Runnable {
 
+    /**
+     * Log facility.
+     */
+    private static final Logger LOG = Logger.getLogger(App.class);
     /**
      * Version information.
      */
@@ -57,6 +62,7 @@ public class App extends InvokableAdapter implements Runnable {
 
     @Override
     public void run() {
+        LOG.debug("Create minesweeper session.");
         final MinesweeperSession minesweeper = new MinesweeperSession(version);
         minesweeper.play();
         registerShutdownHook(new Runnable() {

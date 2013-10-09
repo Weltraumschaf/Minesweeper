@@ -98,8 +98,11 @@ public final class MainWindow extends SwingFrame {
         LOG.debug(String.format("Set field:%n%s", mf.toString()));
 
         if (shouldReinitializeGamePanel(mf)) {
+            LOG.debug("Reinitialize game panel.");
             gamePanel = new MineFieldPanel(mf.getWidth(), mf.getHeight(), this);
+            gamePanel.resize(mf.getWidth(), mf.getHeight());
             gamePanel.init();
+            gamePanel.repaint();
         }
 
         mineField = mf;

@@ -17,6 +17,7 @@ import de.weltraumschaf.minesweeper.model.FieldBox;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Paints the game field.
@@ -26,17 +27,21 @@ import org.apache.commons.lang3.Validate;
 public class MineFieldPanel extends JPanel {
 
     /**
+     * Log facility.
+     */
+    private static final Logger LOG = Logger.getLogger(MineFieldPanel.class);
+    /**
      * Holds the game field buttons in a matrix.
      */
-    private final Matrix<FieldBoxButton> fieldButtons;
+    private Matrix<FieldBoxButton> fieldButtons;
     /**
      * Count of buttons in x-axis.
      */
-    private final int width;
+    private int width;
     /**
      * Count of buttons in y-axis.
      */
-    private final int height;
+    private int height;
     /**
      * Frame to which the listener was added.
      */
@@ -68,7 +73,10 @@ public class MineFieldPanel extends JPanel {
      * Executes only one time per instance.
      */
     public void init() {
+        LOG.debug("Initialize mine field panel.");
+
         if (initialized) {
+            LOG.debug("Mine field panel already intialized.");
             return;
         }
 
@@ -82,6 +90,13 @@ public class MineFieldPanel extends JPanel {
         initialized = true;
     }
 
+    public void resize(final int width, final int height) {
+        this.width = width;
+        this.height = height;
+        this.fieldButtons = new Matrix<FieldBoxButton>(FieldBoxButton.class, width, height);
+        this.initialized = false;
+    }
+
     /**
      * Set the field box models.
      *
@@ -89,7 +104,9 @@ public class MineFieldPanel extends JPanel {
      */
     public void setModels(final Matrix<FieldBox> boxes) {
         Validate.notNull(boxes, "Boxes must not be null!");
-        Validate.isTrue(boxes.size() == fieldButtons.size(), "Size of buttons and boxes matrix must be equal!");
+        Validate.isTrue(boxes.size() == fieldButtons.size(),
+                String.format("Size of buttons (%d) and boxes (%d) matrix must be equal!",
+                boxes.size(), fieldButtons.size()));
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
@@ -101,5 +118,4 @@ public class MineFieldPanel extends JPanel {
             }
         }
     }
-
 }

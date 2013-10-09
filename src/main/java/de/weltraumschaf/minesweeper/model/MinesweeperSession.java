@@ -71,6 +71,7 @@ public class MinesweeperSession {
      * Play minesweeper.
      */
     public void play() {
+        LOG.debug("Play the session.");
         initMainWindow();
         newGame();
     }
@@ -104,10 +105,10 @@ public class MinesweeperSession {
         LOG.debug("Make new game.");
         updateScore();
         currentGame = new Game();
-        currentGame.start();
         mainWindow.setMineField(currentGame.getMineField());
         mainWindow.getStatusbar().setMinesLeft(currentGame.getMineField().countUnflaggedMines());
         mainWindow.repaint();
+        currentGame.start();
     }
 
     /**
