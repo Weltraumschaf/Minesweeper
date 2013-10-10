@@ -15,6 +15,8 @@ import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.commons.system.NullExiter;
+import java.io.IOException;
+import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
@@ -23,16 +25,18 @@ import org.apache.log4j.Logger;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class App extends InvokableAdapter implements Runnable {
+public class App implements Runnable {
 
     /**
      * Log facility.
      */
     private static final Logger LOG = Logger.getLogger(App.class);
+    private static final String JAVAFX_ENVIRONMENT_NAME = "MINESWEEPER_JAVAFX";
     /**
      * Version information.
      */
     private final Version version;
+    private final String[] args;
 
     /**
      * Dedicated constructor.
@@ -40,8 +44,9 @@ public class App extends InvokableAdapter implements Runnable {
      * @param args must not be {@code null}
      */
     public App(final String[] args) {
-        super(args);
-        version = new Version("/de/weltraumschaf/minesweeper/version.properties");
+        super();
+        this.args = args.clone();
+        this.version = new Version("/de/weltraumschaf/minesweeper/version.properties");
     }
 
     /**
@@ -50,28 +55,33 @@ public class App extends InvokableAdapter implements Runnable {
      * @param args cli arguments from VM
      */
     public static void main(final String[] args) {
-        InvokableAdapter.main(new App(args));
-    }
-
-    @Override
-    public void execute() throws Exception {
-        setExiter(new NullExiter());
-        version.load();
-        SwingUtilities.invokeLater(this);
+        new App(args).run();
     }
 
     @Override
     public void run() {
-        LOG.debug("Create minesweeper session.");
-        final MinesweeperSession minesweeper = new MinesweeperSession(version);
-        minesweeper.play();
-        registerShutdownHook(new Runnable() {
+        try {
+            version.load();
+        } catch (IOException ex) {
+            LOG.error("Can't load version file!", ex);
+        }
 
-            @Override
-            public void run() {
-                minesweeper.quit();
-            }
-        });
+        if (useJavaFx()) {
+            LOG.debug("Create and launch JavaFX application.");
+            new FxApp().launch(args);
+        } else {
+            LOG.debug("Create and invoke Swing application.");
+            InvokableAdapter.main(new SwingApp(args, version));
+        }
+    }
+
+    /**
+     * Determine whether to use Java FX or not.
+     *
+     * @return {@code true} if Java FX should be used, else {@code false}
+     */
+    private boolean useJavaFx() {
+        return "true".equalsIgnoreCase(System.getenv(JAVAFX_ENVIRONMENT_NAME));
     }
 
 }
