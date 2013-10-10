@@ -11,13 +11,10 @@
  */
 package de.weltraumschaf.minesweeper;
 
-import de.weltraumschaf.minesweeper.model.MinesweeperSession;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
-import de.weltraumschaf.commons.system.NullExiter;
 import java.io.IOException;
-import java.util.logging.Level;
-import javax.swing.SwingUtilities;
+import javafx.application.Application;
 import org.apache.log4j.Logger;
 
 /**
@@ -68,7 +65,7 @@ public class App implements Runnable {
 
         if (useJavaFx()) {
             LOG.debug("Create and launch JavaFX application.");
-            new FxApp().launch(args);
+            Application.launch(FxApp.class, args);
         } else {
             LOG.debug("Create and invoke Swing application.");
             InvokableAdapter.main(new SwingApp(args, version));

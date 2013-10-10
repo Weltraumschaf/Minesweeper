@@ -13,6 +13,9 @@
 package de.weltraumschaf.minesweeper;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -23,7 +26,12 @@ public class FxApp extends Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        stage.setTitle("Minesweeper");
+        final GridPane grid = new GridPane();
+        grid.add(new Text("Welcome"), 0, 0, 2, 1);
+        final Scene scene = new Scene(grid);
+        stage.setScene(scene);
+        stage.show();
     }
 
 }
