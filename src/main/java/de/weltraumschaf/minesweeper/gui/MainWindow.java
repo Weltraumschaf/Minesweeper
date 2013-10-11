@@ -56,6 +56,9 @@ public final class MainWindow extends SwingFrame {
      * Listens for version menu item.
      */
     private ActionListener versionInfoListener;
+    /**
+     * Listener for size menu items.
+     */
     private ActionListener resizeFieldListener;
     /**
      * Listens for new game menu item.
@@ -121,12 +124,15 @@ public final class MainWindow extends SwingFrame {
                 .separator()
                 .item(Size.SMALL.getActionCommand())
                 .addListener(resizeFieldListener)
+                .setAccelerator('1')
                 .end()
                 .item(Size.MEDIUM.getActionCommand())
                 .addListener(resizeFieldListener)
+                .setAccelerator('2')
                 .end()
                 .item(Size.LARGE.getActionCommand())
                 .addListener(resizeFieldListener)
+                .setAccelerator('3')
                 .end();
 
         if (OperatingSystem.MACOSX != OS) {
