@@ -100,7 +100,7 @@ public final class MainWindow extends SwingFrame {
         if (shouldReinitializeGamePanel(mf)) {
             LOG.debug("Reinitialize game panel.");
             gamePanel = new MineFieldPanel(mf.getWidth(), mf.getHeight(), this);
-            gamePanel.resize(mf.getWidth(), mf.getHeight());
+            gamePanel.changeSize(mf.getWidth(), mf.getHeight());
             gamePanel.init();
             gamePanel.repaint();
         }
@@ -146,7 +146,10 @@ public final class MainWindow extends SwingFrame {
 
     @Override
     public void initPanel() {
+        LOG.debug("Init panel of main window.");
+        LOG.debug("Add game panel to main window.");
         panel.add(gamePanel);
+        LOG.debug("Add status bar to main window.");
         getContentPane().add(statusbar, BorderLayout.SOUTH);
         pack();
     }

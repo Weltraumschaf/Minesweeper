@@ -102,7 +102,7 @@ public class MineField {
      * Set all fields in {@link #boxes} with an instance.
      */
     public void initializeFieldWithBoxes() {
-        LOG.debug("Initialize field with boxes.");
+        LOG.debug(String.format("Initialize field with boxes (%dx%d).", width, height));
 
         for (int rowId = 0; rowId < height; ++rowId) {
             for (int columnId = 0; columnId < width; ++columnId) {

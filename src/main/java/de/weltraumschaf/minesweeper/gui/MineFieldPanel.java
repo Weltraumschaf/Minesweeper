@@ -90,7 +90,8 @@ public class MineFieldPanel extends JPanel {
         initialized = true;
     }
 
-    public void resize(final int width, final int height) {
+    public void changeSize(final int width, final int height) {
+        LOG.debug(String.format("Resize mine field panel to %dx%d", width, height));
         this.width = width;
         this.height = height;
         this.fieldButtons = new Matrix<FieldBoxButton>(FieldBoxButton.class, width, height);

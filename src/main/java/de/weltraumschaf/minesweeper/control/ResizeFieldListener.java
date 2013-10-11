@@ -58,7 +58,7 @@ class ResizeFieldListener implements ActionListener {
         LOG.debug(String.format("Resize mine field to %s.", size));
         final Game game = session.getCurrentGame();
         game.stop();
-        game.resize(size.getWidth(), size.getHeight());
+        game.changeSize(size.getWidth(), size.getHeight());
         main.setMineField(game.getMineField());
         game.start();
     }

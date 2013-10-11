@@ -72,7 +72,7 @@ public class MinesweeperSession {
      */
     public void play() {
         LOG.debug("Play the session.");
-        initMainWindow();
+        prepareMainWindow();
         newGame();
     }
 
@@ -87,8 +87,8 @@ public class MinesweeperSession {
     /**
      * Initializes the main windows.
      */
-    private void initMainWindow() {
-        LOG.debug("Init main window.");
+    private void prepareMainWindow() {
+        LOG.debug("Prepare main window.");
         mainWindow.setVersionInfoListener(MenuItemListeners.createVersionListener(mainWindow, version));
         mainWindow.setNewGameListener(MenuItemListeners.createNewGameListener(this));
         mainWindow.setQuitListener(MenuItemListeners.createQuitListener(mainWindow));
@@ -105,10 +105,10 @@ public class MinesweeperSession {
         LOG.debug("Make new game.");
         updateScore();
         currentGame = new Game();
-        mainWindow.setMineField(currentGame.getMineField());
         mainWindow.getStatusbar().setMinesLeft(currentGame.getMineField().countUnflaggedMines());
         mainWindow.repaint();
         currentGame.start();
+        mainWindow.setMineField(currentGame.getMineField());
     }
 
     /**

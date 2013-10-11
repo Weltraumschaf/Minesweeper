@@ -68,7 +68,8 @@ public class Game {
      * @param width must not be less than 1
      * @param height must not be less than 1
      */
-    public void resize(final int width, final int height) {
+    public void changeSize(final int width, final int height) {
+        LOG.debug(String.format("Resize game and set new mine field model %dx%d.", width, height));
         mineField = new MineField(height, width, this);
         reset();
     }
@@ -77,8 +78,11 @@ public class Game {
      * Starts the game.
      */
     public void start() {
+        LOG.debug("Start game.");
+
         if (started) {
-            throw new IllegalStateException("Game already started!");
+            LOG.warn("Game already startet.");
+            return;
         }
 
         started = true;
@@ -90,8 +94,11 @@ public class Game {
      * Stop the game.
      */
     public void stop() {
+        LOG.debug("Stop game.");
+
         if (!started) {
-            throw new IllegalStateException("Game already stopped!");
+            LOG.warn("Game already stopped.");
+            return;
         }
 
         started = false;
@@ -157,6 +164,7 @@ public class Game {
      * Initializes the mine field and reset the stop watch.
      */
     private void reset() {
+        LOG.debug("Reset game.");
         mineField.initializeFieldWithBoxes();
         watch.reset();
     }
