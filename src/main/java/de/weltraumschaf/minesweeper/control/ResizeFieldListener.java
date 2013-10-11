@@ -36,6 +36,9 @@ class ResizeFieldListener implements ActionListener {
      * Used to get current game.
      */
     private final MinesweeperSession session;
+    /**
+     * Used to set mine field.
+     */
     private final MainWindow main;
 
     /**
@@ -57,10 +60,17 @@ class ResizeFieldListener implements ActionListener {
         final Size size = Size.getForActioncommand(e.getActionCommand());
         LOG.debug(String.format("Resize mine field to %s.", size));
         final Game game = session.getCurrentGame();
+
+        if (game.hasSize(size)) {
+            LOG.debug("Same size. Ignore change event.");
+            return;
+        }
+
         game.stop();
-        game.changeSize(size.getWidth(), size.getHeight());
+        game.setSize(size);
         main.setMineField(game.getMineField());
         game.start();
+        main.repaint();
     }
 
 }

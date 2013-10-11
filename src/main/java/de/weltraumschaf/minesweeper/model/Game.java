@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.minesweeper.model;
 
+import de.weltraumschaf.minesweeper.gui.Size;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -51,6 +52,10 @@ public class Game {
      * Whether a mine was opened and game is over.
      */
     private boolean gameOver;
+    /**
+     * Size of game.
+     */
+    private Size size;
 
     /**
      * Dedicated constructor.
@@ -60,18 +65,24 @@ public class Game {
     public Game() {
         super();
         mineField = new MineField(this);
+        size = Size.SMALL;
     }
 
     /**
      * Changes the size of the mine field.
      *
-     * @param width must not be less than 1
-     * @param height must not be less than 1
+     * @param s must not be {@code null}
      */
-    public void changeSize(final int width, final int height) {
-        LOG.debug(String.format("Resize game and set new mine field model %dx%d.", width, height));
-        mineField = new MineField(height, width, this);
+    public void setSize(final Size s) {
+        Validate.notNull(s, "Size must not be null!");
+        size = s;
+        LOG.debug(String.format("Resize game and set new mine field model %dx%d.", s.getWidth(), s.getHeight()));
+        mineField = new MineField(s.getWidth(), s.getHeight(), this);
         reset();
+    }
+
+    public boolean hasSize(final Size s) {
+        return size == s;
     }
 
     /**
